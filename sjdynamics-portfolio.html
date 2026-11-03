@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang=ko>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>SJ Dynamics · 실제 화면</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif;color:#1d1c1d;background:#f8f8f8}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:14px;height:44px;padding:0 16px;background:#3f0e40;color:#fff}
+header b{font-weight:800}
+header button{border:0;background:#ffffff22;color:#fff;border-radius:6px;padding:5px 10px;font:inherit;font-size:13px;cursor:pointer}
+header .sp{flex:1}
+header small{opacity:.75;font-size:12px}
+main{max-width:1280px;margin:0 auto;padding:28px 24px 60px}
+h1{font-size:30px;margin:0 0 6px}
+.lead{color:#616061;margin:0 0 22px;font-size:15px;line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.card{background:#fff;border:1px solid #e6e6eb;border-radius:12px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column}
+.card:hover{border-color:#611f69;box-shadow:0 2px 10px #0001}
+.th{height:150px;background:#f1eef3;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.th img{width:100%;height:100%;object-fit:cover;object-position:top left}
+.th .big{font-size:40px;font-weight:900;color:#611f69}
+.th .key{position:absolute;left:10px;top:10px;background:#3f0e40;color:#fff;border-radius:6px;font-size:12px;font-weight:800;padding:2px 7px}
+.th .cnt{position:absolute;right:10px;bottom:8px;background:#fffd;border-radius:6px;font-size:11px;padding:2px 6px;color:#616061}
+.cb{padding:12px 14px 14px}
+.cb .nm{font-size:12px;color:#611f69;font-weight:800}
+.cb h3{margin:2px 0 8px;font-size:16px}
+.q{display:flex;flex-wrap:wrap;gap:5px}
+.q span{font-size:12px;background:#fff6db;border:1px solid #f2d68a;border-radius:20px;padding:2px 8px;color:#6b5200}
+.det{display:grid;grid-template-columns:330px 1fr;gap:24px;align-items:start}
+.side .nm{font-size:13px;color:#611f69;font-weight:800}
+.side h2{font-size:26px;margin:4px 0 10px;line-height:1.3}
+.side p{line-height:1.65;font-size:15px;margin:0 0 12px}
+.side ul{padding-left:18px;margin:0 0 14px;line-height:1.7;font-size:14.5px}
+.side .lab{font-size:12px;color:#616061;font-weight:700;margin:16px 0 6px}
+.view{background:#fff;border:1px solid #e6e6eb;border-radius:12px;padding:14px}
+.shot{position:relative;background:#f1eef3;border-radius:8px;overflow:hidden;min-height:420px;display:flex;align-items:center;justify-content:center}
+.shot img{display:block;max-width:100%;max-height:70vh;cursor:zoom-in}
+.cap{display:flex;align-items:center;gap:10px;margin-top:10px}
+.cap b{font-size:15px}
+.cap .sp{flex:1}
+.cap .pg{font-size:13px;color:#616061}
+.cap button{border:1px solid #ddd;background:#fff;border-radius:6px;padding:5px 12px;cursor:pointer;font:inherit}
+.strip{display:flex;gap:8px;margin-top:10px;overflow-x:auto}
+.strip div{flex:0 0 120px;height:72px;border-radius:6px;border:2px solid transparent;background:#f1eef3;overflow:hidden;cursor:pointer;font-size:11px;color:#888;display:flex;align-items:center;justify-content:center;text-align:center;padding:4px}
+.strip div.on{border-color:#611f69}
+.strip img{width:100%;height:100%;object-fit:cover;object-position:top left}
+.note{font-size:12.5px;color:#616061;margin-top:10px}
+.tag{display:inline-block;font-size:11px;font-weight:800;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:2px}
+.tag.r{background:#fde8e8;color:#a61b1b}
+.tag.s{background:#e8f0fd;color:#1b4fa6}
+/* story */
+.story{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.story div{background:#f8f5f9;border-radius:10px;padding:16px}
+.story i{font-style:normal;font-size:12px;font-weight:800;color:#611f69}
+.story p{margin:6px 0 0;line-height:1.65;font-size:14.5px}
+.kpi{display:flex;align-items:center;justify-content:center;gap:26px;padding:34px 0 30px}
+.kpi .v{font-size:76px;font-weight:900;letter-spacing:-2px}
+.kpi .v.a{color:#b9b9b9}
+.kpi .v.b{color:#611f69}
+.kpi .ar{font-size:44px;color:#ccc}
+.kpi small{display:block;text-align:center;font-size:13px;color:#616061;font-weight:600;letter-spacing:0}
+/* org */
+.org{padding:18px 8px 6px}
+.ceo{margin:0 auto 10px;width:360px;text-align:center;background:#3f0e40;color:#fff;border-radius:12px;padding:14px}
+.ceo b{font-size:17px}
+.ceo small{display:block;opacity:.8;margin-top:4px}
+.vline{width:2px;height:22px;background:#c9b8cc;margin:0 auto}
+.ex5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;border-top:2px solid #c9b8cc;padding-top:14px}
+.ex5 div{background:#f8f5f9;border:1px solid #e3d6e6;border-radius:10px;padding:12px}
+.ex5 b{display:block;font-size:15px}
+.ex5 i{font-style:normal;font-size:11px;font-weight:800;color:#9d3f9d}
+.ex5 p{margin:6px 0 0;font-size:13px;line-height:1.55}
+.flow{margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.flow span{background:#fff6db;border:1px solid #f2d68a;border-radius:20px;padding:4px 12px;font-size:13px}
+#zoom{position:fixed;inset:0;background:#000d;z-index:9;display:flex;align-items:center;justify-content:center;cursor:zoom-out}
+#zoom img{max-width:96vw;max-height:94vh}
+#zoom[hidden]{display:none}
+</style>
+</head>
+<body>
+<header><b>SJ Dynamics</b><span>실제 화면</span><button onclick="home()">전체 보기</button><span class=sp></span><small>숫자 키 0–9로 바로 열기 · ← → 화면 넘기기 · Esc 전체 보기</small></header>
+<main id=app></main>
+<div id=zoom hidden onclick="this.hidden=true"><img alt=""></div>
+<script>
+// 화면 파일은 real-screens/<이름>.png 에 둡니다. 파일이 없는 화면은 빠지고, 화면이 하나도 없는 항목은 목록에서 빠집니다.
+let IT=[
+{k:'felix',nm:'실적',t:'생산관리 시스템으로 납기율 30% → 100%',q:['납기','생산 일정','부서가 따로 놀아요'],
+ one:'베트남 하이퐁의 철강 플랜지 공장에서, 생산관리 담당자로서 ERP를 직접 만들었습니다.',
+ pts:['제조 공정 전체 관리','재고 · 재공 관리','몬테카를로 시뮬레이션으로 자동 생산계획'],story:1},
+{k:'mes',nm:'강의',t:'2026 중진공 AI 스마트공장 MES 교육 강사',q:['직원 AI 교육','우리 직원도 AI를 쓸 수 있을까','스마트공장'],
+ one:'중소벤처기업진흥공단 교육(중소벤처기업연수원)에서 스마트공장 추진 담당자와 제조 전문가에게 "AI 기반 스마트공장 MES 실무" 2일차 6시간을 강의했습니다.',
+ pts:['공정 조건으로 품질을 예측 (정방향)','목표 품질에 맞는 공정 조건 찾기 (역방향)','공장 데이터로 직접 실습 (Colab)'],talk:1},
+{k:'station',nm:'SJ Station',t:'회사 메신저',q:['협업 도구가 있어야 AI를 하죠','인수인계','단톡방이 너무 많아요'],
+ one:'채널, 스레드, 검색, 워크플로. 웹과 휴대폰 앱. 저희가 만들어 매일 씁니다.',
+ pts:['일 하나가 스레드 하나에 남습니다','검색 한 번으로 지난 대화와 파일','권한은 채널 단위, AI도 같은 권한'],
+ sh:[['station-1','채널과 스레드: 일 하나가 한 곳에'],['station-2','검색: 거래처 이름 한 번에 지난 견적·주문'],['station-3','워크플로: 접수 양식이 채널 메시지로'],['station-4','휴대폰 앱: 현장에서 같은 스레드']]},
+{k:'ai',nm:'SJ Station · AI 동료',t:'부르면 일하는 AI',q:['AI가 진짜 일해요?','아침 보고','기억이 쌓이는 AI'],
+ one:'채널에서 부르면 스레드에 답합니다. 하는 일은 체크리스트로 실시간으로 보이고, 정해진 시각에 스스로 돕니다.',
+ pts:['파일을 읽고 문서를 만들어 올림','매일 정해진 시각에 보고 (루틴)','볼 수 없는 채널의 내용은 답하지 않음','회사 기준을 기억하고 그대로 따름'],
+ sh:[['ai-1','부르면 진행 체크리스트와 함께 답합니다'],['ai-2','첨부한 가격표로 견적서 파일을 만들어 올립니다'],['ai-3','매일 아침 8시 보고가 스스로 올라옵니다'],['ai-4','권한 밖 채널의 파일은 받지 않습니다'],['ai-5','회사 기준(배송비 규칙 등)을 기억하고 답에 씁니다']]},
+{k:'steward',nm:'SJ Steward',t:'고객 문의 한 곳에',q:['홈페이지 · SNS 문의가 흩어져요','중복 문의','답변이 늦어요'],
+ one:'웹사이트 메신저, 공유 받은편지함, 티켓, 도움말 센터, AI 답변.',
+ pts:['어디로 들어온 문의든 받은편지함 하나로','도움말 센터 글로 AI가 먼저 답함','담당 배정과 상태가 한눈에'],
+ sh:[['steward-1','웹사이트 메신저: AI 상담원이 먼저 맞이합니다'],['steward-2','받은함: AI 상담원이 먼저 답하고, 담당자가 이어받습니다'],['steward-3','고객 정보와 지난 대화가 한 화면에, 담당자는 순번으로 배정']]},
+{k:'junction',nm:'SJ Junction',t:'거래처와 영업 기회',q:['견적 넣은 게 어떻게 됐는지','거래처 관리','영업 파이프라인'],
+ one:'거래처, 담당자, 영업 기회와 단계. 지금 쓰는 ERP는 그대로 두고, 그 앞의 영업을 잇습니다.',
+ pts:['거래처마다 지난 거래와 연락 기록','영업 기회가 어느 단계인지 한눈에','다음 할 일과 담당'],
+ sh:[['junction-1','거래처 한 곳의 기록'],['junction-2','영업 기회 단계']]},
+{k:'docs',nm:'자료 · 문서 생성',t:'보고서와 문서도 만듭니다',q:['보고서 · 제안서도 AI가?','견적서','숫자로 보여 주세요'],
+ one:'지금 보신 소개 자료 자체가 저희가 만든 것입니다. 숫자는 코드가 계산하고, AI는 문장만 씁니다.',
+ pts:['견적서 · 명세서 · 계산서 요청 · 아침 보고','숫자마다 어디서 왔는지 붙음','한 달을 20초로 보는 시뮬레이터'],
+ sh:[['docs-1','견적서: 숫자마다 근거가 붙습니다'],['docs-2','아침 보고 한 장'],['docs-3','한 달 시뮬레이터와 계산기'],['docs-4','회사의 일을 하나의 흐름으로']]},
+{k:'market',nm:'시장 데이터',t:'수입 · 수출 · 시장 숫자',q:['시장 추이','수입 · 수출','해외 진출'],
+ one:'품목별 수입 · 수출 추이, 나라별 점유율, 통계청 지표를 표로 뽑습니다. 업종에 맞춰 미리 준비합니다.',
+ pts:['품목(HS 코드)별 수입 · 수출','나라별 점유율','국내 통계 지표'],
+ sh:[['market-1','품목별 수입 추이']]},
+{k:'pc',nm:'PC 프로그램 자동화',t:'AI가 PC 프로그램을 직접 다룹니다',tag:['연구','r'],q:['카톡은 계속 써야 하는데','옛날 프로그램이라 연동이 안 돼요'],
+ one:'연동 기능이 없는 PC 프로그램도 AI가 화면을 열고 읽고 입력합니다. 메신저 대화방을 읽고 보내는 연구 화면입니다.',
+ pts:['대화방을 열고 최근 메시지를 읽음','이미지 · 문서를 보냄 (보내기 전에 물음)','업무 계정에는 공식 연동 경로를 씁니다'],
+ sh:[['pc-1','대화방을 열고 읽습니다'],['pc-2','견적서 이미지를 보냅니다']]},
+{k:'org',nm:'저희 회사의 운영',t:'대표 한 명과 AI 임원',q:['AI 이사, 팀장급 AI','AX 조직은 어떻게'],
+ one:'저희 회사도 이렇게 운영합니다. AI 임원이 조사하고 초안과 제안을 만들고, 결정은 대표가 합니다.',
+ pts:['역할마다 맡는 일과 목표가 정해져 있음','넘겨주는 순서가 있음','결정은 언제나 사람'],org:1},
+{k:'apps',nm:'앱',t:'휴대폰 · 시계 · TV 앱도 만듭니다',q:['앱도 만들어요?','현장 메모'],
+ one:'iPhone · Apple Watch 녹음과 실시간 받아쓰기, iPhone · Apple TV 백색소음 앱.',
+ pts:['녹음과 기기 안 받아쓰기','시계에서 바로 녹음','근거가 있는 기능만 넣은 백색소음'],
+ sh:[['apps-1','녹음 앱 (iPhone): 말하는 동안 받아쓰기가 나옵니다'],['apps-2','백색소음 앱 (iPhone)']]},
+{k:'review',nm:'AI 검증',t:'고칠 때마다 AI가 검사합니다',q:['결과가 맞는지 검증이 어려워요','프로그램을 고치면 불안해요'],
+ one:'코드를 고칠 때마다 AI가 바뀐 내용을 요약하고 리뷰합니다. 기준 사례를 정해 두고 매번 다시 검사합니다.',
+ pts:['바뀐 내용 요약','문제가 될 곳에 리뷰 댓글','기준 사례 재검사와 되돌리기'],
+ sh:[['review-1','바뀐 내용 요약과 리뷰 댓글']]}];
+let cur=null,si=0;
+const $=s=>document.querySelector(s),img=f=>`real-screens/${f}.png`;
+const keyOf=i=>i<10?String(i):'';
+function shot(f,cls='shot'){return `<div class="${cls}"><img src="${img(f)}" alt="" onclick="zoom(this.src)"></div>`}
+function thumb(it){
+ if(it.story)return `<div class=big>30% → 100%</div>`;
+ if(it.org)return `<div class=big style="font-size:30px">대표 + AI 임원 5</div>`;
+ if(it.talk)return `<div class=big style="font-size:30px">2026 · 6시간 강의</div>`;
+ return `<img src="${img(it.sh[0][0])}" alt=""><span class=cnt>${it.sh.length}장</span>`}
+function home(){cur=null;$('#app').innerHTML=`<h1>실제 화면</h1><p class=lead>저희가 만들어 실제로 돌리는 것들입니다. 화면 속 회사, 사람, 금액은 모두 예시입니다.</p>
+<div class=grid>${IT.map((it,i)=>`<div class=card onclick="open_(${i})"><div class=th>${thumb(it)}${keyOf(i)?`<span class=key>${keyOf(i)}</span>`:''}</div><div class=cb><div class=nm>${it.nm}${it.tag?`<span class="tag ${it.tag[1]}">${it.tag[0]}</span>`:''}</div><h3>${it.t}</h3><div class=q>${it.q.map(x=>`<span>${x}</span>`).join('')}</div></div></div>`).join('')}</div>`;scrollTo(0,0)}
+function open_(i,s=0){cur=i;si=s;const it=IT[i];
+ const side=`<div class=side><div class=nm>${it.nm}${it.tag?`<span class="tag ${it.tag[1]}">${it.tag[0]}</span>`:''}</div><h2>${it.t}</h2><p>${it.one}</p><ul>${it.pts.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+ let v;
+ if(it.story)v=`<div class=view><div class=kpi><div><div class="v a">30%</div><small>입사 당시 납기율</small></div><div class=ar>→</div><div><div class="v b">100%</div><small>2021년</small></div></div>
+<div class=story><div><i>상황</i><p>베트남 하이퐁의 철강 플랜지 공장(펠릭스테크). 생산관리 담당으로 들어갔을 때 생산관리에 큰 문제가 있었습니다.</p></div><div><i>한 일</i><p>개발자가 아니라 생산관리 담당자로서 ERP를 직접 만들었습니다. 공정 전체, 재고 · 재공, 그리고 몬테카를로 시뮬레이션으로 생산계획을 자동으로 세웠습니다.</p></div><div><i>결과</i><p>납기율이 30%에서 100%가 됐습니다. 도구를 사서 들인 것이 아니라, 시스템을 만들어 낸 성과입니다.</p></div></div></div>`;
+ else if(it.talk)v=`<div class=view><div class=kpi><div><div class="v b" style="font-size:56px">AI 스마트공장 MES 실무</div><small>2026 · 중소벤처기업진흥공단 · 중소벤처기업연수원 · 2일차 6시간</small></div></div>
+<div class=story><div><i>누구에게</i><p>중소기업의 스마트공장 추진 담당자와 제조 전문가.</p></div><div><i>무엇을</i><p>"이렇게 하면 품질이 어떻게 될까"(정방향)와 "이 품질을 내려면 어떻게 해야 할까"(역방향). 공장 데이터 Y = f(X)를 AI로 풉니다.</p></div><div><i>어떻게</i><p>완성된 앱을 먼저 보여 주고, 쉬운 예로 체험한 뒤, 공장 데이터로 직접 실습합니다. 한글로 시키면 코드가 나오는 것을 직접 해 봅니다.</p></div></div></div>`;
+ else if(it.org)v=`<div class=view><div class=org><div class=ceo><b>대표 (사람)</b><small>모든 결정 · 전략, 가격, 계약</small></div><div class=vline></div>
+<div class=ex5><div><i>AI 임원</i><b>CEO</b><p>회사 방향, 사업 모델, 로드맵</p></div><div><i>AI 임원</i><b>CFO · COO</b><p>구매, 지출, 현금. 모든 지출을 잽니다</p></div><div><i>AI 임원</i><b>CMO</b><p>알리기. 고객이 찾아오게</p></div><div><i>AI 임원</i><b>CRO</b><p>첫 대화부터 계약, 재계약까지</p></div><div><i>AI 임원</i><b>CTO · CIO</b><p>제품, 시스템, 보안</p></div></div>
+<div class=flow><span>CMO가 관심 고객을 CRO에게 넘김</span><span>CTO가 만든 것을 CRO가 제안</span><span>CFO가 비용과 현금을 확인</span><span>AI는 조사 · 초안 · 제안, 결정은 대표</span></div></div></div>`;
+ else{const[f,c]=it.sh[si];v=`<div class=view>${shot(f)}<div class=cap><b>${c}</b><span class=sp></span><span class=pg>${si+1} / ${it.sh.length}</span><button onclick="mv(-1)">←</button><button onclick="mv(1)">→</button></div>
+<div class=strip>${it.sh.map(([g,cc],j)=>`<div class="${j==si?'on':''}" onclick="open_(${i},${j})" title="${cc}"><img src="${img(g)}" alt=""></div>`).join('')}</div>
+<p class=note>${it.tag&&it.tag[0]=='연구'?'연구 화면입니다. ':''}실제로 돌린 화면입니다. 화면 속 회사, 사람, 금액은 예시입니다.</p></div>`}
+ $('#app').innerHTML=`<div class=det>${side}${v}</div>`;scrollTo(0,0)}
+function mv(d){const it=IT[cur];if(!it||!it.sh)return;open_(cur,(si+d+it.sh.length)%it.sh.length)}
+function zoom(src){const z=$('#zoom');z.querySelector('img').src=src;z.hidden=false}
+addEventListener('keydown',e=>{if(e.target.tagName=='INPUT')return;const z=$('#zoom');
+ if(e.key=='Escape'){if(!z.hidden)z.hidden=true;else home();return}
+ if(/^[0-9]$/.test(e.key)&&IT[+e.key]){z.hidden=true;open_(+e.key);return}
+ if(cur!=null&&(e.key=='ArrowRight'||e.key=='ArrowLeft')){z.hidden=true;mv(e.key=='ArrowRight'?1:-1)}});
+const has=f=>new Promise(r=>{const m=new Image();m.onload=()=>r(true);m.onerror=()=>r(false);m.src=img(f)});
+Promise.all(IT.map(async it=>{if(!it.sh)return it;const ok=await Promise.all(it.sh.map(([f])=>has(f)));it.sh=it.sh.filter((_,j)=>ok[j]);return it.sh.length?it:null}))
+ .then(v=>{IT=v.filter(Boolean);home();remote()});
+// 발표자 화면(sjdynamics-presenter.html) 안에 담겼을 때만: 정해진 명령만 받고, 지금 상태를 알립니다.
+function remote(){if(parent===window)return;
+ addEventListener('message',e=>{const m=e.data;if(!m||!m.sj)return;
+  if(m.open){const i=IT.findIndex(x=>x.k==m.open);if(i>=0&&cur!==i)open_(i,0)}
+  if(m.home)home();
+  if(m.key)dispatchEvent(new KeyboardEvent('keydown',{key:m.key}))});
+ let last='';setInterval(()=>{const s={k:cur==null?null:IT[cur].k,si,items:IT.map(x=>[x.k,x.nm])},j=JSON.stringify(s);if(j!==last){last=j;parent.postMessage({sjState:s},'*')}},300)}
+</script>
+</body>
+</html>

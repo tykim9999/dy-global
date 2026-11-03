@@ -1,0 +1,1073 @@
+<!doctype html>
+<!-- deck v1 -->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="김태유 · SJ Dynamics">
+<meta name="deck-footer" content="SJ Dynamics × 디와이글로벌 · 2026.11.04 진주">
+<title>SJ Dynamics × 디와이글로벌</title>
+<style>
+:root{
+  --bg:#131417; --bg2:#2a2620; --ink:#f4f2ec; --ink2:#bdb9ae; --ink3:#857f73;
+  --accent:#fdc727; --accent2:#ff9f1c; --warm:#ff6b5b;
+  --line:rgba(255,255,255,.12); --line2:rgba(255,255,255,.26); --card:rgba(255,255,255,.045); --card2:#1d1f23;
+  --fx:253,199,39; --glow:.12;
+  --l-chat:#fdc727; --l-crm:#4da3ff; --l-track:#3dd68c; --l-steward:#ff7a59; --l-key:#b18cff; --manual:#ff6b5b;
+  --ease:cubic-bezier(.16,.84,.3,1); --pop:cubic-bezier(.34,1.56,.64,1);
+  --font:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Segoe UI",system-ui,sans-serif;
+}
+[data-theme=light]{
+  --bg:#f7f5ef; --bg2:#ece4cf; --ink:#1e1e1e; --ink2:#4a4740; --ink3:#857f73;
+  --accent:#d9a300; --accent2:#e07b00;
+  --line:rgba(0,0,0,.12); --line2:rgba(0,0,0,.28); --card:rgba(0,0,0,.035); --card2:#ffffff;
+  --fx:150,115,10; --glow:.10;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#000;color:var(--ink);
+  font-family:var(--font);-webkit-font-smoothing:antialiased;word-break:keep-all}
+body.idle{cursor:none}
+
+/* ---------- stage: fixed 1920x1080, scaled to the window ---------- */
+#viewport{position:fixed;inset:0}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;
+  transform:translate(-50%,-50%) scale(var(--s,1));
+  background:radial-gradient(1200px 700px at 85% 0%,var(--bg2),transparent 60%),var(--bg)}
+#fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.55}
+.glow{position:absolute;border-radius:50%;filter:blur(100px);opacity:var(--glow);pointer-events:none;
+  animation:drift 24s ease-in-out infinite alternate}
+.glow.g1{width:700px;height:700px;left:-220px;top:-240px;background:var(--accent)}
+.glow.g2{width:600px;height:600px;right:-160px;bottom:-260px;background:var(--accent2);animation-duration:31s;animation-direction:alternate-reverse}
+@keyframes drift{to{transform:translate(160px,110px) scale(1.15)}}
+#prog{position:absolute;left:0;top:0;height:5px;width:0;z-index:5;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .6s var(--ease)}
+#hint{position:absolute;right:48px;bottom:40px;z-index:5;font-size:18px;color:var(--ink3);transition:opacity 1s}
+#black{position:fixed;inset:0;z-index:20;background:#000;opacity:0;pointer-events:none;transition:opacity .4s}
+body.black #black{opacity:1}
+
+/* ---------- slides: zoom through ---------- */
+.slide{position:absolute;inset:0;padding:120px 140px 110px;display:flex;flex-direction:column;
+  opacity:0;visibility:hidden;transform:scale(.94);
+  transition:opacity .7s var(--ease),transform 1s var(--ease),visibility 0s .7s}
+.slide.active{opacity:1;visibility:visible;transform:none;z-index:2;
+  transition:opacity .7s var(--ease),transform 1s var(--ease)}
+.slide.leave{transform:scale(1.08)}
+#stage.back .slide{transform:scale(1.08)}
+#stage.back .slide.active{transform:none}
+#stage.back .slide.leave{transform:scale(.94)}
+.noanim,.noanim *{transition:none!important}
+
+/* ---------- element animation vocabulary ----------
+   .a      fade up            .a.l / .a.r  slide in from left / right
+   .a.b    blur in            .a.pop       scale in with overshoot
+   .a.grow draw left to right .a.still     fade only (SVG groups)
+   .a.up   grow from the bottom (bars)
+   .draw   an SVG path that draws itself when its .a turns on
+   .rider  an SVG circle that travels data-path when its .a turns on
+   .type   text that types itself when its .a turns on
+   data-s="n"  appears at build step n (none = on entry)
+   --d     delay, e.g. style="--d:.3s"                                  */
+.a{opacity:0;transform:translateY(40px);
+  transition:opacity .8s var(--ease),transform .9s var(--ease),filter .8s var(--ease);transition-delay:var(--d,0s)}
+svg .a{transform-box:fill-box;transform-origin:center}
+.a.l{transform:translateX(-90px)}
+.a.r{transform:translateX(90px)}
+.a.b{filter:blur(14px);transform:scale(1.05)}
+.a.pop{transform:scale(.4);transition-timing-function:var(--pop)}
+.a.grow{transform:scaleX(0);transform-origin:left center;transition-duration:.8s,1.6s,.8s}
+.a.still{transform:none}
+.a.up{transform:scaleY(0);transform-origin:50% 100%;transition-duration:.6s,1.3s,.6s}
+.a.on{opacity:1;transform:none;filter:none}
+.draw{stroke-dasharray:var(--len) var(--len);stroke-dashoffset:var(--len);
+  transition:stroke-dashoffset 1.5s var(--ease);transition-delay:var(--d,0s)}
+.a.on .draw,.a.on.draw{stroke-dashoffset:0}
+.type::after{content:"";display:inline-block;width:3px;height:1em;margin-left:4px;vertical-align:-.15em;
+  background:var(--accent);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* ---------- text ---------- */
+.kicker{font-size:22px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:28px}
+h1{font-size:112px;line-height:1.1;margin:0 0 36px;font-weight:800;letter-spacing:-.02em}
+h2{font-size:60px;line-height:1.2;margin:0 0 44px;font-weight:800;letter-spacing:-.01em}
+.lead{font-size:36px;line-height:1.5;color:var(--ink2);margin:0}
+.grad{background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.fit{white-space:nowrap}
+.src{position:absolute;left:140px;bottom:84px;font-size:18px;color:var(--ink3)}
+.by{margin-top:64px;font-size:26px;color:var(--ink3)}
+.center{margin:auto 0}
+.tbd{display:inline-block;padding:0 .2em;border:3px dashed var(--accent);border-radius:.18em;color:var(--accent);line-height:1.05}
+
+/* ---------- blocks ---------- */
+.pts{list-style:none;margin:auto 0;padding:0;display:grid;gap:34px}
+.pts li{position:relative;padding-left:48px;font-size:40px;line-height:1.4}
+.pts li::before{content:"";position:absolute;left:0;top:.68em;width:20px;height:4px;background:var(--accent)}
+.pts li small{display:block;font-size:27px;color:var(--ink2);margin-top:6px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin:auto 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:48px 44px}
+.card b{display:block;font-size:20px;letter-spacing:.14em;color:var(--accent);margin-bottom:20px}
+.card h3{font-size:40px;line-height:1.25;margin:0 0 16px}
+.card p{font-size:27px;line-height:1.55;color:var(--ink2);margin:0}
+.flow{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin:auto 0}
+.flow .rail{position:absolute;left:60px;right:460px;top:58px;height:4px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.node{position:relative}
+.node .dot{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;font-size:44px;font-weight:800;
+  border:3px solid var(--accent);background:var(--bg);margin-bottom:36px}
+.node h3{font-size:40px;margin:0 0 12px}
+.node p{font-size:27px;line-height:1.5;color:var(--ink2);margin:0}
+.keys{display:grid;grid-template-columns:1fr 1fr;gap:6px 90px;margin:auto 0}
+.keys div{display:flex;align-items:center;gap:28px;padding:14px 0;border-bottom:1px solid var(--line);font-size:30px;color:var(--ink2)}
+kbd{min-width:150px;padding:8px 14px;text-align:center;font-family:inherit;font-size:22px;color:var(--ink);
+  background:var(--card);border:1px solid var(--line);border-radius:10px}
+
+/* ---------- metro vocabulary (SVG) ---------- */
+svg text{font-family:var(--font)}
+.map{display:block;width:1640px;overflow:visible}
+.t-lbl{font-size:26px;font-weight:700;fill:var(--ink)}
+.t-sub{font-size:20px;fill:var(--ink3)}
+.t-mid{font-size:24px;fill:var(--ink2)}
+.t-big{font-size:32px;font-weight:800;fill:var(--ink)}
+.ln{fill:none;stroke-width:14;stroke-linecap:round;stroke-linejoin:round}
+.trk{fill:none;stroke:var(--line2);stroke-width:10;stroke-linecap:round}
+.wire{fill:none;stroke:var(--ink3);stroke-width:3}
+.dash{fill:none;stroke:var(--ink3);stroke-width:3;stroke-dasharray:8 10}
+.box{fill:var(--card2);stroke:var(--line2);stroke-width:2}
+.zone{fill:rgba(253,199,39,.035);stroke:var(--accent);stroke-width:3}
+.st circle{fill:var(--bg);stroke:var(--ink);stroke-width:5;transition:fill .4s,stroke .4s}
+.st .ring{fill:none;stroke-width:3;opacity:0;transform-box:fill-box;transform-origin:center}
+.lit .ring{animation:ping 1.1s var(--ease)}
+@keyframes ping{from{opacity:.9;transform:scale(1)}to{opacity:0;transform:scale(2.4)}}
+.hub{fill:var(--bg);stroke:var(--accent);stroke-width:10}
+.hub-in{fill:var(--accent)}
+.rider{fill:var(--accent)}
+.hs circle{stroke:var(--ink3)}
+.hs .ring{stroke:var(--manual)}
+.hs.lit circle:not(.ring){fill:var(--manual);stroke:var(--manual)}
+.hand rect{fill:none;stroke:var(--manual);stroke-width:2;opacity:.55;transition:fill .4s,opacity .4s}
+.hand text{font-size:19px;font-weight:700;fill:var(--manual);text-anchor:middle;transition:fill .4s}
+.hs.lit .hand rect{fill:var(--manual);opacity:1}
+.hs.lit .hand text{fill:#fff}
+.as circle{stroke:var(--ink3)}
+.as .ring{stroke:var(--accent)}
+.as.lit circle:not(.ring){fill:var(--accent);stroke:var(--accent)}
+.cover-map{position:absolute;inset:0;width:1920px;height:1080px;opacity:.42;pointer-events:none}
+.cover-map .ln{stroke-width:12}
+
+/* ---------- slide parts ---------- */
+.logo{display:block;height:58px;width:342px;color:var(--ink);margin-bottom:44px}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:30px}
+.stats3 .stat{border-top:2px solid var(--line);padding-top:26px}
+.stats3 .num{font-size:96px;font-weight:800;line-height:1}
+.stats3 .num small{font-size:44px;color:var(--ink2);margin-left:10px;font-weight:700}
+.stats3 p{font-size:28px;color:var(--ink2);margin:14px 0 0}
+.note{font-size:32px;color:var(--ink);margin:30px 0 0}
+.note b{color:var(--manual)}
+.duo{display:grid;grid-template-columns:740px 1fr;gap:60px;height:520px}
+.chat{background:var(--card2);border:1px solid var(--line2);border-radius:24px;overflow:hidden;align-self:start}
+.chat .hd{display:flex;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--line);font-size:24px;font-weight:700}
+.chat .hd span{color:var(--ink3);font-weight:400}
+.msg{display:flex;gap:18px;padding:20px 28px}
+.av{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;font-weight:800;font-size:19px;flex:none;background:#3a3f4a;color:#fff}
+.av.ai{background:var(--accent);color:#1e1e1e;font-size:22px}
+.who{font-size:22px;font-weight:700;margin-bottom:6px}
+.who small{color:var(--ink3);font-weight:400;margin-left:8px}
+.tx{font-size:27px;line-height:1.5}
+.chk{font-size:24px;line-height:1.55;color:var(--ink2)}
+.chk i{font-style:normal;color:var(--accent);font-weight:800;margin-right:8px}
+.chk .btn{display:inline-block;margin-left:10px;padding:2px 16px;border-radius:8px;background:var(--accent);color:#1e1e1e;font-weight:800;font-size:20px}
+.strip{display:flex;justify-content:space-between;align-items:baseline;margin-top:28px;padding-top:24px;border-top:1px solid var(--line);font-size:32px;color:var(--ink2)}
+.strip b{color:var(--ink)}
+.legend{display:flex;gap:40px;margin-top:20px;font-size:24px;color:var(--ink2)}
+.legend i{display:inline-block;width:34px;height:10px;border-radius:5px;margin-right:12px;vertical-align:middle}
+.org{position:relative;width:1640px;height:560px}
+.org svg{position:absolute;inset:0;width:1640px;height:560px;overflow:visible}
+.nd{position:absolute;display:flex;flex-direction:column;justify-content:center;padding:0 30px;border-radius:20px;background:var(--card2);border:2px solid var(--line2)}
+.nd.ai{border-color:var(--accent)}
+.nd .tg{position:absolute;top:-14px;left:24px;padding:2px 12px;border-radius:8px;font-size:17px;font-weight:800;background:var(--ink3);color:#fff}
+.nd.ai .tg{background:var(--accent);color:#1e1e1e}
+.nd h4{font-size:34px;margin:0}
+.nd p{font-size:22px;color:var(--ink2);margin:6px 0 0}
+.nd.row{flex-direction:row;align-items:center;justify-content:center;gap:20px}
+.nd.row p{margin:0}
+.mem{position:absolute;left:0;top:470px;width:1640px;height:90px;border-radius:20px;display:flex;align-items:center;gap:24px;padding:0 36px;
+  background:linear-gradient(90deg,rgba(253,199,39,.22),rgba(253,199,39,.04));border:2px solid var(--accent);font-size:28px}
+.mem b{color:var(--accent);font-size:30px}
+.prin{margin-top:40px;font-size:32px;color:var(--ink2)}
+.prin b{color:var(--ink)}
+.duo9{display:grid;grid-template-columns:760px 1fr;gap:60px;margin:auto 0}
+.eq{font-size:54px;font-weight:800;line-height:1.3;margin:6px 0 26px}
+.eq span{color:var(--accent);margin:0 18px}
+.card p + p{margin-top:18px}
+.stairs{position:relative;width:1640px;height:600px}
+.stairs svg{position:absolute;inset:0;width:1640px;height:600px;overflow:visible}
+.stp{position:absolute;width:500px;height:280px;padding:30px 36px;border-radius:24px;background:var(--card2);border:2px solid var(--line2)}
+.stp.now{border-color:var(--accent)}
+.stp b{display:block;font-size:20px;letter-spacing:.12em;color:var(--accent);margin-bottom:14px}
+.stp h3{font-size:40px;margin:0 0 12px}
+.stp p{font-size:25px;line-height:1.5;color:var(--ink2);margin:0}
+.stairs .tail{position:absolute;left:1140px;top:360px;width:500px;font-size:30px;line-height:1.5;color:var(--ink)}
+.ask{margin-top:44px;font-size:46px;font-weight:800}
+.ask span{color:var(--accent)}
+.live{display:inline-flex;align-items:center;gap:16px;font-size:24px;font-weight:800;letter-spacing:.2em;color:var(--accent);margin-bottom:28px}
+.live i{width:18px;height:18px;border-radius:50%;background:var(--accent);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25;transform:scale(.7)}}
+
+/* ---------- footer, notes ---------- */
+.ft{position:absolute;left:140px;right:140px;bottom:40px;display:flex;justify-content:space-between;
+  font-size:18px;letter-spacing:.04em;color:var(--ink3)}
+.ft b{color:var(--ink)}
+.notes{display:none}
+body.shownotes .slide.active .notes{display:block;position:absolute;left:140px;right:140px;bottom:100px;z-index:6;
+  padding:28px 36px;border-radius:16px;background:rgba(0,0,0,.85);color:#fff;font-size:26px;line-height:1.5;white-space:pre-line}
+
+/* ---------- presenter window (?presenter) ---------- */
+#pv{display:none}
+body.presenter{background:#111}
+body.presenter #pv{position:fixed;inset:0;display:grid;grid-template-columns:62% 1fr;gap:28px;padding:28px;color:#eee}
+body.presenter #viewport{position:absolute}
+#pvStage{position:relative;width:100%;aspect-ratio:16/9;background:#000;align-self:start}
+#pvSide{display:flex;flex-direction:column;gap:18px;min-height:0}
+#pvTimer{font-size:64px;font-weight:800;font-variant-numeric:tabular-nums}
+#pvTimer.over{color:#ff6b5c}
+#pvBar{height:6px;background:#333;border-radius:3px;overflow:hidden}
+#pvBar i{display:block;height:100%;width:0;background:var(--accent)}
+#pvMeta,#pvNext{font-size:20px;color:#aaa}
+#pvNotes{flex:1;overflow:auto;font-size:26px;line-height:1.55;white-space:pre-line;border-top:1px solid #333;padding-top:18px}
+#pvBtns{display:flex;gap:12px}
+#pvBtns button{flex:1;padding:14px;font:inherit;font-size:18px;color:#eee;background:#222;border:1px solid #444;border-radius:10px;cursor:pointer}
+
+/* ---------- ?static, reduced motion, print ---------- */
+body.static *,body.static *::before,body.static *::after{transition:none!important;animation:none!important}
+body.static #hint{display:none}
+body.calm .a,body.calm .slide{transform:none!important;filter:none!important}
+body.calm .draw{stroke-dashoffset:0!important}
+body.calm .glow{animation:none}
+@media print{
+  @page{size:1920px 1080px;margin:0}
+  html,body{height:auto;overflow:visible;background:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #viewport{position:static}
+  #stage{position:static;transform:none;width:1920px;height:auto;overflow:visible;background:none}
+  .slide{position:relative;height:1080px;opacity:1!important;visibility:visible!important;transform:none!important;
+    break-after:page;background:radial-gradient(1200px 700px at 85% 0%,var(--bg2),transparent 60%),var(--bg)}
+  .a{opacity:1!important;transform:none!important;filter:none!important}
+  .draw{stroke-dashoffset:0!important}
+  .rider,.type::after{display:none!important}
+  .glow,#fx,#prog,#hint,#black,#pv,.notes{display:none!important}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="glow" x="-150%" y="-150%" width="400%" height="400%">
+      <feGaussianBlur stdDeviation="7" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+</svg>
+<div id="viewport"><div id="stage">
+  <div class="glow g1"></div><div class="glow g2"></div>
+  <canvas id="fx"></canvas>
+  <div id="prog"></div>
+
+  <!-- 1 · cover -->
+  <section class="slide" data-title="표지" data-time="0.5" data-bare>
+    <svg class="cover-map" viewBox="0 0 1920 1080" aria-hidden="true">
+      <g class="a still" style="--d:.2s">
+        <path id="cv-a" class="ln draw" style="stroke:var(--l-track);--d:.3s" d="M1000,300 H1200 L1420,520 L1660,760 H1920"/>
+        <path class="ln draw" style="stroke:var(--l-crm);--d:.55s" d="M1920,250 H1690 L1420,520 V1080"/>
+        <path class="ln draw" style="stroke:var(--l-steward);--d:.8s" d="M1420,0 V520"/>
+        <path id="cv-b" class="ln draw" style="stroke:var(--l-chat);--d:1.05s" d="M1150,1080 V790 L1420,520 H1920"/>
+        <g class="st"><circle cx="1200" cy="300" r="12"/></g>
+        <g class="st"><circle cx="1690" cy="250" r="12"/></g>
+        <g class="st"><circle cx="1150" cy="900" r="12"/></g>
+        <g class="st"><circle cx="1720" cy="520" r="12"/></g>
+        <g class="st"><circle cx="1660" cy="760" r="12"/></g>
+        <g class="st"><circle cx="1420" cy="280" r="12"/></g>
+        <g class="st"><circle cx="1420" cy="820" r="12"/></g>
+        <circle class="hub" cx="1420" cy="520" r="30"/>
+        <circle class="hub-in" cx="1420" cy="520" r="12"/>
+        <circle class="rider" cx="1000" cy="300" r="11" filter="url(#glow)" data-path="cv-a" data-dur="6" data-delay="1.8" data-rest=".5" data-loop/>
+        <circle class="rider" cx="1150" cy="1060" r="11" filter="url(#glow)" data-path="cv-b" data-dur="5" data-delay="4.2" data-rest=".6" data-loop/>
+      </g>
+    </svg>
+    <div class="center" style="position:relative">
+      <svg class="logo a" style="--d:.1s" viewBox="24.20 39.60 294.80 50.00" role="img" aria-label="SJ Dynamics"><g transform="translate(0.000000,125.400000) scale(0.002500,-0.002500)"
+fill="#fdc727" stroke="none">
+<path d="M13310 33975 c0 -23 4 -25 45 -25 40 0 45 2 45 23 0 20 -5 23 -45 25
+-42 1 -45 0 -45 -23z M13410 33979 c0 -11 7 -28 16 -37 15 -14 16 -53 13 -372
+-2 -195 -3 -905 -1 -1577 2 -1215 2 -1223 22 -1223 12 0 20 7 20 18 0 9 4 23
+8 30 7 10 1086 12 5588 12 3570 0 5607 3 5656 10 253 32 471 187 576 410 68
+145 67 131 67 1100 0 884 -3 964 -39 1036 -8 16 -27 58 -43 93 -77 174 -248
+350 -411 422 -37 17 -76 35 -86 41 -17 9 -62 19 -222 47 -30 6 -2302 10 -5608
+10 l-5556 1 0 -21z M11130 33822 c-51 -28 -50 -42 4 -42 44 0 46 1 46 30 0 35
+-4 36 -50 12z M36030 33421 c0 -57 12 -91 31 -91 17 0 19 8 19 60 0 57 -1 60
+-25 60 -21 0 -25 -5 -25 -29z M40180 33285 c0 -56 33 -67 44 -14 10 51 8 59
+-19 59 -23 0 -25 -4 -25 -45z M36036 30489 c-13 -66 -8 -89 19 -89 24 0 25 3
+25 60 0 52 -2 60 -19 60 -13 0 -20 -10 -25 -31z M36030 30200 c0 -79 0 -80 25
+-80 25 0 25 1 25 80 0 79 0 80 -25 80 -25 0 -25 -1 -25 -80z M36030 30011 c0
+-57 12 -91 31 -91 17 0 19 8 19 60 0 57 -1 60 -25 60 -21 0 -25 -5 -25 -29z
+M36036 29809 c-3 -17 -6 -53 -6 -80 0 -46 2 -49 25 -49 25 0 25 1 25 80 0 72
+-2 80 -19 80 -13 0 -20 -10 -25 -31z M36036 29489 c-3 -17 -6 -93 -6 -169 0
+-165 5 -200 31 -200 18 0 19 11 19 200 0 189 -1 200 -19 200 -13 0 -20 -10
+-25 -31z M40180 27940 c0 -57 1 -60 25 -60 21 0 25 5 25 29 0 57 -12 91 -31
+91 -16 0 -19 -8 -19 -60z M40180 27660 c0 -91 2 -100 19 -100 23 0 31 35 31
+131 0 67 -1 69 -25 69 l-25 0 0 -100z M26020 26975 c0 -45 0 -45 35 -45 42 0
+42 1 8 51 -36 50 -43 49 -43 -6z M40180 26860 c0 -130 1 -140 19 -140 23 0 31
+35 31 140 0 105 -8 140 -31 140 -18 0 -19 -10 -19 -140z M36031 26778 c-1
+-140 6 -178 30 -178 18 0 19 9 19 140 l0 140 -24 0 c-24 0 -24 -1 -25 -102z
+M9974 25901 c9 -59 24 -91 41 -91 16 0 20 42 9 99 -5 25 -11 31 -32 31 -23 0
+-24 -2 -18 -39z M36037 25850 c-10 -46 2 -90 24 -90 17 0 19 8 19 60 0 52 -2
+60 -19 60 -13 0 -20 -9 -24 -30z M40180 25800 c0 -72 2 -80 19 -80 15 0 21 10
+26 40 10 61 -2 120 -26 120 -17 0 -19 -8 -19 -80z M40180 25540 c0 -52 3 -60
+19 -60 19 0 31 34 31 91 0 24 -4 29 -25 29 -24 0 -25 -3 -25 -60z M40180
+25020 c0 -57 1 -60 25 -60 21 0 25 5 25 29 0 57 -12 91 -31 91 -16 0 -19 -8
+-19 -60z M40180 24860 c0 -52 3 -60 19 -60 19 0 31 34 31 91 0 24 -4 29 -25
+29 -24 0 -25 -3 -25 -60z M22762 23908 c5 -18 15 -54 20 -80 15 -68 48 -69 48
+-3 0 25 -4 45 -10 45 -5 0 -10 16 -10 35 0 32 -2 35 -29 35 -29 0 -29 -1 -19
+-32z M36035 23000 c-10 -61 2 -120 26 -120 17 0 19 8 19 80 0 72 -2 80 -19 80
+-15 0 -21 -10 -26 -40z M40180 22800 c0 -79 0 -80 25 -80 23 0 25 3 25 49 0
+76 -10 111 -31 111 -17 0 -19 -8 -19 -80z M36036 22379 c-14 -70 -8 -99 19
+-99 24 0 25 2 25 65 0 57 -2 65 -19 65 -13 0 -20 -10 -25 -31z M36030 22156
+c0 -43 14 -76 31 -76 16 0 19 8 19 45 0 41 -2 45 -25 45 -15 0 -25 -6 -25 -14z
+M35963 21525 l-21 -45 34 0 c34 0 34 1 34 45 0 30 -4 45 -13 45 -7 0 -22 -20
+-34 -45z M35904 21417 c-38 -57 -38 -57 0 -57 36 0 36 0 36 45 0 53 -8 56 -36
+12z M29463 21053 c-46 -9 -28 -43 22 -43 41 0 45 2 45 25 0 26 -11 29 -67 18z
+M29760 21035 c0 -24 3 -25 55 -25 47 0 55 3 55 19 0 19 -34 31 -86 31 -19 0
+-24 -5 -24 -25z M34783 21053 c-46 -9 -28 -43 22 -43 41 0 45 2 45 25 0 26
+-11 29 -67 18z M40100 20395 c0 -56 33 -67 44 -14 10 51 8 59 -19 59 -23 0
+-25 -4 -25 -45z M10006 20139 c-3 -17 -6 -56 -6 -85 0 -51 1 -54 25 -54 25 0
+25 1 25 85 0 76 -2 85 -19 85 -13 0 -20 -10 -25 -31z M10000 19876 c0 -72 10
+-106 31 -106 17 0 19 8 19 75 0 73 -1 75 -25 75 -23 0 -25 -4 -25 -44z M39540
+19143 l0 -46 21 19 c12 10 27 31 35 46 15 28 15 28 -21 28 l-35 0 0 -47z
+M26010 18565 c0 -55 10 -57 44 -5 33 50 33 50 -9 50 -35 0 -35 0 -35 -45z
+M10007 18323 c-9 -44 3 -83 24 -83 16 0 19 8 19 55 0 47 -3 55 -19 55 -12 0
+-20 -9 -24 -27z"/>
+</g>
+<g transform="translate(0.000000,125.400000) scale(0.002500,-0.002500)"
+fill="currentColor" stroke="none">
+<path d="M36465 34033 c-208 -48 -372 -205 -415 -399 -8 -35 -11 -1700 -11
+-5931 1 -5745 0 -5884 -18 -5985 -64 -345 -299 -572 -669 -645 -81 -16 -310
+-18 -3333 -19 l-3245 -2 -79 -27 c-148 -49 -258 -143 -326 -278 -61 -120 -60
+-87 -57 -1382 3 -1162 3 -1181 24 -1236 71 -197 228 -334 425 -374 118 -24
+8226 -17 8459 8 444 46 840 171 1260 400 622 337 1181 950 1449 1587 18 41 36
+82 40 91 31 57 125 331 147 428 49 223 75 377 89 531 24 268 24 12736 0 12831
+-52 199 -165 320 -363 388 l-62 21 -1648 -1 c-906 -1 -1656 -3 -1667 -6z
+M11765 33990 c-209 -27 -276 -42 -455 -100 -478 -156 -882 -500 -1129 -964
+-74 -139 -149 -350 -181 -511 -7 -33 -19 -94 -28 -135 -20 -95 -31 -5954 -12
+-6212 16 -216 51 -362 152 -623 103 -267 336 -576 578 -767 227 -179 428 -279
+745 -373 175 -52 -155 -48 5610 -54 l5340 -6 64 -28 c135 -60 233 -147 289
+-258 63 -126 62 -94 62 -1285 l0 -1080 -23 -90 c-59 -225 -210 -375 -432 -431
+-66 -16 -412 -17 -5990 -23 l-5920 -5 -63 -26 c-185 -79 -289 -187 -343 -358
+-32 -104 -31 -2430 2 -2529 64 -192 223 -336 418 -377 64 -13 846 -15 7116
+-15 7564 0 7152 -3 7340 46 102 27 229 65 262 80 17 8 34 14 38 14 15 0 183
+84 255 129 231 140 468 367 618 589 23 34 42 65 42 67 0 2 11 20 25 40 122
+181 236 534 270 835 25 225 18 6446 -8 6589 -158 887 -802 1531 -1650 1650
+-147 21 -147 21 -5514 21 l-5368 0 -69 25 c-157 55 -263 166 -310 323 -14 49
+-16 338 -16 2938 -1 2516 -3 2886 -16 2899 -16 16 -1577 21 -1699 5z"/>
+</g>
+<g transform="translate(22.8881 -13.6390) scale(1.728814)">
+<g transform="translate(0.000000,88.700000) scale(0.002500,-0.002500)"
+fill="currentColor" stroke="none">
+<path d="M22269 22991 c-102 -33 -237 -152 -282 -248 l-22 -48 0 -4425 0
+-4425 26 -50 c37 -69 154 -179 226 -212 l58 -27 2885 2 c1587 1 2905 5 2930 8
+261 32 479 146 708 368 273 265 399 509 452 880 l21 149 -5 3376 c-4 2107 -9
+3402 -15 3446 -26 187 -63 301 -152 470 -70 134 -108 185 -248 328 -239 244
+-473 372 -753 412 -175 25 -5751 21 -5829 -4z m4659 -2119 c17 -11 18 -5118 1
+-5139 -12 -14 -2737 -21 -2773 -7 -26 10 -24 5128 2 5143 21 13 2750 15 2770
+3z M55475 22946 c-67 -31 -180 -151 -195 -205 -7 -28 -10 -293 -8 -843 l3
+-803 24 -35 c43 -61 125 -140 167 -160 39 -19 65 -20 836 -20 l795 0 41 23
+c59 32 159 132 188 189 l24 47 0 769 c0 901 7 836 -103 949 -120 124 -30 113
+-938 113 l-784 0 -50 -24z M29875 20311 c-83 -27 -198 -135 -241 -226 l-24
+-50 0 -2415 c0 -2659 -3 -2497 59 -2678 102 -298 333 -533 665 -676 118 -51
+96 -50 1481 -56 l1290 -5 1 -232 c2 -168 -1 -235 -10 -242 -7 -6 -588 -11
+-1611 -13 l-1600 -3 -45 -24 c-61 -31 -176 -145 -206 -203 l-24 -47 0 -703 0
+-703 24 -50 c41 -87 165 -201 242 -223 55 -16 3857 -17 3984 -1 334 41 593
+180 875 470 255 261 390 529 424 841 16 144 15 6932 -1 6996 -14 56 -141 195
+-211 230 l-44 22 -774 0 -774 -1 -40 -24 c-75 -46 -184 -165 -200 -219 -13
+-43 -15 -306 -15 -1973 l0 -1923 -709 0 c-637 0 -709 2 -715 16 -3 9 -6 881
+-6 1939 0 2208 13 1961 -107 2077 -122 119 -32 108 -908 107 -418 -1 -769 -4
+-780 -8z M48005 20313 c-197 -27 -364 -122 -551 -316 -160 -165 -221 -282
+-258 -493 -27 -152 -24 -5104 3 -5166 22 -52 137 -170 195 -201 l41 -22 765 0
+765 1 47 27 c71 43 173 155 191 213 14 44 16 255 14 1994 l-1 1945 398 3 c295
+2 401 0 412 -9 12 -10 14 -286 14 -1972 l0 -1960 22 -44 c30 -60 156 -179 205
+-193 27 -8 260 -10 788 -8 l750 3 46 32 c57 39 133 123 162 177 l22 41 5 1965
+5 1965 400 0 c220 0 406 -2 413 -4 9 -2 12 -403 12 -1957 l0 -1954 22 -46 c28
+-60 115 -155 176 -191 l47 -28 783 -3 c536 -2 796 1 823 8 47 13 177 131 215
+196 l24 41 0 2518 c0 1384 -3 2543 -6 2574 -20 193 -129 386 -325 577 -143
+139 -264 211 -439 263 l-85 26 -3035 1 c-1669 1 -3048 -1 -3065 -3z M36244
+20290 c-323 -66 -649 -379 -732 -703 -14 -56 -16 -321 -19 -2627 l-3 -2565 21
+-50 c13 -30 47 -77 87 -118 115 -118 23 -108 929 -107 l786 0 36 22 c52 31
+169 156 181 193 7 21 11 680 13 1996 l2 1964 705 0 705 0 5 -1970 c5 -1894 6
+-1971 24 -2005 25 -48 133 -157 178 -181 36 -18 67 -19 816 -19 l778 0 45 29
+c24 15 71 57 105 92 105 111 95 -197 91 2684 l-3 2530 -21 68 c-73 228 -116
+297 -300 478 -177 175 -306 248 -507 289 -148 30 -3774 30 -3922 0z M41720
+20286 c-99 -35 -118 -48 -216 -148 -166 -169 -160 -137 -154 -908 l5 -605 25
+-49 c38 -74 178 -202 242 -221 45 -13 243 -15 1629 -15 1429 0 1577 -1 1583
+-16 9 -25 7 -332 -3 -338 -5 -3 -694 -7 -1532 -9 -1516 -3 -1524 -3 -1580 -24
+-92 -34 -117 -51 -206 -136 -104 -100 -134 -143 -162 -234 l-21 -71 0 -1465 0
+-1464 24 -65 c61 -168 227 -332 393 -387 61 -21 67 -21 2341 -21 1463 0 2295
+3 2323 9 103 23 160 59 271 170 112 112 137 152 164 261 21 85 20 4875 -1
+5011 -30 198 -97 320 -266 486 -129 127 -149 142 -239 183 -14 7 -38 18 -55
+26 -16 7 -73 23 -125 34 -93 20 -122 20 -2235 19 l-2140 -1 -65 -22z m3115
+-4091 l0 -320 -798 -3 c-539 -1 -804 1 -818 8 -18 10 -19 24 -19 319 0 169 3
+311 7 314 3 4 371 6 817 5 l811 -3 0 -320z M55500 20290 c-71 -25 -203 -156
+-219 -218 -8 -28 -10 -879 -9 -2888 l3 -2849 22 -36 c32 -51 146 -157 187
+-174 47 -20 1547 -23 1624 -3 64 16 203 148 226 215 14 42 16 331 16 2874 l0
+2827 -21 49 c-25 60 -128 166 -191 199 l-47 24 -768 0 c-735 -1 -770 -2 -823
+-20z M58535 20291 c-206 -44 -337 -117 -507 -280 -159 -152 -229 -261 -280
+-437 l-23 -79 -3 -2280 -2 -2280 26 -105 c57 -227 162 -375 389 -546 92 -69
+174 -115 258 -143 157 -53 84 -51 2306 -51 l2063 0 63 30 c90 43 208 169 231
+247 26 88 12 1206 -15 1268 -24 55 -152 182 -210 209 l-46 21 -1492 5 -1492 5
+-23 23 -23 23 -3 1228 c-1 775 1 1238 7 1255 7 17 22 28 48 35 24 6 583 10
+1498 10 1353 1 1464 3 1509 19 61 21 192 147 227 218 l24 49 -3 639 c-2 617
+-3 640 -22 685 -29 66 -161 196 -229 227 l-53 24 -2072 -1 c-1918 -1 -2077 -2
+-2151 -18z M64210 20289 c-47 -11 -99 -26 -117 -34 -17 -8 -35 -15 -40 -15
+-12 0 -80 -37 -138 -75 -60 -39 -254 -233 -297 -295 -46 -68 -93 -167 -117
+-245 -31 -98 -39 -384 -39 -1325 0 -969 7 -1199 41 -1295 52 -151 112 -241
+256 -389 157 -161 250 -217 436 -262 l100 -24 1097 0 c603 0 1103 -3 1112 -6
+21 -8 24 -422 4 -442 -9 -9 -328 -12 -1375 -12 -1598 0 -1427 14 -1560 -125
+-122 -126 -115 -76 -111 -787 4 -689 -8 -622 125 -749 65 -62 91 -80 143 -98
+l64 -21 1890 0 c2132 0 2003 -4 2172 76 251 119 471 387 516 627 16 90 24
+2323 8 2427 -29 186 -106 336 -245 476 -108 109 -183 165 -279 209 -160 74
+-66 69 -1298 72 l-1108 4 -15 23 c-13 19 -15 58 -13 227 l3 203 25 7 c14 4
+612 7 1329 8 1512 1 1369 -9 1487 106 39 38 82 90 95 115 l24 45 3 635 c3 758
+11 700 -115 831 -69 71 -94 90 -142 108 l-58 21 -1889 -1 c-1819 -1 -1892 -2
+-1974 -20z"/>
+</g>
+</g></svg>
+      <div class="kicker a" style="--d:.2s">디와이글로벌 × SJ Dynamics · 2026.11.04 진주</div>
+      <h1 class="a b" style="--d:.35s">주문 한 건이<br><span class="grad">스스로 처리되는 회사</span></h1>
+      <p class="lead a" style="--d:.6s">반복 업무는 AI 동료에게, 사람은 영업과 판단에.</p>
+      <div class="by a" style="--d:.8s">김태유 · SJ Dynamics</div>
+    </div>
+    <aside class="notes">[초안 메모 · 발표 전에 지울 것] 노란 점선 칸은 아직 확인하지 않은 숫자입니다. 홍건의의 A~G 흐름 정리를 받으면 채웁니다: 주문당 처리 시간, 월 주문 건수, 성공 기준.
+
+안녕하세요, SJ Dynamics 김태유입니다.
+오늘은 문의 한 건이 입금까지 사람 손을 덜 거치고 이어지는 모습을 보여드리러 왔습니다.</aside>
+  </section>
+
+  <!-- 2 · today -->
+  <section class="slide" data-title="지금" data-time="1.5">
+    <div class="kicker a">01 · 지금</div>
+    <h2 class="a" style="--d:.1s">문의 한 건이 열 단계, 여섯 가지 도구를 지나갑니다</h2>
+    <svg class="map" viewBox="0 0 1640 250" style="height:250px" aria-label="지금의 문의·주문 처리 단계">
+      <path class="trk" d="M80,120 H1560"/>
+      <path id="p-manual" d="M80,120 H1560" fill="none" stroke="none"/>
+      <circle class="hub" cx="80" cy="120" r="28"/><circle class="hub-in" cx="80" cy="120" r="11"/>
+      <text class="t-lbl" x="80" y="55" text-anchor="middle">홍보</text><text class="t-sub" x="80" y="190" text-anchor="middle">사람이 만듦</text>
+      <g class="st hs"><circle class="ring" cx="244" cy="120" r="28"/><circle cx="244" cy="120" r="28"/>
+        <text class="t-lbl" x="244" y="55" text-anchor="middle">문의</text><text class="t-sub" x="244" y="190" text-anchor="middle">전화 · 카톡</text></g>
+      <g class="st hs"><circle class="ring" cx="409" cy="120" r="28"/><circle cx="409" cy="120" r="28"/>
+        <text class="t-lbl" x="409" y="55" text-anchor="middle">상담</text><text class="t-sub" x="409" y="190" text-anchor="middle">개인 번호로</text><text class="t-sub" x="409" y="216" text-anchor="middle">다시 전화</text></g>
+      <g class="st hs"><circle class="ring" cx="573" cy="120" r="28"/><circle cx="573" cy="120" r="28"/>
+        <text class="t-lbl" x="573" y="55" text-anchor="middle">견적</text><text class="t-sub" x="573" y="190" text-anchor="middle">엑셀 · 이미지</text><text class="t-sub" x="573" y="216" text-anchor="middle">카톡 · 문자</text></g>
+      <g class="st hs"><circle class="ring" cx="738" cy="120" r="28"/><circle cx="738" cy="120" r="28"/>
+        <text class="t-lbl" x="738" y="55" text-anchor="middle">발주</text><text class="t-sub" x="738" y="190" text-anchor="middle">전화</text></g>
+      <g class="st hs"><circle class="ring" cx="902" cy="120" r="28"/><circle cx="902" cy="120" r="28"/>
+        <text class="t-lbl" x="902" y="55" text-anchor="middle">출고</text></g>
+      <g class="st hs"><circle class="ring" cx="1067" cy="120" r="28"/><circle cx="1067" cy="120" r="28"/>
+        <text class="t-lbl" x="1067" y="55" text-anchor="middle">명세서</text><text class="t-sub" x="1067" y="190" text-anchor="middle">주기도</text><text class="t-sub" x="1067" y="216" text-anchor="middle">안 주기도</text></g>
+      <g class="st hs"><circle class="ring" cx="1231" cy="120" r="28"/><circle cx="1231" cy="120" r="28"/>
+        <text class="t-lbl" x="1231" y="55" text-anchor="middle">계산서</text><text class="t-sub" x="1231" y="190" text-anchor="middle">단톡방에 올리면</text><text class="t-sub" x="1231" y="216" text-anchor="middle">회계가 발행</text></g>
+      <g class="st hs"><circle class="ring" cx="1396" cy="120" r="28"/><circle cx="1396" cy="120" r="28"/>
+        <text class="t-lbl" x="1396" y="55" text-anchor="middle">입금 확인</text><text class="t-sub" x="1396" y="190" text-anchor="middle">회계에</text><text class="t-sub" x="1396" y="216" text-anchor="middle">계속 물어봄</text></g>
+      <g class="st hs"><circle class="ring" cx="1560" cy="120" r="28"/><circle cx="1560" cy="120" r="28"/>
+        <text class="t-lbl" x="1560" y="55" text-anchor="middle">이카운트</text><text class="t-sub" x="1560" y="190" text-anchor="middle">마지막에 입력</text></g>
+      <g class="a still" style="--d:.6s">
+        <circle class="rider" cx="80" cy="120" r="14" filter="url(#glow)" data-path="p-manual" data-dur="6"
+          data-stops="0.111,0.222,0.333,0.444,0.556,0.667,0.778,0.889" data-hold=".5" data-delay="1" data-lights=".hs"/>
+      </g>
+    </svg>
+    <div class="stats3">
+      <div class="stat a" data-s="1"><div class="num"><span class="tbd">?</span><small>분</small></div><p>문의·주문 한 건 처리 시간</p></div>
+      <div class="stat a" data-s="1" style="--d:.15s"><div class="num"><span class="tbd">?</span><small>건</small></div><p>한 달 문의·주문</p></div>
+      <div class="stat a" data-s="1" style="--d:.3s"><div class="num"><span class="tbd">?</span><small>시간</small></div><p>한 달에 드는 사람 시간</p></div>
+    </div>
+    <p class="note a" data-s="2">전화 · 문자 · 카톡 · 엑셀 · NAS · 이카운트에 정보가 흩어지고, <b>사업마다 따로 돕니다.</b></p>
+    <div class="src a" style="--d:.8s">단계는 10월 31일 대화 기준이고, 주류와 매직스톤을 비롯한 사업이 같은 흐름입니다. 숫자는 실제 거래로 확인합니다.</div>
+    <aside class="notes">지금 흐름을 제가 맞게 이해했는지 확인하는 슬라이드입니다. 사업이 달라도 흐름은 같다고 들었습니다.
+홍보는 사람이 만들고, 문의는 대부분 사무실 전화로 옵니다. 담당자가 개인 번호로 다시 걸어 상담하고 링크를 문자로 보냅니다.
+견적은 엑셀을 이미지로 바꿔 카톡에 올리고, 그것을 다시 문자로 보냅니다. 발주는 전화로 옵니다.
+출고 뒤 거래명세서는 주는 곳도 있고 안 주는 곳도 있습니다. 세금계산서는 세 분이 있는 단톡방에 올리면 회계가 발행합니다.
+입금은 회계에 계속 물어서 확인하고, 마지막에 이카운트에 들어갑니다.
+열 단계에 도구 여섯 가지, 정보는 흩어져 있고 사업마다 따로 돕니다.
+"이 중 가장 시간을 많이 쓰는 단계는 어디인가요? 한 건에 몇 분, 한 달에 몇 건쯤인가요?" 숫자는 대표님과 홍건의 님 입으로 나오게 합니다.</aside>
+  </section>
+
+  <!-- 3 · tomorrow -->
+  <section class="slide" data-title="다음" data-time="1.5">
+    <div class="kicker a">02 · 다음</div>
+    <h2 class="a" style="--d:.1s">문의는 한 곳에, 초안은 AI가, 승인은 사람이 합니다</h2>
+    <div class="duo">
+      <div class="chat a l" style="--d:.2s">
+        <div class="hd"># 공용 문의대장 <span>SJ Station</span></div>
+        <div class="msg"><div class="av">고객</div><div>
+          <div class="who">○○ 시공사<small>오후 2:14</small></div>
+          <div class="tx type" data-delay=".9" data-cps="14">매직스톤 시공 견적이 필요합니다. 소개 자료도 받을 수 있을까요?</div>
+        </div></div>
+        <div class="msg a" data-s="1"><div class="av ai">AI</div><div>
+          <div class="who">문의 비서<small>오후 2:14</small></div>
+          <div class="chk">
+            <div class="a" data-s="1" style="--d:.2s"><i>✓</i>접수: ○○ 시공사 (기존 거래처)</div>
+            <div class="a" data-s="1" style="--d:.5s"><i>✓</i>소개 자료: 회사 자료에서 골라 답변 초안</div>
+            <div class="a" data-s="1" style="--d:.8s"><i>✓</i>견적 초안: 회사 단가표 기준</div>
+            <div class="a" data-s="1" style="--d:1.1s"><i>◷</i>견적 발송: 담당자가 확인하면 발송<span class="btn">승인</span></div>
+          </div>
+        </div></div>
+      </div>
+      <svg class="map" viewBox="0 0 840 520" style="width:840px;height:520px" aria-label="한 스레드로 이어지는 처리 단계">
+        <path class="trk" d="M60,30 V490"/>
+        <path id="p-auto" d="M60,30 V490" fill="none" stroke="none"/>
+        <circle class="hub" cx="60" cy="30" r="24"/><circle class="hub-in" cx="60" cy="30" r="9"/>
+        <text class="t-lbl" x="110" y="28">문의 접수</text><text class="t-sub" x="110" y="58">전화 · 카톡이 한 곳으로</text>
+        <g class="st as"><circle class="ring" cx="60" cy="145" r="24"/><circle cx="60" cy="145" r="24"/>
+          <text class="t-lbl" x="110" y="143">소개 · 견적 초안</text><text class="t-sub" x="110" y="173">회사 단가표와 자료로</text></g>
+        <g class="st as"><circle class="ring" cx="60" cy="260" r="24"/><circle cx="60" cy="260" r="24"/>
+          <text class="t-lbl" x="110" y="258">발주 · 출고</text><text class="t-sub" x="110" y="288">같은 스레드에 이어서</text></g>
+        <g class="st as"><circle class="ring" cx="60" cy="375" r="24"/><circle cx="60" cy="375" r="24"/>
+          <text class="t-lbl" x="110" y="373">계산서</text><text class="t-sub" x="110" y="403">초안 → 담당자 확인 → 발행</text></g>
+        <g class="st as"><circle class="ring" cx="60" cy="490" r="24"/><circle cx="60" cy="490" r="24"/>
+          <text class="t-lbl" x="110" y="488">입금 확인 · 이카운트</text><text class="t-sub" x="110" y="518">자동으로 대조하고 기록</text></g>
+        <g class="a" data-s="1" style="--d:1.8s">
+          <rect x="460" y="120" width="130" height="40" rx="20" fill="var(--accent)"/>
+          <text x="525" y="148" text-anchor="middle" style="font-size:22px;font-weight:800;fill:#1e1e1e">사람 승인</text>
+          <rect x="460" y="350" width="130" height="40" rx="20" fill="var(--accent)"/>
+          <text x="525" y="378" text-anchor="middle" style="font-size:22px;font-weight:800;fill:#1e1e1e">사람 승인</text>
+        </g>
+        <g class="a" data-s="1" style="--d:2.2s">
+          <rect x="420" y="215" width="330" height="50" rx="25" fill="none" stroke="var(--manual)" stroke-width="2" stroke-dasharray="6 6"/>
+          <text x="585" y="248" text-anchor="middle" style="font-size:24px;font-weight:700;fill:var(--manual)">카톡 · 문자로 옮겨 보내기</text>
+          <line x1="440" y1="240" x2="730" y2="240" stroke="var(--manual)" stroke-width="3"/>
+          <text class="t-sub" x="585" y="294" text-anchor="middle">필요 없어집니다</text>
+        </g>
+        <g class="a still" data-s="1" style="--d:.4s">
+          <circle class="rider" cx="60" cy="30" r="13" filter="url(#glow)" data-path="p-auto" data-dur="3.2"
+            data-stops=".25,.5,.75" data-hold=".4" data-delay=".4" data-lights=".as"/>
+        </g>
+      </svg>
+    </div>
+    <div class="strip a" data-s="2">
+      <span>사람이 하는 일: <b>확인과 승인 (견적, 계산서)</b></span>
+      <span>문의·주문당 <span class="tbd">?</span>분 → <span class="tbd">?</span>분</span>
+    </div>
+    <div class="src a" data-s="2" style="--d:.3s">화면은 예시입니다. 이카운트와 세금계산서 연동 방식은 확인한 뒤 확정합니다.</div>
+    <aside class="notes">문의가 전화든 카톡이든 공용 문의대장 한 곳에 모입니다. 같은 스레드가 발주, 출고, 계산서, 입금 확인, 이카운트까지 이어집니다.
+AI는 회사가 가진 단가표와 자료만으로 답변과 소개, 견적 초안을 씁니다. 담당자가 확인해야 발송됩니다.
+돈과 문서가 오가는 단계(견적 발송, 세금계산서)는 반드시 사람이 승인합니다. 홍건의 님이 정리하신 구성안에도 승인 단계가 들어 있습니다.
+엑셀을 이미지로 바꿔 카톡과 문자로 옮겨 보내는 일은 없어집니다.
+구성은 지금 쓰시는 채널을 버리는 것이 아니라 한 곳으로 모으는 것입니다. 대표님께는 "문의 한 건이 입금까지 추적됩니다"라고 말씀드립니다.</aside>
+  </section>
+
+  <!-- 4 · live demo -->
+  <section class="slide" data-title="데모" data-time="5" data-bare>
+    <div class="center">
+      <div class="live a"><i></i>LIVE</div>
+      <h1 class="a b" style="--d:.15s">직접 보여드리겠습니다</h1>
+      <p class="lead a" style="--d:.4s">디와이글로벌의 실제 거래 한 건으로.</p>
+    </div>
+    <aside class="notes">데모는 최근의 실제 거래 한 건을 처음부터 끝까지 따라갑니다. 홍건의 님이 11월 4일에 실제 거래 한 건과 PDS 화면을 보며 조언받기로 계획해 두신 것에 맞춥니다.
+후보는 매직스톤 문의 한 건입니다. 주류도 같은 노선에 올라타는 모습을 마지막에 보여 드립니다.
+1. 그 문의가 들어온 상태에서 시작합니다. 공용 문의대장에 접수된 모습을 보여 드립니다.
+2. AI가 회사 단가표와 자료로 쓴 답변과 견적 초안을 보여 드립니다. 담당자 승인 한 번이 필요한 지점을 짚습니다.
+3. 발주, 출고, 계산서 초안, 입금 확인, 이카운트 기록이 같은 스레드에 이어지는 화면을 보여 드립니다. 계산서는 사람이 승인해야 발행됩니다.
+4. 같은 화면에 주류 문의를 올려 같은 노선임을 보여 드립니다.
+거래처 이름과 금액은 대표님께 어디까지 보여도 되는지 먼저 여쭙니다.
+데모가 안 되면 ← 키로 이전 슬라이드로 돌아가 애니메이션으로 설명합니다.</aside>
+  </section>
+
+  <!-- 5 · product lines -->
+  <section class="slide" data-title="제품" data-time="2">
+    <div class="kicker a">03 · 제품</div>
+    <h2 class="a" style="--d:.1s">회사의 모든 일이 대화 허브 한 곳으로 모입니다</h2>
+    <svg class="map" viewBox="0 0 1640 560" style="height:560px" aria-label="제품 노선도">
+      <g class="a still" data-s="1">
+        <path class="ln draw" style="stroke:var(--l-crm)" d="M720,280 H1180"/>
+        <g class="st"><circle cx="920" cy="280" r="13"/></g><g class="st"><circle cx="1120" cy="280" r="13"/></g>
+        <text class="t-lbl" x="920" y="246" text-anchor="middle">거래처</text>
+        <text class="t-lbl" x="1120" y="246" text-anchor="middle">주문 · 매출</text>
+      </g>
+      <g class="a still" data-s="2">
+        <path class="ln draw" style="stroke:var(--l-track)" d="M720,280 L510,490 H120"/>
+        <g class="st"><circle cx="360" cy="490" r="13"/></g><g class="st"><circle cx="120" cy="490" r="13"/></g>
+        <text class="t-lbl" x="360" y="536" text-anchor="middle">담당자 배정</text>
+        <text class="t-lbl" x="120" y="536" text-anchor="middle">할 일 · 마감</text>
+      </g>
+      <g class="a still" data-s="3">
+        <path id="p-map" class="ln draw" style="stroke:var(--l-steward)" d="M120,70 H510 L720,280"/>
+        <g class="st"><circle cx="120" cy="70" r="13"/></g><g class="st"><circle cx="360" cy="70" r="13"/></g>
+        <text class="t-lbl" x="120" y="36" text-anchor="middle">카톡 · 인스타 문의</text>
+        <text class="t-lbl" x="360" y="36" text-anchor="middle">상담 · 답변</text>
+      </g>
+      <g class="a still" data-s="4">
+        <path class="ln draw" style="stroke:var(--l-key)" d="M720,280 L930,490 H1180"/>
+        <g class="st"><circle cx="1010" cy="490" r="13"/></g><g class="st"><circle cx="1180" cy="490" r="13"/></g>
+        <text class="t-lbl" x="1010" y="536" text-anchor="middle">공용 계정</text>
+        <text class="t-lbl" x="1180" y="536" text-anchor="middle">권한 · 기록</text>
+      </g>
+      <g class="a still" data-s="5">
+        <text class="t-sub" x="1445" y="98" text-anchor="middle">지금 쓰시는 시스템 그대로</text>
+        <path class="dash" d="M1180,280 L1290,155"/><path class="dash" d="M1180,280 H1290"/><path class="dash" d="M1180,280 L1290,405"/>
+        <rect class="box" x="1290" y="120" width="310" height="70" rx="16"/><text class="t-lbl" x="1445" y="164" text-anchor="middle">이카운트</text>
+        <rect class="box" x="1290" y="245" width="310" height="70" rx="16"/><text class="t-lbl" x="1445" y="289" text-anchor="middle">홈택스</text>
+        <rect class="box" x="1290" y="370" width="310" height="70" rx="16"/><text class="t-lbl" x="1445" y="414" text-anchor="middle">택배사</text>
+      </g>
+      <g class="a still">
+        <path class="ln draw" style="stroke:var(--l-chat)" d="M60,280 H720"/>
+        <g class="st"><circle cx="120" cy="280" r="13"/></g><g class="st"><circle cx="400" cy="280" r="13"/></g>
+        <text class="t-lbl" x="120" y="246" text-anchor="middle">사람</text>
+        <text class="t-sub" x="120" y="322" text-anchor="middle">영업 · 경리 · 생산</text>
+        <text class="t-lbl" x="400" y="246" text-anchor="middle">AI 동료</text>
+        <text class="t-sub" x="400" y="322" text-anchor="middle">주문 비서 · 총괄 AI</text>
+        <circle class="hub" cx="720" cy="280" r="34"/><circle class="hub-in" cx="720" cy="280" r="14"/>
+        <text class="t-big" x="720" y="392" text-anchor="middle">SJ Station</text>
+        <text class="t-sub" x="720" y="424" text-anchor="middle">대화 허브</text>
+      </g>
+      <path id="p-order" d="M120,70 H510 L720,280 H1180 L1290,155" fill="none" stroke="none"/>
+      <g class="a still" data-s="6">
+        <circle class="rider" cx="120" cy="70" r="14" filter="url(#glow)" data-path="p-order" data-dur="4.2" data-loop/>
+      </g>
+    </svg>
+    <div class="legend">
+      <span class="a"><i style="background:var(--l-chat)"></i>대화 · SJ Station</span>
+      <span class="a" data-s="1"><i style="background:var(--l-crm)"></i>고객 · 주문 (CRM)</span>
+      <span class="a" data-s="2"><i style="background:var(--l-track)"></i>업무 · SJ Track</span>
+      <span class="a" data-s="3"><i style="background:var(--l-steward)"></i>고객 문의 · SJ Steward</span>
+      <span class="a" data-s="4"><i style="background:var(--l-key)"></i>계정 관리</span>
+    </div>
+    <aside class="notes">→ 키를 누를 때마다 노선이 하나씩 나옵니다.
+대화(SJ Station)가 환승역입니다. 모든 일은 여기서 시작합니다.
+고객과 주문, 업무와 할 일, 카톡과 인스타 DM 문의, 공용 계정 관리가 하나씩 연결됩니다.
+이카운트와 홈택스는 바꾸지 않고 그대로 연결합니다.
+마지막의 노란 점이 주문 한 건이 지나가는 길입니다.</aside>
+  </section>
+
+  <!-- 6 · AI colleagues -->
+  <section class="slide" data-title="AI 동료" data-time="1.5">
+    <div class="kicker a">04 · AI 동료</div>
+    <h2 class="a" style="--d:.1s">회사 일을 아는 AI가, 사람이 바뀌어도 일을 잇습니다</h2>
+    <div class="org">
+      <svg viewBox="0 0 1640 560" aria-hidden="true">
+        <g class="a still" style="--d:.3s"><path class="wire draw" d="M820,90 V130"/></g>
+        <g class="a still" data-s="1"><path class="wire draw" d="M820,240 V270 M180,270 H1458 M180,270 V300 M606,270 V300 M1032,270 V300 M1458,270 V300"/></g>
+      </svg>
+      <div class="nd row a" style="left:620px;top:0;width:400px;height:90px;--d:.2s"><span class="tg">사람</span><h4>대표님</h4><p>방향과 결정</p></div>
+      <div class="nd ai a pop" style="left:470px;top:130px;width:700px;height:110px;--d:.45s"><span class="tg">AI</span><h4>총괄 AI</h4><p>회사 전체를 알고, 매일 정리해 보고합니다</p></div>
+      <div class="nd ai a pop" data-s="1" style="left:0;top:300px;width:360px;height:130px;--d:.3s"><span class="tg">AI</span><h4>영업 · 주문</h4><p>+ 영업 담당과 함께</p></div>
+      <div class="nd ai a pop" data-s="1" style="left:426px;top:300px;width:360px;height:130px;--d:.45s"><span class="tg">AI</span><h4>경리 · 회계</h4><p>+ 경리 담당과 함께</p></div>
+      <div class="nd ai a pop" data-s="1" style="left:852px;top:300px;width:360px;height:130px;--d:.6s"><span class="tg">AI</span><h4>생산 · 품질</h4><p>+ 공장 담당과 함께</p></div>
+      <div class="nd ai a pop" data-s="1" style="left:1278px;top:300px;width:360px;height:130px;--d:.75s"><span class="tg">AI</span><h4>베트남 법인</h4><p>+ 현지 담당과 함께</p></div>
+      <div class="mem a grow" data-s="2"><b>회사 기억</b>거래처 · 단가 · 지난 주문 · 일하는 방식이 SJ Station에 계속 쌓입니다</div>
+    </div>
+    <aside class="notes">홍건의 님이 말씀하신 총괄 AI와 팀장급 AI, 인수인계가 필요 없는 운영을 단계적으로 만들어 갑니다.
+AI는 따로 쓰는 프로그램이 아니라, 채팅방에서 사람과 함께 일하는 동료입니다.
+기억이 SJ Station에 쌓이기 때문에 사람이 바뀌어도 일이 끊기지 않습니다.</aside>
+  </section>
+
+  <!-- 7 · principle -->
+  <section class="slide" data-title="원칙" data-time="1">
+    <div class="kicker a">05 · 원칙</div>
+    <h2 class="a" style="--d:.1s">AI는 저희가 아니라, 디와이글로벌을 위해 일합니다</h2>
+    <div class="cards">
+      <div class="card a pop" data-s="1"><b>01</b><h3>지시는 회사만 바꿉니다</h3><p>AI가 무엇을 우선할지는 디와이글로벌이 정합니다. 저희가 업데이트해도 바뀌지 않습니다.</p></div>
+      <div class="card a pop" data-s="2"><b>02</b><h3>똑똑해져도 기억은 그대로</h3><p>더 좋은 AI로 바꿔도 회사의 기억, 규칙, 일하는 방식은 그대로 옮겨갑니다.</p></div>
+    </div>
+    <p class="prin a" data-s="3">광고를 보여 주는 것도, 더 오래 쓰게 만드는 것도 <b>AI의 목표가 아닙니다.</b></p>
+    <aside class="notes">두 가지 약속입니다. AI가 누구를 위해 일하는지는 고객만 정합니다.
+더 좋은 모델이 나와도 회사의 기억과 규칙은 그대로 갑니다.</aside>
+  </section>
+
+  <!-- 9 · idiot index -->
+  <section class="slide" data-title="가격 원칙" data-time="1">
+    <div class="kicker a">06 · 가격</div>
+    <h2 class="a" style="--d:.1s">소프트웨어는 원가보다 너무 비싸게 팔립니다</h2>
+    <div class="duo9">
+      <div class="card a l" style="--d:.2s">
+        <b>IDIOT INDEX · 일론 머스크</b>
+        <div class="eq">완제품 가격<span>÷</span>원재료 비용</div>
+        <p>값이 클수록 없앨 낭비가 많다는 뜻입니다.</p>
+        <p class="a" data-s="1">소프트웨어의 원재료는 서버, 저장 공간, AI 사용량, 그리고 만들고 운영하는 시간입니다.</p>
+        <p class="a" data-s="2" style="color:var(--ink)">그래서 저희는 <b style="display:inline;letter-spacing:0;font-size:inherit;margin:0">원가에 가까운 다른 구조</b>로 받습니다.</p>
+      </div>
+      <svg class="map" viewBox="0 0 820 520" style="width:820px;height:520px" aria-label="가격과 원가 개념도">
+        <path class="trk" style="stroke-width:3" d="M40,470 H800"/>
+        <g data-s="1">
+          <rect class="a up" x="110" y="50" width="120" height="420" rx="8" style="fill:var(--ink3)"/>
+          <rect class="a up" x="250" y="430" width="120" height="40" rx="6" style="fill:var(--ink);--d:.3s"/>
+          <text class="t-lbl a" x="170" y="36" text-anchor="middle" style="--d:.6s">가격</text>
+          <text class="t-lbl a" x="310" y="416" text-anchor="middle" style="--d:.6s">원가</text>
+          <text class="t-mid a" x="240" y="508" text-anchor="middle">일반 SaaS</text>
+        </g>
+        <g data-s="2">
+          <rect class="a up" x="470" y="330" width="120" height="140" rx="8" style="fill:var(--accent)"/>
+          <rect class="a up" x="610" y="430" width="120" height="40" rx="6" style="fill:var(--ink);--d:.3s"/>
+          <text class="t-lbl a" x="530" y="316" text-anchor="middle" style="--d:.6s">가격</text>
+          <text class="t-lbl a" x="670" y="416" text-anchor="middle" style="--d:.6s">원가</text>
+          <text class="t-mid a" x="600" y="508" text-anchor="middle">SJ Dynamics</text>
+        </g>
+      </svg>
+    </div>
+    <div class="src a" style="--d:.8s">오른쪽은 개념도입니다. 실제 금액은 제안서에서 드립니다.</div>
+    <aside class="notes">제조업에 비유하면, 원목값 대비 파렛트 판매가 같은 비율입니다.
+소프트웨어는 그 비율이 터무니없이 큽니다. 1인당 요금이 실제로 쓰는 서버와 AI 비용보다 훨씬 높습니다.
+그래서 저희는 다른 구조로 받습니다. 금액은 묻지 않으시면 먼저 말하지 않습니다. 범위를 정한 뒤 제안서로 드립니다.</aside>
+  </section>
+
+  <!-- 10 · ladder -->
+  <section class="slide" data-title="순서" data-time="1">
+    <div class="kicker a">07 · 순서</div>
+    <h2 class="a" style="--d:.1s">작게 시작해, 사업마다 붙여, 베트남까지 갑니다</h2>
+    <div class="stairs">
+      <svg viewBox="0 0 1640 600" aria-hidden="true">
+        <path id="p-stairs" d="M30,298 H400 L450,195 H820 L870,92 H1240 L1290,-12 H1610" fill="none" stroke="none"/>
+        <g class="a still" data-s="4"><circle class="rider" cx="30" cy="298" r="13" filter="url(#glow)" data-path="p-stairs" data-dur="3.4"/></g>
+      </svg>
+      <div class="stp now a pop" style="left:0px;top:310px;width:380px;height:290px;padding:28px 30px;--d:.2s;"><b>지금</b><h3>매직스톤 · 주류</h3><p>같은 흐름 하나로, 문의부터 입금까지. 2주 시범 운영으로 효과를 잽니다.</p></div>
+      <div class="stp a pop" data-s="1" style="left:420px;top:207px;width:380px;height:290px;padding:28px 30px;"><b>다음</b><h3>야자매트 · 창호 등</h3><p>다른 사업에 같은 흐름을 붙입니다.</p></div>
+      <div class="stp a pop" data-s="2" style="left:840px;top:104px;width:380px;height:290px;padding:28px 30px;"><b>그다음</b><h3>파렛트 · 수출포장</h3><p>설계 앱을 흐름의 한 단계로 넣습니다.</p></div>
+      <div class="stp a pop" data-s="3" style="left:1260px;top:0px;width:380px;height:290px;padding:28px 30px;"><b>이후</b><h3>베트남</h3><p>처음부터 AI 조직으로. 현장 QC 보고까지.</p></div>
+      <p class="tail a" data-s="4" style="left:1260px;top:340px;width:380px;--d:2.4s">처음 만든 흐름이,<br>다른 사업의 틀이 됩니다.</p>
+    </div>
+    <aside class="notes">매직스톤과 주류는 같은 흐름 하나입니다. 이 하나로 시작해서 효과를 숫자로 확인합니다.
+그 흐름을 야자매트, 창호 등 다른 사업에 그대로 붙입니다. 사업마다 따로 만들지 않습니다.
+파렛트와 수출포장은 홍건의 님의 설계 앱을 흐름의 한 단계로 넣습니다(부록 A3).
+베트남 법인은 처음부터 AI 조직으로 시작하고, 현장 QC 보고를 사진 한 장에서 보고서까지 잇는 것부터 합니다.
+대표님께서 다른 사업 이야기를 꺼내시면, 각 사업을 이 계단의 어디에 둘지 같이 정합니다.</aside>
+  </section>
+
+  <!-- 11 · the ask -->
+  <section class="slide" data-title="제안" data-time="1.5">
+    <div class="kicker a">08 · 제안</div>
+    <h2 class="a" style="--d:.1s">2주 동안, 실제 주문으로 확인하겠습니다</h2>
+    <div class="center"><div class="cards" style="margin:0">
+      <div class="card a pop" data-s="1"><b>범위</b><h3>매직스톤 한 흐름</h3><p>문의 → 소개·견적 초안 → 발주 → 계산서 초안 → 입금 확인 → 이카운트. 주류도 같은 노선에서 함께 봅니다.</p></div>
+      <div class="card a pop" data-s="2"><b>성공 기준</b><h3>문의·주문당 <span class="tbd">?</span>분 → <span class="tbd">?</span>분</h3><p>다시 입력하는 일 0건. 기준은 디와이글로벌이 정합니다.</p></div>
+      <div class="card a pop" data-s="3"><b>준비할 것</b><h3>자료 네 가지</h3><p>실제 문의·견적 샘플 · 단가표 · 이카운트 연동 권한 · 담당자 한 분</p></div>
+    </div>
+    <div class="ask a" data-s="4">오늘 정할 것 하나: <span>시범 운영 시작일</span></div></div>
+    <aside class="notes">범위는 한 흐름, 매직스톤입니다. 주류는 같은 노선 위에서 함께 확인합니다. 성공 기준은 디와이글로벌이 정하시고, 저희는 그 숫자로만 판단받습니다.
+범위, 성공 기준, 준비할 것을 차례로 말씀드립니다.
+마지막 질문을 드리고 기다립니다. 침묵이 흘러도 괜찮습니다.
+"시범 운영은 언제부터 시작하면 좋을까요?"</aside>
+  </section>
+
+  <!-- A1 · partners -->
+  <section class="slide" data-title="부록: 함께 넓히기" data-time="0">
+    <div class="kicker a">부록 A1 · 함께 넓히기</div>
+    <h2 class="a" style="--d:.1s">디와이글로벌이 소개하는 회사에도, 같은 방식으로</h2>
+    <div class="flow">
+      <div class="rail a grow" data-s="1"></div>
+      <div class="node a pop" data-s="1" style="--d:.1s"><div class="dot">1</div><h3>디와이글로벌</h3><p>비슷한 고민을 가진 중소기업을 소개하고, 관계를 이어갑니다.</p></div>
+      <div class="node a pop" data-s="1" style="--d:.5s"><div class="dot">2</div><h3>SJ Dynamics</h3><p>설치, 연동, 운영, 지원을 맡습니다.</p></div>
+      <div class="node a pop" data-s="1" style="--d:.9s"><div class="dot">3</div><h3>소개받은 회사</h3><p>자기 지표로 성과를 확인합니다.</p></div>
+    </div>
+    <div class="src a" data-s="1" style="--d:1.2s">소개 수수료와 역할 분담은 따로 협의합니다.</div>
+    <aside class="notes">대화가 이 주제로 흘러갈 때만 보여 드립니다.</aside>
+  </section>
+
+  <!-- A3 · pallet app -->
+  <section class="slide" data-title="부록: 파렛트 앱" data-time="0">
+    <div class="kicker a">부록 A3 · 파렛트 앱</div>
+    <h2 class="a" style="--d:.1s">만드신 앱을 키우고, 견적 흐름의 한 단계로 잇습니다</h2>
+    <ul class="pts">
+      <li class="a l" data-s="1">지금처럼 계속 키웁니다<small>설계, 하중 분석, 원가 견적, 차량 적재, 고객 제출용 사양서까지 이미 있습니다.</small></li>
+      <li class="a l" data-s="2">검증 체계를 붙입니다<small>상용 프로그램과 실측값에 견주는 시험 사례를 만들고, 고친 오류는 시험으로 남깁니다.</small></li>
+      <li class="a l" data-s="3">고칠 때마다 자동으로 다시 확인합니다<small>시험이 모두 통과한 버전만 씁니다. 한 번 잡은 오류는 다시 나오지 않습니다. (CI/CD)</small></li>
+      <li class="a l" data-s="4">문의에서 견적까지, 한 번에<small>견적 요청 한 건이 들어오면 설계, 원가, 사양서가 한 번에 나옵니다.</small></li>
+    </ul>
+    <aside class="notes">DY LOGISTIC MASTER는 홍건의 님이 직접 만드신 앱입니다. 저는 조언만 드립니다.
+첫째, 지금 하시는 대로 계속 만드시면 됩니다. 이미 설계, 하중 분석, 원가와 견적, 차량 적재, 고객용 사양서가 있습니다.
+둘째, 해석 결과가 맞는지 확인하기 어렵다고 하신 걱정에는 검증 체계가 답입니다. 상용 프로그램과 실측값으로 시험 사례를 만들고, 오류를 고칠 때마다 그 오류를 시험으로 남깁니다.
+셋째, 그 시험을 고칠 때마다 자동으로 돌립니다. 쉬운 말로 하면 통과한 버전만 쓰는 것입니다. 정확도 수치는 슬라이드에 올리지 않고, 검증 체계를 만든 뒤 함께 확인합니다.
+넷째, 검증된 앱을 문의에서 견적으로 가는 흐름의 한 단계로 연결합니다. 대화창에서 고객 요구를 쓰면 설계, 원가, 문서가 한 번에 나오는 것이 목표입니다.</aside>
+  </section>
+
+  <div id="hint">→ 또는 클릭으로 넘기기 · P 발표자 화면</div>
+</div></div>
+
+<div id="pv">
+  <div id="pvStage"></div>
+  <div id="pvSide">
+    <div id="pvTimer">00:00</div>
+    <div id="pvBar"><i></i></div>
+    <div id="pvMeta"></div>
+    <div id="pvNext"></div>
+    <div id="pvNotes"></div>
+    <div id="pvBtns"><button id="pvPrev">Back</button><button id="pvFwd">Next</button><button id="pvReset">Restart timer</button></div>
+  </div>
+</div>
+<div id="black"></div>
+
+<script>
+(() => {
+  const $ = (q, el = document) => el.querySelector(q);
+  const $$ = (q, el = document) => [...el.querySelectorAll(q)];
+  const stage = $('#stage'), viewport = $('#viewport'), slides = $$('.slide');
+  const query = new URLSearchParams(location.search);
+  const isPresenter = query.has('presenter'), isStatic = query.has('static');
+  const calm = isStatic || matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.body.classList.toggle('static', isStatic);
+  document.body.classList.toggle('calm', calm);
+  let i = -1, step = 0, peer = null, t0 = Date.now(), lite = calm;
+
+  const maxStep = s => Math.max(0, ...$$('[data-s]', s).map(e => +e.dataset.s || 0));
+  const stepOf = e => +(e.closest('[data-s]')?.dataset.s || 0);
+  const notesOf = s => ($('.notes', s)?.textContent || '').split('\n').map(l => l.trim()).join('\n').trim();
+  const store = (k, v) => { try { return v === undefined ? localStorage.getItem(k) : localStorage.setItem(k, v); } catch (e) { return null; } };
+
+  // ---------- footer on every slide without data-bare ----------
+  const footer = $('meta[name="deck-footer"]')?.content || '';
+  slides.forEach((s, k) => {
+    if (s.hasAttribute('data-bare')) return;
+    const ft = document.createElement('div'); ft.className = 'ft';
+    ft.innerHTML = '<span></span><span><b>' + String(k + 1).padStart(2, '0') + '</b> / ' + slides.length + '</span>';
+    ft.firstChild.textContent = footer;
+    s.appendChild(ft);
+  });
+
+  // ---------- counters ----------
+  const fmt = el => v => v.toLocaleString('en-US', { minimumFractionDigits: +(el.dataset.dec || 0), maximumFractionDigits: +(el.dataset.dec || 0) });
+  const settle = el => { cancelAnimationFrame(el._raf); el.textContent = fmt(el)(+el.dataset.to); };
+  function count(e) {
+    [e, ...$$('.cnt', e)].filter(x => x.classList.contains('cnt')).forEach(el => {
+      if (calm) return settle(el);
+      const to = +el.dataset.to, f = fmt(el), dur = 1400;
+      const start = performance.now() + (parseFloat(getComputedStyle(el.closest('.a') || el).transitionDelay) || 0) * 1000 + 200;
+      cancelAnimationFrame(el._raf);
+      (function tick(t) {
+        const p = Math.min(1, Math.max(0, (t - start) / dur));
+        el.textContent = f(to * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) el._raf = requestAnimationFrame(tick);
+      })(performance.now());
+    });
+  }
+  addEventListener('beforeprint', () => $$('.cnt').forEach(settle));
+
+  // ---------- riders: a dot that travels a path, lighting stations as it reaches each stop ----------
+  const ease = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+  function ride(el) {
+    const slide = el.closest('.slide'), path = document.getElementById(el.dataset.path);
+    if (!path) return;
+    const L = path.getTotalLength(), dur = (+el.dataset.dur || 3) * 1000, hold = (+el.dataset.hold || 0) * 1000;
+    const stops = (el.dataset.stops || '').split(',').filter(Boolean).map(Number), marks = [0, ...stops, 1];
+    const lights = el.dataset.lights ? $$(el.dataset.lights, slide) : [];
+    const place = f => { const p = path.getPointAtLength(L * f); el.setAttribute('cx', p.x); el.setAttribute('cy', p.y); };
+    cancelAnimationFrame(el._raf);
+    if (calm) { place(+(el.dataset.rest || 1)); lights.forEach(x => x.classList.add('lit')); return; }
+    const total = dur + hold * stops.length;
+    let start = performance.now() + (parseFloat(el.dataset.delay) || 0) * 1000, lit = 0;
+    place(0);
+    (function tick(now) {
+      if (!slide.classList.contains('active')) return;
+      let t = now - start, f = 0, reached = 0;
+      if (t >= 0) for (let k = 0; k < marks.length - 1; k++) {
+        const seg = dur * (marks[k + 1] - marks[k]);
+        if (t < seg) { f = marks[k] + (marks[k + 1] - marks[k]) * ease(t / seg); break; }
+        t -= seg; reached = k + 1; f = marks[k + 1];
+        if (k + 1 < marks.length - 1) { if (t < hold) break; t -= hold; }
+      }
+      while (lit < reached) lights[lit++]?.classList.add('lit');
+      place(f);
+      if (now - start >= total) {
+        if (!el.hasAttribute('data-loop')) return;
+        if (now - start >= total + 1200) { start = now; lit = 0; lights.forEach(x => x.classList.remove('lit')); }
+      }
+      el._raf = requestAnimationFrame(tick);
+    })(performance.now());
+  }
+  // ---------- typing ----------
+  function type(el) {
+    const full = el.dataset.text ?? (el.dataset.text = el.textContent);
+    cancelAnimationFrame(el._raf);
+    if (calm) { el.textContent = full; return; }
+    const start = performance.now() + (parseFloat(el.dataset.delay) || 0) * 1000, cps = +el.dataset.cps || 20;
+    el.textContent = '';
+    (function tick(now) {
+      const n = Math.max(0, Math.floor((now - start) / 1000 * cps));
+      el.textContent = full.slice(0, n);
+      if (n < full.length) el._raf = requestAnimationFrame(tick);
+    })(performance.now());
+  }
+  const play = e => [e, ...$$('.rider,.type', e)].forEach(x => {
+    if (x.classList.contains('rider')) ride(x); else if (x.classList.contains('type')) type(x);
+  });
+
+  // ---------- slides and steps ----------
+  function reset(s) {
+    s.classList.add('noanim');
+    $$('.a', s).forEach(e => e.classList.remove('on'));
+    $$('.cnt,.rider,.type', s).forEach(c => cancelAnimationFrame(c._raf));
+    $$('.lit', s).forEach(e => e.classList.remove('lit'));
+    $$('.type', s).forEach(e => { if (e.dataset.text) e.textContent = e.dataset.text; });
+    void s.offsetWidth;
+    s.classList.remove('noanim');
+  }
+  function render() {
+    $$('.a', slides[i]).forEach(e => {
+      const on = stepOf(e) <= step;
+      if (on && !e.classList.contains('on')) { e.classList.add('on'); count(e); play(e); }
+      else if (!on) e.classList.remove('on');
+    });
+  }
+  function go(n, st = 0, quiet = false) {
+    n = Math.max(0, Math.min(slides.length - 1, n));
+    if (n !== i) {
+      stage.classList.toggle('back', n < i);
+      const prev = slides[i];
+      if (prev) {
+        prev.classList.remove('active'); prev.classList.add('leave');
+        setTimeout(() => { prev.classList.remove('leave'); if (prev !== slides[i]) reset(prev); }, 900);
+      }
+      reset(slides[n]);
+      i = n; slides[i].classList.remove('leave'); slides[i].classList.add('active');
+      try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
+    }
+    step = isStatic ? maxStep(slides[i]) : Math.max(0, Math.min(maxStep(slides[i]), st));
+    render();
+    $('#prog').style.width = ((i + 1) / slides.length * 100) + '%';
+    if (!quiet) send();
+    renderPresenter();
+  }
+  const next = () => step < maxStep(slides[i]) ? go(i, step + 1) : go(i + 1, 0);
+  const prev = () => step > 0 ? go(i, step - 1) : i > 0 && go(i - 1, maxStep(slides[i - 1]));
+
+  // ---------- theme ----------
+  let fxColor = '';
+  const theme = () => document.documentElement.dataset.theme || 'dark';
+  function setTheme(t, quiet) {
+    document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark';
+    store('deck-theme', theme());
+    fxColor = getComputedStyle(document.documentElement).getPropertyValue('--fx').trim();
+    if (!quiet) send();
+  }
+
+  // ---------- presenter link ----------
+  function send() { if (peer && !peer.closed) peer.postMessage({ deck: 'go', i, step, t0, theme: theme() }, '*'); }
+  addEventListener('message', ev => {
+    const d = ev.data; if (!d || !d.deck) return;
+    peer = peer || ev.source;
+    if (d.deck === 'hello') { peer = ev.source; send(); }
+    if (d.deck === 'go') { t0 = d.t0; if (d.theme !== theme()) setTheme(d.theme, true); go(d.i, d.step, true); }
+  });
+  const budget = k => slides.slice(0, k + 1).reduce((a, s) => a + (+s.dataset.time || 0), 0);
+  const clock = sec => String(Math.floor(sec / 60)).padStart(2, '0') + ':' + String(Math.floor(sec % 60)).padStart(2, '0');
+  function renderPresenter() {
+    if (!isPresenter) return;
+    const s = slides[i], ms = maxStep(s), nx = slides[i + 1];
+    $('#pvMeta').textContent = 'Slide ' + (i + 1) + ' / ' + slides.length + ' · step ' + (step + 1) + ' / ' + (ms + 1)
+      + (budget(i) ? ' · end this slide by ' + clock(budget(i) * 60) : '');
+    $('#pvNext').textContent = step < ms ? 'Next: the next step on this slide'
+      : nx ? 'Next slide: ' + (nx.dataset.title || $('h1,h2', nx)?.textContent.trim() || '') : 'Last slide';
+    $('#pvNotes').textContent = notesOf(s);
+  }
+  if (isPresenter) setInterval(() => {
+    const el = (Date.now() - t0) / 1000, total = budget(slides.length - 1) * 60;
+    $('#pvTimer').textContent = clock(el) + (total ? ' / ' + clock(total) : '');
+    $('#pvTimer').classList.toggle('over', total > 0 && el > total);
+    $('#pvBar i').style.width = total ? Math.min(100, el / total * 100) + '%' : '0';
+  }, 500);
+
+  // ---------- input ----------
+  addEventListener('keydown', e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (['ArrowRight', 'PageDown', ' ', 'Enter', 'ArrowDown'].includes(k)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'PageUp', 'Backspace', 'ArrowUp'].includes(k)) { e.preventDefault(); prev(); }
+    else if (k === 'Home') go(0);
+    else if (k === 'End') go(slides.length - 1);
+    else if (k === 'f') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
+    else if (k === 'b' || k === '.') document.body.classList.toggle('black');
+    else if (k === 'n') document.body.classList.toggle('shownotes');
+    else if (k === 'c') setTheme(theme() === 'light' ? 'dark' : 'light');
+    else if (k === 'l') lite = !lite;
+    else if (k === 't') { t0 = Date.now(); send(); }
+    else if (k === 'p' && !isPresenter) peer = window.open(location.pathname + '?presenter#' + (i + 1), 'presenter', 'width=1400,height=860');
+  });
+  if (!isPresenter) {
+    viewport.addEventListener('click', e => {
+      if (e.target.closest('a,button,input,select,textarea')) return;
+      e.clientX < innerWidth * 0.25 ? prev() : next();
+    });
+    let tx = null;
+    addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+    addEventListener('touchend', e => {
+      if (tx === null) return;
+      const d = e.changedTouches[0].clientX - tx; tx = null;
+      if (Math.abs(d) > 50) d < 0 ? next() : prev();
+    });
+    let idle;
+    addEventListener('mousemove', () => {
+      document.body.classList.remove('idle'); clearTimeout(idle);
+      idle = setTimeout(() => document.body.classList.add('idle'), 2000);
+    });
+  }
+  addEventListener('hashchange', () => { const h = parseInt(location.hash.slice(1)); if (h && h - 1 !== i) go(h - 1); });
+
+  // ---------- fit: stage to window, one-line text to its box ----------
+  function fit() {
+    const host = isPresenter ? $('#pvStage') : null;
+    const w = host ? host.clientWidth : innerWidth, h = host ? host.clientHeight : innerHeight;
+    stage.style.setProperty('--s', Math.min(w / 1920, h / 1080));
+  }
+  function fitText() {
+    $$('.fit').forEach(el => {
+      el.style.fontSize = '';
+      let fs = parseFloat(getComputedStyle(el).fontSize); const min = fs * 0.7;
+      while (el.scrollWidth > el.clientWidth + 1 && fs > min) { fs -= 1; el.style.fontSize = fs + 'px'; }
+    });
+  }
+
+  // ---------- background: faint track grid, a few trains running on it ----------
+  const cv = $('#fx'), cx = cv.getContext('2d'); cv.width = 1920; cv.height = 1080;
+  const G = 120;
+  function spawn(t) {
+    t.h = Math.random() < .6; t.dir = Math.random() < .5 ? 1 : -1;
+    t.lane = (1 + Math.floor(Math.random() * (t.h ? 8 : 15))) * G;
+    t.v = (.35 + Math.random() * .5) * t.dir;
+    const max = t.h ? 1920 : 1080;
+    t.p = t.dir > 0 ? -200 - Math.random() * 900 : max + 200 + Math.random() * 900;
+    return t;
+  }
+  const trains = Array.from({ length: 9 }, () => spawn({}));
+  function loop() {
+    requestAnimationFrame(loop);
+    cx.clearRect(0, 0, 1920, 1080);
+    if (lite || document.hidden) return;
+    cx.lineWidth = 1; cx.strokeStyle = 'rgba(' + fxColor + ',.05)';
+    cx.beginPath();
+    for (let x = G; x < 1920; x += G) { cx.moveTo(x, 0); cx.lineTo(x, 1080); }
+    for (let y = G; y < 1080; y += G) { cx.moveTo(0, y); cx.lineTo(1920, y); }
+    cx.stroke();
+    for (const t of trains) {
+      t.p += t.v;
+      const max = t.h ? 1920 : 1080;
+      if ((t.dir > 0 && t.p > max + 200) || (t.dir < 0 && t.p < -200)) spawn(t);
+      const back = t.p - 160 * t.dir;
+      const x0 = t.h ? back : t.lane, y0 = t.h ? t.lane : back, x1 = t.h ? t.p : t.lane, y1 = t.h ? t.lane : t.p;
+      const g = cx.createLinearGradient(x0, y0, x1, y1);
+      g.addColorStop(0, 'rgba(' + fxColor + ',0)'); g.addColorStop(1, 'rgba(' + fxColor + ',.45)');
+      cx.strokeStyle = g; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(x0, y0); cx.lineTo(x1, y1); cx.stroke();
+      cx.fillStyle = 'rgba(' + fxColor + ',.8)'; cx.beginPath(); cx.arc(x1, y1, 3.5, 0, 7); cx.fill();
+    }
+  }
+
+  // ---------- start ----------
+  $$('.draw').forEach(p => p.style.setProperty('--len', Math.ceil(p.getTotalLength()) + 2));
+  if (isPresenter) {
+    document.body.classList.add('presenter');
+    $('#pvStage').appendChild(viewport);
+    $('#pvPrev').onclick = prev; $('#pvFwd').onclick = next;
+    $('#pvReset').onclick = () => { t0 = Date.now(); send(); };
+    peer = window.opener;
+  }
+  setTheme(store('deck-theme') || 'dark', true);
+  addEventListener('resize', fit); fit();
+  fitText(); if (document.fonts) document.fonts.ready.then(fitText);
+  go((parseInt(location.hash.slice(1)) || 1) - 1, 0, true);
+  if (isPresenter && peer) peer.postMessage({ deck: 'hello' }, '*');
+  if (!calm) loop();
+  setTimeout(() => { $('#hint').style.opacity = 0; }, 5000);
+  window.deck = { go, next, prev, get count() { return slides.length; }, get at() { return [i, step]; } };
+})();
+</script>
+</body>
+</html>

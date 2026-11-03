@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SJ Dynamics · 소개와 시연 · v5</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;height:100vh;display:flex;flex-direction:column;font:15px/1.46 Lato,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:#1d1c1d;background:#39063a;word-break:keep-all}
+button{font:inherit}
+[hidden]{display:none!important}
+#top{height:40px;flex:none;display:flex;align-items:center;gap:10px;padding:0 12px;background:linear-gradient(90deg,#3a103f,#4d1452);color:#fff;font-size:13px}
+#top .br{font-weight:900;white-space:nowrap}
+#pages{display:flex;gap:2px}
+#pages button{all:unset;cursor:pointer;padding:3px 10px;border-radius:6px;color:#e6d4ea;white-space:nowrap}
+#pages button.on{background:#f9edff;color:#39063a;font-weight:700}
+#top .q{flex:0 1 480px;margin:0 auto;height:26px;border-radius:6px;background:#6b5071;color:#d8c8e0;display:flex;align-items:center;padding:0 10px}
+#top .sp{flex:1}
+.chip{background:#f2c744;color:#3a103f;border-radius:4px;padding:1px 6px;font-weight:700;font-size:11px;white-space:nowrap}
+.vw{display:flex;align-items:center;gap:6px;background:#6b5071;border-radius:6px;padding:2px 8px;white-space:nowrap}
+.vw select{background:transparent;color:#fff;border:0;font:inherit;font-weight:700;cursor:pointer}
+.vw option{color:#1d1c1d}
+.rs{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:6px;padding:2px 8px;cursor:pointer;font-size:12px;white-space:nowrap}
+#deck{flex:1;overflow:auto;background:#fff;margin:0 4px 4px;border-radius:6px}
+.pg{max-width:1180px;margin:0 auto;padding:34px 44px 90px}
+.pg.w{max-width:1520px}
+.pg.cv{min-height:100%;display:flex;flex-direction:column;justify-content:center;padding-bottom:120px}
+.ey{font-size:13px;font-weight:700;color:#8a6d00}
+.pg h1{font-size:38px;line-height:1.25;margin:6px 0 10px;font-weight:900}
+.pg h1 em{font-style:normal;color:#39063a;background:linear-gradient(transparent 62%,#f9e08a 62%)}
+.lead{font-size:17px;color:#454245;margin:0 0 24px;max-width:860px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cd{border:1px solid #e6e6eb;border-radius:12px;padding:16px 18px}
+.cd>b{display:block;font-size:16px;margin-bottom:6px}
+.cd p{margin:0;color:#616061;font-size:14px}
+.cd ul{margin:0;padding-left:18px;font-size:14px;color:#454245}
+.cd li{margin:5px 0}
+.n1{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#39063a;color:#fff;font-weight:900;font-size:13px;margin-bottom:8px}
+.by{margin-top:30px;color:#616061;font-size:14px}
+.go{color:#1264a3;cursor:pointer;font-size:13px;font-weight:700;white-space:nowrap}
+.nx{position:fixed;right:22px;bottom:18px;display:flex;gap:8px}
+.nx button,.bt2{border:1px solid #c8c8c8;background:#fff;border-radius:6px;padding:6px 14px;cursor:pointer;font-weight:700;font-size:14px}
+.nx button.p,.bt2.p{background:#007a5a;border-color:#007a5a;color:#fff}
+.calc{display:grid;grid-template-columns:1.05fr 1fr;gap:16px;align-items:stretch}
+.cin{border:1px solid #e6e6eb;border-radius:12px;padding:14px 18px;font-size:16px;line-height:2.5}
+.cin input{width:86px;font:inherit;font-weight:800;text-align:right;border:2px dashed #ecb22e;background:#fffaeb;border-radius:6px;padding:0 6px;color:#1d1c1d;line-height:1.6}
+.cin small,.out small{display:block;line-height:1.5;color:#8a6d00;font-size:12px}
+.out{border-radius:12px;background:#39063a;color:#fff;padding:16px 20px;display:flex;flex-direction:column;gap:10px}
+.out div{font-size:14px;color:#e6d4ea}
+.out b{display:block;font-size:28px;font-weight:900;color:#fff;line-height:1.2}
+.out b.y{color:#f9e08a}
+.out small{color:#c9b8cf}
+svg text{font-family:inherit;pointer-events:none}
+.ctl .sdt{font-size:13.5px;color:#5f6b7c;margin-left:6px}
+.sdw{position:relative;border:1px solid #dce0e5;border-radius:8px;overflow:hidden;background:#f8f9fa radial-gradient(#c5cbd3 1px,transparent 1.3px) 0 0/18px 18px}
+.sdc{position:absolute;left:0;top:0;width:1380px;height:534px;transform-origin:0 0}
+.sdg{position:absolute;left:12px;width:1356px;background:rgba(237,231,225,.5);border-radius:4px;box-shadow:0 0 0 1px rgba(17,20,24,.12)}
+.sdg b{position:absolute;left:14px;top:8px;font-size:14px;color:#1c2127}
+.sdg small{position:absolute;right:14px;top:9px;font-size:12.5px;color:#5f6b7c}
+.sde{position:absolute;left:0;top:0;overflow:visible}
+.sde>path{fill:none}
+.sde .m{stroke:#5f6b7c;stroke-width:1.6}
+.sde .d{stroke:#8f99a8;stroke-width:1.3;stroke-dasharray:5 4}
+.sde .g{stroke:#d49b00;stroke-width:2.4;stroke-dasharray:6 4}
+.sde .t{stroke:#2d72d2;stroke-width:3;stroke-dasharray:1;stroke-dashoffset:1;animation:sddraw .6s linear both}
+.sde .el{font-size:12px;fill:#5f6b7c;paint-order:stroke;stroke:#f6f3f0;stroke-width:5px}
+.sde .gb{fill:#fbd065;stroke:#d49b00;stroke-width:1.5}
+.sde .gt{font-size:13px;font-weight:800;fill:#3a2a00}
+@keyframes sddraw{to{stroke-dashoffset:0}}
+.sdn{position:absolute;box-sizing:border-box;background:#fff;border-radius:4px;box-shadow:0 0 0 1px rgba(17,20,24,.15),0 1px 2px rgba(17,20,24,.08);cursor:pointer;display:flex;flex-direction:column}
+.sdn:hover{box-shadow:0 0 0 1px #4c90f0,0 1px 2px rgba(17,20,24,.08)}
+.sdn.sel{box-shadow:0 0 0 2px #4c90f0,0 0 0 6px rgba(76,144,240,.2)}
+.sdn.off{opacity:.4}
+.sdn.lit{animation:sdlit .6s both}
+@keyframes sdlit{0%{box-shadow:0 0 0 1px rgba(17,20,24,.15)}45%{box-shadow:0 0 0 7px rgba(138,187,255,.55)}100%{box-shadow:0 0 0 3px #2d72d2}}
+.sdn .hd{display:flex;align-items:center;gap:8px;padding:0 10px;height:44px;flex:none}
+.sdn .ic{width:20px;height:20px;flex:none}
+.sdn .hc{min-width:0}
+.sdn .tt{font-size:15px;font-weight:700;color:#1c2127;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sdn .ty{font-size:11.5px;color:#5f6b7c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sdn .bd{border-top:1px solid rgba(17,20,24,.15);padding:6px 10px;font-size:12.5px;line-height:1.35;color:#404854}
+.sdn .tg{position:absolute;top:-9px;right:-6px;background:#fbd065;color:#3a2a00;border-radius:9px;padding:0 7px;font-size:11px;font-weight:800;line-height:18px;box-shadow:0 0 0 1.5px #fff}
+.sdp{position:absolute;transform:translateX(-50%);background:#2d72d2;color:#fff;border-radius:11px;padding:2px 9px;font-size:12px;font-weight:700;white-space:nowrap;animation:sdin .4s both}
+@keyframes sdin{from{opacity:0;transform:translate(-50%,-4px)}to{opacity:1;transform:translate(-50%,0)}}
+.sdi{position:absolute;top:12px;width:300px;max-height:calc(100% - 24px);overflow:auto;box-sizing:border-box;background:#fff;border-radius:4px;box-shadow:0 0 0 1px rgba(17,20,24,.1),0 4px 14px rgba(17,20,24,.16);padding:12px 14px;font-size:14px}
+.sih{display:flex;align-items:center;gap:10px}
+.sih .ic{width:24px;height:24px;flex:none}
+.sih b{display:block;font-size:17px}
+.sih small{color:#5f6b7c;font-size:12px}
+.sih button{margin-left:auto;align-self:flex-start;border:0;background:none;font-size:16px;cursor:pointer;color:#5f6b7c}
+.sdi .dsc{color:#5f6b7c}
+.sdi .k{font-size:12px;color:#5f6b7c;font-weight:700;margin-top:10px}
+.sdi .t{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+.sdi .t span{background:#f4f4f6;border-radius:10px;padding:1px 8px;font-size:12px}
+.sdi p{margin:3px 0 0}
+.sdi .mo{margin-top:12px;background:#fffaeb;border:1px solid #f0d58c;border-radius:8px;padding:7px 10px;font-weight:700}
+.sdl{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:10px;font-size:13px;color:#454245}
+.sdl b{color:#1d1c1d;margin-right:5px}
+.sdl .h{color:#8b8b93}
+.seg{display:inline-flex;border:1px solid #c8c8c8;border-radius:8px;overflow:hidden;margin-right:8px}
+.seg button{border:0;background:#fff;padding:5px 14px;cursor:pointer;font-weight:700;font-size:14px}
+.seg button.on{background:#39063a;color:#fff}
+.ctl{display:flex;align-items:center;gap:8px;margin:-8px 0 12px}
+.scg{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.sc{border:1px solid #e6e6eb;border-radius:12px;padding:14px 16px;cursor:pointer;display:flex;flex-direction:column;gap:6px}
+.sc:hover{border-color:#39063a;box-shadow:0 2px 10px rgba(57,6,58,.12)}
+.sc.main{grid-column:span 2;background:#fbf8fc}
+.sc .n{font-size:12px;color:#8a6d00;font-weight:700}
+.sc h3{margin:0;font-size:17px}
+.sc p{margin:0;color:#616061;font-size:14px}
+.sc .ft{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:12px;margin-top:auto;padding-top:4px}
+.lad{display:flex;margin:18px 0 0}
+.lad div{flex:1;padding:10px 14px;border:1px solid #e6e6eb;border-left:0;font-size:14px;color:#454245}
+.lad div:first-child{border-left:1px solid #e6e6eb;border-radius:10px 0 0 10px;background:#f9edff}
+.lad div:last-child{border-radius:0 10px 10px 0}
+.lad b{display:block;color:#1d1c1d}
+.ask{margin-top:22px;border:2px solid #ecb22e;background:#fffaeb;border-radius:12px;padding:18px 22px;font-size:22px;font-weight:900}
+.ask small{display:block;font-size:14px;font-weight:400;color:#616061;margin-top:4px}
+.ex{border:2px dashed #ecb22e;background:#fffaeb;border-radius:6px;padding:0 6px;font-weight:800}
+.agd{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.agd div{border:1px solid #e6e6eb;border-radius:12px;padding:12px 14px;font-size:14px;color:#616061}
+.agd b{display:block;font-size:16px;color:#1d1c1d;margin:6px 0 4px}
+.agd i{font-style:normal;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#39063a;color:#fff;font-weight:900;font-size:12px}
+.fo{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fo .cd{cursor:pointer;display:flex;flex-direction:column}
+.fo .cd.on{border:2px solid #39063a;background:#fbf5fc}
+.fo .cd ul{flex:1}
+.tg{display:inline-block;font-size:12px;font-weight:700;color:#8a6d00;background:#fffaeb;border:1px solid #ecb22e;border-radius:10px;padding:0 8px;margin-left:8px;vertical-align:2px}
+.fo .cin{border:0;padding:8px 0 0;line-height:2.3;font-size:15px}
+.fo .hr{font-size:15px;color:#454245}
+.fo .hr b{font-size:24px;color:#39063a}
+.fo .pk{margin-top:8px;font-weight:700;color:#007a5a;font-size:14px}
+.simw{border:1px solid #e6e6eb;border-radius:12px;padding:12px 14px;margin-bottom:16px}
+.simb{display:flex;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap}
+.sday{font-weight:800;font-size:15px;min-width:84px}
+.snote{font-size:12px;color:#8a6d00}
+#sim{width:100%;height:290px;display:block}
+.sres{min-height:26px;font-size:16px;color:#39063a;margin-top:2px}
+.sres b{font-size:20px}
+.fl.lk{cursor:pointer;color:#1264a3;text-decoration:underline}
+#doc{position:fixed;inset:0;z-index:60;background:rgba(29,28,29,.55);display:flex;justify-content:center;align-items:flex-start;gap:18px;padding:28px;overflow:auto}
+#doc[hidden]{display:none}
+.a4{width:600px;min-height:848px;background:#fff;box-shadow:0 8px 30px rgba(0,0,0,.25);padding:44px 46px;font-size:13px;color:#222;flex:none}
+.a4t{text-align:center;font-size:26px;font-weight:900;letter-spacing:6px;margin-bottom:6px}
+.a4d{text-align:center;color:#616061;margin-bottom:22px}
+.a4p{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;align-items:start}
+.a4 table{width:100%;border-collapse:collapse}
+.a4 th,.a4 td{border:1px solid #c8c8c8;padding:5px 7px;text-align:left}
+.a4 th{background:#f4f4f4}
+.a4i td:nth-child(n+3),.a4i th:nth-child(n+3){text-align:right}
+.a4i tr.sum td{background:#fafafa}
+.a4l{margin:0 0 10px}
+.a4n{margin-top:14px;border-top:1px solid #e6e6eb;padding-top:10px}
+.a4k td:first-child{width:90px;background:#f4f4f4;font-weight:700}
+.dsd{width:340px;background:#fff;border-radius:12px;padding:14px 16px;flex:none}
+.dtb{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.dtb button{border:1px solid #c8c8c8;background:#fff;border-radius:16px;padding:3px 10px;font-weight:700;cursor:pointer;font-size:13px}
+.dtb button.on{background:#39063a;border-color:#39063a;color:#fff}
+.dsh{font-weight:800;margin-bottom:8px}
+.dsr{border-left:3px solid #e6e6eb;padding:4px 0 4px 10px;margin:8px 0}
+.dsr span{display:block;font-size:11px;font-weight:700;color:#616061}
+.dsr b{display:block;font-size:14px}
+.dsr small{color:#616061;font-size:12px}
+.dsr.code{border-color:#215db0}.dsr.ai{border-color:#9d3f9d}.dsr.hu{border-color:#ecb22e}.dsr.now{border-color:#e8912d}
+.tl3{display:grid;grid-template-columns:repeat(3,1fr);margin-top:16px}
+.tl3 div{padding:12px 16px;border:1px solid #e6e6eb;border-left:0;font-size:14px;color:#454245}
+.tl3 div:first-child{border-left:1px solid #e6e6eb;border-radius:10px 0 0 10px}
+.tl3 div:last-child{border-radius:0 10px 10px 0}
+.tl3 i{display:block;font-style:normal;font-size:12px;font-weight:800;color:#39063a;margin-bottom:2px}
+.tl3 b{display:block;color:#1d1c1d;margin-bottom:4px}
+.cd.fx{display:flex;flex-direction:column}
+.cd.rp{background:#f9edff;border-color:#e3c6f0}
+.rpb{margin-top:auto;display:flex;gap:8px;padding-top:10px}
+.rpb button{border:1px solid #39063a;background:#fff;color:#39063a;border-radius:8px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:13px}
+.pr{margin-top:auto;font-size:22px;font-weight:900;padding-top:8px}
+.sv{margin-top:14px;border:1px solid #e6e6eb;border-radius:12px;padding:14px 18px}
+.svr{display:flex;gap:10px;margin-top:8px}
+.svr div{flex:1;border:1px solid #e6e6eb;border-radius:8px;padding:8px 12px;font-size:14px}
+.svr div:first-child{background:#f9edff}
+.svr i{display:block;font-style:normal;font-size:12px;font-weight:800;color:#616061}
+.svr span{align-self:center;color:#8f99a8;font-weight:900}
+.a4w td:first-child{width:120px}
+.dsf{font-size:11px;color:#8f99a8;margin:12px 0 0}
+#app{flex:1;display:flex;min-height:0}
+#rail{width:70px;flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding-top:8px}
+#rail .w{width:36px;height:36px;border-radius:8px;background:#fff;color:#39063a;font-weight:900;display:grid;place-items:center;margin-bottom:8px}
+#rail button{all:unset;cursor:pointer;width:60px;text-align:center;font-size:11px;color:#fff}
+#rail i{display:block;font-style:normal;font-size:16px;width:36px;height:34px;line-height:34px;margin:0 auto 1px;border-radius:8px}
+#rail button.on i,#rail button:hover i{background:rgba(249,237,255,.25)}
+#win{flex:1;display:flex;min-width:0;margin:0 4px 4px 0;border-radius:6px;overflow:hidden;background:#fff}
+#side{width:250px;flex:none;background:#4e1f50;color:rgba(246,228,255,.9);overflow:auto;padding-bottom:20px}
+#side .ws{height:49px;display:flex;align-items:center;padding:0 16px;font-weight:900;font-size:18px;color:#fff;gap:4px}
+#side .sec{padding:14px 16px 2px;font-size:14px;opacity:.8;user-select:none}
+#side a{display:flex;gap:8px;align-items:center;margin:0 8px;padding:3px 10px;border-radius:6px;cursor:pointer;white-space:nowrap;overflow:hidden}
+#side a:hover{background:rgba(249,237,255,.08)}
+#side a.on{background:#f9edff;color:#39063a;font-weight:700}
+#side a.mut{opacity:.75;cursor:default}
+#side a b{width:20px;text-align:center;font-weight:400;opacity:.85}
+#main{flex:1;display:flex;flex-direction:column;min-width:0;border-left:1px solid #e6e6eb}
+header{height:49px;flex:none;display:flex;align-items:center;gap:8px;padding:0 16px 0 20px;border-bottom:1px solid #e6e6eb;min-width:0}
+header h1{font-size:18px;margin:0;font-weight:900;white-space:nowrap}
+header h1 small{font-size:12px;color:#616061}
+header .d{color:#616061;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+header .m,header .x{margin-left:auto;border:1px solid #ddd;border-radius:6px;background:#fff;padding:2px 8px;cursor:pointer;font-size:13px;white-space:nowrap}
+.tabs{display:flex;gap:18px;padding:0 20px;border-bottom:1px solid #e6e6eb;font-size:13px;flex:none}
+.tabs a{padding:7px 0;cursor:pointer;color:#616061}
+.tabs a.on{color:#1d1c1d;font-weight:700;box-shadow:inset 0 -2px #39063a}
+.feed{flex:1;overflow:auto;padding:0 0 16px}
+.intro{padding:22px 20px 10px}
+.intro .ic{width:56px;height:56px;border-radius:12px;background:#f1eaf3;color:#39063a;display:grid;place-items:center;font-size:26px;font-weight:900}
+.intro h2{margin:8px 0 2px;font-size:22px}
+.intro p{margin:0;color:#616061;font-size:14px}
+.day{position:relative;text-align:center;margin:14px 0 4px;font-size:13px;font-weight:700}
+.day:before{content:"";position:absolute;left:0;right:0;top:50%;border-top:1px solid #e6e6eb}
+.day span{position:relative;background:#fff;border:1px solid #e6e6eb;border-radius:12px;padding:2px 12px}
+.msg{display:flex;gap:8px;padding:6px 20px;transition:background .3s}
+.msg:hover{background:#f8f8f8}
+.hl,.hl:hover{background:#fff8e1;box-shadow:inset 3px 0 0 #ecb22e}
+.av{flex:none;border-radius:6px;display:inline-grid;place-items:center;font-weight:700;color:#fff}
+.bd{min-width:0;flex:1}
+.nm{font-weight:900}
+.tm{color:#616061;font-size:12px;margin-left:6px}
+.ap{font-size:10px;background:#e8e8e8;color:#616061;border-radius:3px;padding:0 3px;margin-left:4px;font-weight:700;vertical-align:1px}
+.ap.mk{background:#fff1c2;color:#8a6d00}
+.st{display:inline-block;font-size:11px;background:#f9edff;color:#39063a;border-radius:10px;padding:0 7px;margin-right:6px;font-weight:700}
+.mn{background:#e8f5fa;color:#1264a3;border-radius:3px;padding:0 2px}
+a.ch{color:#1264a3;cursor:pointer}
+.card{border:1px solid #e6e6eb;border-radius:8px;padding:10px 12px;margin-top:6px;max-width:560px;background:#fff}
+.ct{font-weight:900;margin-bottom:4px}
+.cb{margin:4px 0 6px;padding:6px 10px;background:#f8f8f8;border-radius:6px;font-size:14px}
+.card table{border-collapse:collapse;font-size:14px}
+.card th{text-align:left;font-weight:400;color:#616061;padding:2px 14px 2px 0;white-space:nowrap;vertical-align:top}
+.cf{font-size:12px;color:#616061;margin-top:6px}
+.chk{margin-top:8px;border:1px solid #f0d58c;background:#fffaeb;border-radius:8px;padding:8px 12px;max-width:560px}
+.chk .h{font-size:12px;color:#8a6d00;font-weight:700}
+.chk.dn{border-color:#bfe3d3;background:#f0faf5}
+.chk.dn .h{color:#007a5a}
+.chk .l{font-weight:700;font-size:14px}
+.bt{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
+.bt button{font-size:13px;font-weight:700;border:1px solid #c8c8c8;background:#fff;border-radius:4px;padding:3px 12px;cursor:pointer}
+.bt button.p{background:#007a5a;border-color:#007a5a;color:#fff}
+.ok{margin-top:4px;color:#007a5a;font-size:13px}
+.fl{display:inline-block;border:1px solid #e6e6eb;border-radius:8px;padding:5px 10px;margin:6px 6px 0 0;font-size:13px}
+.im{display:inline-grid;place-items:center;width:112px;height:76px;background:linear-gradient(135deg,#ece8ee,#dcd5df);border-radius:8px;margin:6px 6px 0 0;font-size:12px;color:#616061}
+.rx{display:flex;gap:4px;margin-top:4px}
+.rx span{border:1px solid #e6e6eb;border-radius:12px;padding:0 7px;font-size:12px;background:#f8f8f8}
+.li{display:inline-flex;gap:6px;align-items:center;border:1px solid #e6e6eb;border-left:4px solid #39063a;border-radius:6px;padding:4px 10px;margin-top:6px;font-size:13px;cursor:pointer}
+.pill{display:inline-block;border:1px solid #ddd;border-radius:10px;padding:0 7px;font-size:11px;color:#616061;white-space:nowrap}
+.pill.ok2{border-color:#bfe3d3;color:#007a5a}
+.rep{all:unset;cursor:pointer;color:#1264a3;font-size:13px;font-weight:700;margin-top:4px;display:block}
+.item{margin:12px 16px 4px;border:1px solid #e6e6eb;border-radius:8px;padding:10px 12px;background:#fbf8fc;font-size:14px}
+.sps{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.sps span{font-size:11px;padding:1px 7px;border-radius:10px;background:#efeff2;color:#8b8b93}
+.sps .dn{background:#e3f4ec;color:#007a5a}
+.sps .cu{background:#39063a;color:#fff;font-weight:700}
+.rc{margin:8px 20px 4px;font-size:13px;color:#616061;border-bottom:1px solid #e6e6eb;padding-bottom:4px}
+.comp{margin:0 20px 16px;border:1px solid #c8c8c8;border-radius:8px;padding:10px 12px;color:#868686;font-size:14px;flex:none}
+.comp .tl{font-size:12px;margin-top:6px;letter-spacing:6px;color:#aaa}
+#pane{width:420px;flex:none;border-left:1px solid #e6e6eb;display:flex;flex-direction:column;min-width:0}
+.lt{width:100%;border-collapse:collapse;font-size:14px}
+.lt th,.lt td{border-bottom:1px solid #e6e6eb;padding:7px 10px;text-align:left;vertical-align:top}
+.lt th{font-size:12px;color:#616061;background:#f8f8f8}
+.lt tr.r{cursor:pointer}.lt tr.r:hover td{background:#f8f8f8}
+.fc{display:flex;gap:6px;padding:12px 20px;flex-wrap:wrap}
+.fc button{border:1px solid #c8c8c8;background:#fff;border-radius:14px;padding:2px 10px;font-size:13px;cursor:pointer}
+.fc button.on{background:#1264a3;color:#fff;border-color:#1264a3}
+#tour{flex:none;display:flex;align-items:center;gap:20px;padding:10px 16px 12px 82px;background:#1d1c1d;color:#fff}
+#tour .tt{width:230px;flex:none;font-size:12px;color:#c9b8cf;font-weight:700}
+#tour .tt b{display:block;color:#fff;font-size:13px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#tour .ts{flex:1;font-size:16px;line-height:1.5}
+#tour .ts a.ch{color:#7ac6ee}
+#tour .tb{display:flex;gap:6px;flex:none}
+#tour button{border:0;border-radius:6px;padding:6px 12px;cursor:pointer;font-size:13px;background:#3b3b3f;color:#fff}
+#tour button.p{background:#007a5a;font-weight:700}
+#tour button[disabled]{opacity:.35;cursor:default}
+#tour .dt{display:flex;gap:3px;margin-top:7px}
+#tour .dt i{flex:1;height:3px;border-radius:2px;background:#4a4a4f}
+#tour .dt i.on{background:#ecb22e}
+@media(max-width:1280px){#side{width:215px}#pane{width:360px}#tour .tt{width:190px}.pg{padding:28px 32px 90px}}
+</style>
+<body>
+<div id="top"><span class="br">SJ Dynamics</span><nav id="pages"></nav><div class="q" id="q">🔍 Search 가람상사</div><span class="sp" id="sp"></span><label class="vw" id="vw"><span id="wav"></span><select id="who"></select>시점</label><button class="rs" id="rs" onclick="browse()">↺ 처음 상태</button><span class="chip">가안 · 회사와 데이터는 예시</span></div>
+<div id="deck"></div>
+<div id="app" hidden><nav id="rail"></nav><div id="win"><aside id="side"></aside><main id="main"></main><section id="pane" hidden></section></div></div>
+<div id="tour" hidden></div>
+<div id="doc" hidden onclick="if(event.target===this)docClose()"></div>
+<script>
+// 회사와 사람은 모두 예시입니다.
+const WS='가람상사';
+// 사람: [표시 이름, 직함]
+const P={bae:['배정훈 대표','대표이사'],moon:['문성호 이사','총괄'],lee:['이수빈 대리','기획부 · 제품 A 담당'],hong:['홍서범','기획부 · 제품 B 담당'],choi:['최민정 과장','회계부 · 세금계산서·입금 확인'],park:['박재현 과장','영업부 · 유통'],yoon:['윤태호 대리','영업부 · 제품 C · OEM'],lim:['임도현 주임','영업부 · 제품 C 납품'],seo:['서지원 과장','무역부 · 원자재 수입'],oh:['오세진 팀장','시공사업 · 제품 D'],jang:['장만수 반장','현장 · 생산, 창고 출고 확인'],song:['송유진','원격 근무'],jung:['정민호','해외법인 · 영업·품질관리'],anh:['Sam Lee','해외법인 · 현지 업무']};
+const PC=['#e01e5a','#2eb67d','#1f9bd1','#c58b00','#1264a3','#8e44ad','#e8912d','#2bac76','#d63a7a','#4a8bd6','#7f5539','#5c6bc0','#00897b','#c0392b'];
+// 앱: [이름, 종류, 글자, 색, 하는 일]
+const A={gm:['총괄 AI','AI','총','#39063a','아침 보고와 회사 기억. 묻는 사람이 볼 수 있는 채널 안에서만 답합니다.'],
+inq:['문의 비서','AI','문','#6b3fa0','② 접수·중복 확인·담당 배정, ③ 근거와 회신 문자, ④ 견적 초안을 만듭니다.'],
+ord:['주문 비서','AI','주','#0b7a75','⑤ 확정·ERP 입력·계산서 요청·입금 대조, ⑥ 출고 접수, ⑦ 명세서, ⑩ 마감 점검을 합니다.'],
+pr:['홍보 비서','AI','홍','#c2185b','① 사진으로 게시물 초안을 만들고 표현 근거를 점검합니다.'],
+qc:['QC 비서','AI','QC','#d35400','현장 사진으로 QC 보고서 초안을 여러 언어로 만듭니다.'],
+mail:['홈페이지 메일','모의','@','#5f6368',''],insta:['인스타 DM','모의','in','#d6249f',''],ecount:['ERP','모의','E','#1e88e5',''],bank:['은행 입금 알림','모의','₩','#2e7d32',''],daesin:['택배사','모의','택','#ef6c00',''],pds:['설계 도구','모의','설','#455a64','']};
+// 채널: [id, 이름, 비공개, 설명, 사람|앱]
+const CH=[
+['all','all-'+WS,0,'회사 공지','*'],
+['inq','문의대장',0,'모든 사업의 문의 → 견적 → 확정을 스레드 하나로','bae moon lee hong choi park yoon lim seo oh jang|inq ord mail insta ecount pds gm'],
+['ship','출고',0,'출고 접수, 실제 출고량 확인, 배송·택배','bae moon lee hong park yoon lim oh jang|ord daesin gm'],
+['bill','계산서-입금',1,'계산서 발행, 입금 대조, 잔액 확정','bae lee hong choi|ord ecount bank gm'],
+['plan','기획부',0,'제품 A · 제품 B','bae moon lee hong|gm'],
+['sales','영업부',0,'유통, 제품 C','bae moon park yoon lim|gm'],
+['trade','무역부',0,'수입 일정과 통관','bae moon seo park|gm'],
+['win','시공사업',0,'제품 D 실측·시공','bae moon oh jang|gm'],
+['pr','디자인-홍보',0,'인스타·네이버 클립·틱톡·유튜브','bae moon lee hong|pr gm'],
+['vn','해외법인',0,'해외 법인 (구상)','bae moon hong yoon seo jung anh|ord gm'],
+['vnqc','해외-qc',0,'사진 → QC 보고서 → 고객','bae hong jung anh|qc gm']
+].map(([id,n,p,d,m])=>{const[h,a]=m=='*'?[Object.keys(P).join(' '),'gm']:m.split('|');return{id,n,p,d,h:h.split(' '),a:a.split(' ')}});
+// 메시지: d 날짜, id, need(먼저 확인돼야 보임), u, as(고객), st 단계, x 본문, card, chk(사람 확인), th 스레드, r 반응
+const M={
+all:[{d:'Monday, November 2nd'},{u:'bae',t:'8:30 AM',x:'이번 주부터 모든 문의는 #{inq}에 모아 주세요. 제가 받은 전화도 여기에 한 줄 남기겠습니다.',r:[['👍',9],['✅',4]]},{u:'moon',t:'8:41 AM',x:'11/7(토) 오전 공장 안전 점검 있습니다.',r:[['👀',3]]}],
+inq:[{d:'Tuesday, October 27th'},
+{id:'t0',u:'bae',t:'9:40 AM',x:'📞 한빛정밀 박 사장님 전화 받았어요. 창립기념일 직원 선물로 제품 A 세트 60개, 10/30(금) 오전에 회사로 받고 싶으시답니다. @{lee} 부탁해요.',th:'hb'},
+{id:'d0',u:'lee',t:'10:12 AM',x:'📞 사무실 전화 문의 · 다온인테리어 김 실장\n매장 리모델링, 벽면 약 30㎡. 제품 B 견적과 샘플을 원하십니다.',th:'daon'},
+{d:'Tuesday, November 3rd'},
+{id:'n0',u:'insta',as:'지우 님',t:'9:02 AM',x:'제품 A 2개랑 제품 A 프리미엄 1개 선물용으로 주문하고 싶어요. 서울로 보내 주실 수 있나요?',th:'ins'},
+{id:'o0',u:'lee',t:'10:05 AM',x:'📞 솔밭상회 전화 주문 · 제품 A 20박스, 11/4(수) 오후 납품 요청',th:'sol'},
+{id:'e0',u:'mail',as:'한결건축',t:'10:40 AM',x:'상가 리모델링 건으로 제품 D 12개 교체 견적 부탁드립니다.',th:'hg'},
+{id:'h0',u:'lim',t:'3:30 PM',x:'해솔물류 제품 C 300개 견적 요청입니다. 맞춤 규격, 11/13(금) 납품 희망.',th:'hs'}],
+ship:[{d:'Thursday, October 29th'},
+{id:'s1',need:'c6',u:'ord',t:'2:05 PM',st:'⑥ 출고',card:{title:'출고 · 한빛정밀',rows:[['품목','제품 A 세트 60개'],['운송','직접 배송 · 10/30(금) 오전 10시 · 이수빈 대리'],['배송비','시내 · 무료']],foot:'입금 확인 뒤에만 이 카드가 만들어집니다.'},chk:{id:'c7',by:'jang',l:'창고가 실제 출고량 확인',ok:'제품 A 세트 60개 확인'}},
+{id:'s2',need:'m4',u:'ord',t:'2:30 PM',st:'⑥ 출고',card:{title:'출고 · 다온인테리어',rows:[['품목','제품 B 샌드 그레이 44장, 전용 부자재 10통'],['운송','화물 택배 · 10/30(금) 오전 7시 수거']]}},
+{id:'s3',need:'m4',u:'daesin',t:'2:31 PM',x:'화물 접수 완료 · 10/30(금) 오전 7시 수거 예정'},
+{d:'Friday, October 30th'},
+{id:'s4',need:'m4',u:'daesin',t:'7:05 AM',x:'수거 완료 · 운송장 0000-0000-0000'},
+{id:'s5',need:'c7',u:'jang',t:'9:30 AM',x:'제품 A 세트 60개 실제 출고량 확인했습니다.',img:['출고 사진'],r:[['👍',2]]},
+{d:'Wednesday, November 4th'},
+{id:'s6',u:'ord',t:'8:30 AM',st:'⑥ 출고',card:{title:'출고 · 솔밭상회',rows:[['품목','제품 A 20박스'],['운송','직접 배송 · 오후 2시 · 이수빈 대리']]}},
+{id:'s7',need:'i1',u:'ord',t:'8:31 AM',st:'⑥ 출고',card:{title:'출고 · 지우 님',rows:[['품목','제품 A 2개, 제품 A 프리미엄 1개'],['운송','택배 · 3만 원 이상 무료배송']]}}],
+bill:[{d:'Thursday, October 29th'},
+{id:'b1',need:'c4',u:'ord',t:'9:07 AM',st:'⑧ 세금계산서',card:{title:'세금계산서 발행 요청 · 한빛정밀',rows:[['공급가액','1,527,273'],['세액','152,727'],['합계','**1,680,000원**']],foot:'근거: 견적서 · 사업자등록증 · 판매 전표 1029-0003',files:['세금계산서_발행요청_한빛정밀.pdf']},chk:{id:'c5',by:'choi',l:'회계 담당자가 검토 후 발행',b:'검토하고 발행',ok:'ERP로 발행 요청'}},
+{id:'b2',need:'c5',u:'ecount',t:'9:20 AM',st:'⑧ 세금계산서',x:'전자세금계산서 발행 완료 · 한빛정밀 · 1,680,000원'},
+{id:'b3',need:'c5',u:'bank',t:'2:02 PM',st:'⑨ 입금',x:'입금 1,680,000원 · 입금자 한빛정밀'},
+{id:'b4',need:'c5',u:'ord',t:'2:03 PM',st:'⑨ 입금 확인',x:'계산서와 금액·입금자명이 같습니다.',chk:{id:'c6',by:'choi',l:'계좌 입금 확인 후 잔액 확정',ok:'잔액 0원 확정 · 출고 가능'}},
+{id:'b6',need:'m4',u:'bank',t:'2:18 PM',st:'⑨ 입금',x:'입금 2,136,200원 · 입금자 다온인테리어'},
+{d:'Friday, October 30th'},
+{id:'b0',u:'ecount',t:'5:10 PM',st:'⑧ 세금계산서',x:'전자세금계산서 발행 완료 · 그린조경 · 제품 B 40개 · 1,980,000원'},
+{d:'Wednesday, November 4th'},
+{id:'b5',u:'ord',t:'8:00 AM',st:'⑨ 입금 대기',card:{title:'⏰ 입금 대기 · 그린조경',rows:[['품목','제품 B 40개'],['금액','1,980,000원'],['경과','계산서 발행 뒤 5일'],['출고','입금 확인 뒤 · 지금 보류']],body:`재요청 문자 초안: 안녕하세요, ${WS}입니다. 10/30 발행한 계산서(1,980,000원)의 입금 확인 부탁드립니다. 입금이 확인되면 바로 출고하겠습니다.`},chk:{id:'gr',by:'choi',l:'재요청 문자 확인',b:'보내기',ok:'재요청 문자를 보냄 (모의)'}}],
+plan:[{d:'Tuesday, November 3rd'},{u:'lee',t:'9:05 AM',x:'제품 A 재고: 세트 12개, 낱개 140개 남았습니다. 연말 수요 대비 OEM 추가 발주 검토 부탁드립니다 @{bae}',r:[['👀',2]]},{u:'hong',t:'9:31 AM',x:'제품 B 재고 시트 기준 샌드 그레이 84장 남았습니다.'}],
+sales:[{d:'Tuesday, November 3rd'},{u:'yoon',t:'8:50 AM',x:'OEM 공장 11월 물량 확정했습니다. 월말 정산 그대로입니다.'},{u:'lim',t:'3:35 PM',x:'해솔물류 견적은 #{inq}에 올렸습니다.'}],
+trade:[{d:'Monday, November 2nd'},{u:'seo',t:'4:10 PM',x:'수입 원자재 컨테이너 4대, 11/12 입항 예정입니다.',r:[['👍',1]]}],
+win:[{d:'Tuesday, November 3rd'},{u:'oh',t:'11:05 AM',x:'한결건축 실측 11/5(목) 오전 10시입니다. @{jang} 반장님 동행 부탁드립니다.'},{u:'jang',t:'11:10 AM',x:'네, 동행하겠습니다.'}],
+pr:[{d:'Monday, November 2nd'},
+{id:'r2',u:'lee',t:'10:00 AM',x:'제품 A 세트 사진입니다. 네이버 클립이랑 인스타 릴스 부탁해요.',img:['제품 A 세트','포장','클로즈업']},
+{id:'r3',u:'pr',t:'10:01 AM',st:'① 홍보물',card:{title:'게시물 초안 · 제품 A 세트',rows:[['네이버 클립','클로즈업 → 포장 → 세트 가격, 15초'],['인스타 릴스 자막','"선물하기 좋은 제품 A 세트 28,000원"'],['표현 점검','필수 표시 문구 넣음 ✅ · 근거 없는 효능 표현은 뺌']]},chk:{id:'r3c',by:'lee',l:'게시 전 사진·표현 승인',b:'승인하고 예약',ok:'네이버 클립·인스타 게시 예약 (모의)'}},
+{id:'r0',u:'hong',t:'10:30 AM',x:'다온인테리어 제품 B 시공 사진입니다. 고객께 게시 동의 받았어요.',img:['시공 전','시공 후']},
+{id:'r1',u:'pr',t:'10:31 AM',st:'① 홍보물',card:{title:'게시물 초안 · 제품 B 매장 시공',rows:[['인스타 피드','철거 없이 바뀐 매장 벽 #시공사례 #리모델링'],['표현 점검','"친환경": 인증서 첨부 필요 ⚠️']]},chk:{id:'r1c',by:'hong',l:'게시 전 사진·표현 승인',b:'승인하고 예약',ok:'인스타 게시 예약 (모의)'}}],
+vn:[{d:'구상'},{u:'jung',t:'2:00 PM',x:'현지 고객에게서 제품 C 500개 수주했습니다.\nWe received an order for 500 units of Product C from a local customer.'},
+{id:'v1',u:'ord',t:'2:01 PM',st:'OEM 발주',card:{title:'현지 OEM 발주서 초안 (English)',rows:[['공장','Local Factory A'],['수량','500개'],['매입가','$11.40 / 개'],['판매가','$13.20 / 개 · 마진 13.6%'],['결제','월말 정산']],foot:'국내 OEM과 같은 방식입니다.'},chk:{id:'vc',by:'jung',l:'변경 조건과 최종 주문 확인',b:'발주 승인',ok:'공장에 발주서 전달'}}],
+vnqc:[{d:'구상'},{id:'q0',u:'anh',t:'10:20 AM',x:'QC photos, lot L-1103 / L-1103 QC 사진입니다.',img:['QC 1','QC 2','QC 3']},
+{id:'q1',u:'qc',t:'10:21 AM',st:'QC 보고',card:{title:'QC 보고서 초안 · Lot L-1103',rows:[['치수 편차','±0.3mm (기준 ±0.5mm) ✅'],['중량','기준 범위 안 ✅'],['외관 결함','0건 ✅']],files:['QC_L-1103_KO.pdf','QC_L-1103_EN.pdf']},chk:{id:'qcc',by:'jung',l:'고객에게 보내기 전 확인',b:'확인하고 보내기',ok:'고객에게 보냄 · 한국어·영어 2종'}}]};
+const T={
+hb:[{id:'t1',u:'inq',t:'9:40 AM',st:'② 문의 접수',x:'최근 90일 같은 번호·상호 문의: **없음** · 사업: 제품 A · 회신 담당: @{lee}',chk:{id:'c1',by:'lee',l:'중복 문의와 회신 담당자 확인',ok:'회신 담당 확정'}},
+{id:'t2',need:'c1',u:'inq',t:'9:41 AM',st:'③ 가격 안내',card:{title:'다시 전화하기 전에',rows:[['가격','제품 A 세트 28,000원 (가격표)'],['재고','제품 A 세트 72개 (재고 시트)'],['배송','시내 직접 배송 · 3만 원 이상 무료']],body:`보낼 문자 초안: 안녕하세요, ${WS} 이수빈입니다. 제품 A 세트는 28,000원이고 60세트 준비 가능합니다. 견적서 발행을 위해 사업자등록증 사진 부탁드립니다.`},chk:{id:'c2',by:'lee',l:'가격·재고·납기 근거 확인',b:'확인하고 문자 보내기',ok:'가격 안내 문자를 보냄 (모의)'}},
+{id:'t3',need:'c2',u:'lee',t:'10:05 AM',x:'통화했습니다. 60세트 확정, 10/30(금) 오전 10시 회사 로비로 배송 원하십니다.'},
+{d:'Wednesday, October 28th'},
+{id:'t4',need:'c2',u:'inq',t:'9:10 AM',st:'④ 견적',x:'견적서 초안입니다. 금액은 가격표로 계산했고, 문장만 AI가 썼습니다.',card:{title:'견적서 초안 · 한빛정밀',rows:[['제품 A 세트','60세트 × 28,000 = 1,680,000'],['배송','시내 직접 배송 · 무료'],['공급가액','1,527,273'],['세액','152,727'],['합계','**1,680,000원**']],foot:'가격표 기준 (부가세 포함) · 납기 10/30(금) 오전 10시',files:['견적서_한빛정밀.pdf']},chk:{id:'c3',by:'lee',l:'단가·배송비·납기 승인',b:'승인하고 보내기',ok:'견적서 PDF를 문자로 보냄 (모의)'}},
+{d:'Thursday, October 29th'},
+{id:'t5',need:'c3',u:'lee',t:'9:05 AM',x:'견적대로 진행한답니다. 사업자등록증 사진 받았어요.',img:['사업자등록증']},
+{id:'t6',need:'c3',u:'ord',t:'9:06 AM',st:'⑤ 확정·입금',card:{title:'최종 주문 확인',rows:[['변경 조건','없음 (견적서와 같음)'],['사업자등록증','한빛정밀 · 000-00-00000 (사진에서 읽음)'],['입금 요청','합계 1,680,000원 · 계좌 안내 문자']],foot:'확인하면: ERP 거래처 등록·견적 입력 → 계산서 요청 → 입금 요청 문자'},chk:{id:'c4',by:'lee',l:'변경 조건과 최종 주문 확인',ok:'최종 주문 확정'}},
+{id:'t7',need:'c4',u:'ecount',t:'9:07 AM',st:'⑤ ERP',x:'거래처 등록: 한빛정밀 · 견적 건 입력 · 판매 전표 1029-0003'},
+{id:'t8',need:'c4',u:'ord',t:'9:07 AM',st:'⑤ 계산서·입금 요청',x:'#{bill}에 계산서 발행을 요청했고, 고객에게 입금 요청 문자를 보냈습니다 (모의).'},
+{id:'t9',need:'c6',u:'ord',t:'2:04 PM',st:'⑤ 입금 확인',x:'입금 확인 ✅ 잔액 0원 · 출고할 수 있습니다. #{ship}에 올렸습니다.'},
+{d:'Friday, October 30th'},
+{id:'t10',need:'c7',u:'ord',t:'10:20 AM',st:'⑥ 출고',x:'배송 완료 · 재고 시트에 기록 (제품 A 세트 72 → 12개)'},
+{id:'t11',need:'c7',u:'ord',t:'10:21 AM',st:'⑦ 거래명세서',x:'실출고 기준으로 거래명세서를 만들었습니다.',files:['거래명세서_한빛정밀.pdf'],chk:{id:'c8',by:'lee',l:'명세서와 실출고 대조',b:'대조하고 보내기',ok:'고객에게 문자로 보냄 (모의)'}},
+{id:'t12',need:'c8',u:'ord',t:'10:40 AM',st:'⑩ 마감',card:{title:'마감 점검',rows:[['ERP 판매','1,680,000 · 전표 1건 (중복 0)'],['수금','1,680,000 · 잔액 0'],['재고 시트','제품 A 세트 60개 반영됨']]},chk:{id:'c9',by:'choi',l:'전표 중복·누락 확인 후 마감',b:'마감',ok:'마감 완료 · 문의대장 상태: 완료'}}],
+daon:[{id:'d1',u:'inq',t:'10:12 AM',st:'② 문의 접수',x:'최근 90일 같은 번호·상호 문의: **없음** · 사업: 제품 B · 회신 담당: @{hong}',chk:{id:'m1',by:'hong',l:'중복 문의와 회신 담당자 확인',ok:'회신 담당 확정'}},
+{id:'d2',need:'m1',u:'inq',t:'10:13 AM',st:'③ 답변·소개',card:{title:'다시 전화하기 전에',rows:[['단가','제품 B 샌드 그레이 1200×600 장당 38,000원 (단가표)'],['재고','128장 (제품 B 재고 시트)'],['납기','재고품 1~3일 · 수도권 화물']],body:`보낼 문자 초안: 안녕하세요, ${WS} 홍서범입니다. 명함과 홈페이지 링크 보내 드립니다. 샘플은 2~3종 골라 알려 주세요. 견적서 발행을 위해 사업자등록증 사진도 부탁드립니다.`},chk:{id:'m2',by:'hong',l:'가격·재고·납기 근거 확인',b:'확인하고 문자 보내기',ok:'명함·링크 문자를 보냄 (모의)'}},
+{id:'d3',need:'m2',u:'hong',t:'10:40 AM',x:'통화했습니다. 샘플 3종 골랐어요: 샌드 그레이, 아이보리, 차콜. @{lee} 발송 부탁해요.'},
+{d:'Wednesday, October 28th'},
+{id:'d5',need:'m2',u:'hong',t:'11:20 AM',x:'카톡으로 답 왔어요. 샌드 그레이 30㎡, 금요일 오전 현장 도착 원하십니다.'},
+{id:'d6',need:'m2',u:'inq',t:'11:21 AM',st:'④ 견적',x:'견적서 초안입니다. 금액은 단가표로 계산했고, 문장만 AI가 썼습니다.',card:{title:'견적서 초안 · 다온인테리어',rows:[['샌드 그레이 1200×600','44장 × 38,000 = 1,672,000'],['전용 부자재','10통 × 12,000 = 120,000'],['수도권 화물','1건 150,000'],['공급가액','1,942,000'],['세액','194,200'],['합계','**2,136,200원**']],foot:'30㎡ ÷ 0.72㎡ = 42장, 로스 5% → 44장 · 납기 10/30(금) 오전'},chk:{id:'m3',by:'hong',l:'단가·배송비·납기 승인',b:'승인하고 보내기',ok:'견적서 PDF를 문자·메일로 보냄 (모의)'}},
+{d:'Thursday, October 29th'},
+{id:'d7',need:'m3',u:'hong',t:'9:05 AM',x:'견적대로 진행한답니다. 사업자등록증 사진 받았어요.',img:['사업자등록증']},
+{id:'d8',need:'m3',u:'ord',t:'9:06 AM',st:'⑤ 확정·입금',card:{title:'최종 주문 확인',rows:[['변경 조건','없음 (견적서와 같음)'],['입금 요청','합계 2,136,200원 · 계좌 안내 문자']]},chk:{id:'m4',by:'hong',l:'변경 조건과 최종 주문 확인',ok:'최종 주문 확정'}},
+{id:'d9',need:'m4',u:'ecount',t:'9:07 AM',st:'⑤ ERP',x:'거래처 등록: 다온인테리어 · 견적 건 입력 · 판매 전표 1029-0007'},
+{id:'d11',need:'m4',u:'ord',t:'2:20 PM',st:'⑤ 입금 확인',x:'계산서 발행, 입금 확인 ✅ 잔액 0원 · 화물 택배 접수 (#{ship})'},
+{d:'Friday, October 30th'},
+{id:'d12',need:'m4',u:'ord',t:'7:10 AM',st:'⑥ 출고',x:'택배사 수거 완료 · 제품 B 재고 시트에 기록 (128 → 84장)'},
+{id:'d14',need:'m4',u:'ord',t:'7:30 AM',st:'⑩ 마감',x:'명세서 대조, 마감 완료 · 전표 중복 0'}],
+ins:[{id:'n1',u:'inq',t:'9:02 AM',st:'② 문의 접수',card:{title:'주문 근거',rows:[['제품 A','2개 × 13,000 = 26,000'],['제품 A 프리미엄','1개 × 16,000 = 16,000'],['합계','**42,000원**'],['배송','3만 원 이상 무료배송 ✅ · 먼 곳이라 택배']],body:`DM 답장 초안: 안녕하세요, ${WS}입니다. 제품 A 2개와 제품 A 프리미엄 1개, 합계 42,000원이고 배송비는 무료입니다. 안내드린 계좌로 입금해 주시면 바로 보내 드릴게요.`},chk:{id:'i1',by:'lee',l:'가격·재고·납기 근거 확인',b:'확인하고 답장',ok:'인스타 DM으로 답장 (모의)'}},
+{id:'n2',need:'i1',u:'insta',as:'지우 님',t:'9:20 AM',x:'입금했어요! 감사합니다.'},
+{id:'n3',need:'i1',u:'ord',t:'9:31 AM',st:'⑤ 확정·입금',x:'입금 42,000원 확인 (회계부) · ERP 입력 · #{ship}에 택배 접수'}],
+sol:[{id:'o1',u:'ord',t:'10:05 AM',st:'④ 견적',x:'제품 A 20박스 · 1,320,000원 (부가세 포함) · 입금 요청 문자를 보냈습니다 (모의).'},
+{id:'o2',u:'ord',t:'1:40 PM',st:'⑤ 확정·입금',x:'입금 확인 ✅ · ERP 입력 · 계산서 발행 (회계부)'},
+{id:'o3',u:'ord',t:'1:41 PM',st:'⑥ 출고',x:'가까운 곳이라 직접 배송합니다 · 11/4(수) 오후 2시 @{lee}'}],
+hg:[{id:'e1',u:'inq',t:'10:40 AM',st:'② 문의 접수',x:'최근 90일 중복 문의 없음 · 사업: 제품 D · 회신 담당 @{oh}',chk:{id:'ec',by:'oh',l:'중복 문의와 회신 담당자 확인',ok:'회신 담당 확정'}},
+{id:'e2',need:'ec',u:'oh',t:'10:52 AM',x:'11/5(목) 오전 현장 실측 후 견적 드리겠습니다.'}],
+hs:[{id:'h1',u:'inq',t:'3:30 PM',st:'② 문의 접수',x:'사업: 제품 C · 회신 담당 @{lim}'},
+{id:'h2',u:'inq',t:'3:31 PM',st:'설계 도구 연결 · 구상',card:{title:'설계 도구에 넘길 조건',rows:[['규격','고객 요청 규격'],['요구 조건','고객 기준 3가지'],['수량','300개'],['운송','5톤 카고'],['납기','11/13(금)']]}},
+{id:'h3',u:'pds',t:'3:32 PM',card:{title:'설계 결과 · 설계안 B',rows:[['요구 조건','3가지 모두 충족 ✅'],['개당 원가','12,400원'],['적재','5톤 카고 1대 144개 → 3대'],['검사','기준 사례 24건 재검사 통과 · v2.5'],['되돌리기','v2.4로 복구 가능']],files:['사양서_해솔물류.pdf']}},
+{id:'h4',u:'inq',t:'3:33 PM',st:'④ 견적',card:{title:'견적서 초안 · 해솔물류',rows:[['제품 C (맞춤 규격)','300개 × 13,000 = 3,900,000'],['운임','5톤 카고 3대 × 250,000 = 750,000'],['공급가액','4,650,000'],['세액','465,000'],['합계','**5,115,000원**']]},chk:{id:'hc',by:'lim',l:'단가·배송비·납기 승인',b:'승인하고 보내기',ok:'견적서 PDF를 메일로 보냄 (모의)'}}]};
+const DMS={
+bae:[{d:'Wednesday, November 4th'},{id:'g1',u:'gm',t:'8:00 AM',card:{title:'☀️ 11월 4일 (수) 아침 보고',rows:[['제품 A 최근 7일','주문 3건 · 3,042,000원'],['어제 새 문의','3건 · 제품 A(인스타 DM), 제품 D, 제품 C'],['승인 대기','1건 · 해솔물류 견적 5,115,000원'],['입금 대기','1건 · 그린조경 1,980,000원 (5일째, 출고 보류)'],['오늘 출고','2건 · 제품 A: 솔밭상회 직접 배송, 지우 님 택배']],foot:'근거: #문의대장 · #출고 · 🔒계산서-입금',files:['아침보고_11월4일.pdf']},btns:[{l:'문의대장 열기',go:'inq'},{l:'입금 대기 보기',go:'bill'}]},
+{id:'g2',u:'bae',t:'8:12 AM',x:'한빛정밀 지난번에 얼마에 했지?'},
+{id:'g3',need:'c3',u:'gm',t:'8:12 AM',x:'제품 A 세트 **세트당 28,000원**, 60세트 1,680,000원입니다. 10/28 견적이고 이수빈 대리가 승인했습니다 (#{inq} 스레드).'}],
+park:[{d:'Wednesday, November 4th'},{id:'k1',u:'park',t:'9:30 AM',x:'한빛정밀 입금됐어요?'},
+{id:'k2',u:'gm',t:'9:30 AM',x:'그 내용은 #{bill} 채널에 있어서 박재현 님께는 알려 드릴 수 없습니다. 담당 @{lee} 님께 여쭤보시거나 채널 초대를 요청하세요.'},
+{id:'k3',u:'park',t:'9:31 AM',x:'수입 원자재 입항 일정은요?'},
+{id:'k4',u:'gm',t:'9:31 AM',x:'#{trade} 기준으로 원자재 컨테이너 4대가 **11/12 입항** 예정입니다.'}],
+hong:[{d:'Tuesday, November 10th'},{id:'l1',u:'hong',t:'10:02 AM',x:'한빛정밀에서 재주문 전화 왔어요. 이수빈 대리가 휴가라 제가 받을게요. 지난번 조건 알려 주세요.'},
+{id:'l2',need:'c9',u:'gm',t:'10:02 AM',card:{title:'한빛정밀 · 지난 거래 요약',rows:[['제품','제품 A 세트 60개 · 세트당 28,000원'],['배송','직접 배송 · 무료 · 회사 로비 오전 10시'],['결제','선입금 · 10/29 입금, 잔액 0원'],['서류','사업자등록증 받음 · ERP 거래처 등록됨'],['연결','대표님 지인 (박 사장님)']],body:'회사 기준: 입금 확인 뒤 출고 · 견적은 단가·배송비·납기 승인 뒤 발송',foot:'근거: #문의대장 스레드 · ERP 전표 1029-0003'},btns:[{l:'지난 스레드 열기',th:'hb'}]}]};
+// 문의대장 List: 거래처, 사업, 담당, 접수, 금액, 스레드, 시작 단계, [[확인, 확인 뒤 단계]], 메모
+const SP=['② 문의','③ 소개','④ 견적','⑤ 확정·입금','⑥ 출고','⑦ 명세서','⑩ 마감'];
+const L=[['한빛정밀','제품 A','lee','10/27','1,680,000','hb',0,[['c1',1],['c2',2],['c3',3],['c6',4],['c7',5],['c8',6],['c9',7]]],['지우 님 (인스타)','제품 A','lee','11/3','42,000','ins',1,[['i1',4]]],['솔밭상회','제품 A','lee','11/3','1,320,000','sol',4,[]],['다온인테리어','제품 B','hong','10/27','2,136,200','daon',0,[['m1',1],['m2',2],['m3',3],['m4',7]]],['한결건축','제품 D','oh','11/3','실측 뒤','hg',1,[]],['해솔물류','제품 C','lim','11/3','5,115,000','hs',2,[['hc',3]]],['그린조경','제품 B','hong','10/28','1,980,000','',3,[],'입금 대기 · 5일째']];
+const ALLD=['c1','c2','c3','c4','c5','c6','c7','c8','c9'];
+// 시나리오
+const SC=[
+{t:'거래 한 건',s:'대표님이 받은 지인 주문 전화 한 통에서 마감까지. 사람은 정해진 곳에서 확인만 합니다.',who:'lee',steps:[
+{who:'bae',go:'inq',th:'hb',hl:'t0',say:'② 대표님이 받은 주문 전화도 #{inq}에 한 줄 남기면 거래가 시작됩니다. 문의 비서가 중복을 확인하고 담당을 정합니다.'},
+{who:'lee',ok:['c1','c2'],hl:'t4',say:'③④ 가격표와 재고 시트를 근거로 견적서 초안이 나옵니다. 금액은 코드가 계산하고 AI는 문장만 씁니다. 📄 견적서를 누르면 실제로 나가는 문서가 보입니다.'},
+{ok:['c3'],hl:'t6',say:'⑤ 확정은 한 번이면 됩니다. ERP 입력, 계산서 요청, 입금 요청 문자가 이어집니다. 지금 사람 손이 가장 많이 가는 곳입니다.'},
+{ok:['c4','c5'],who:'choi',go:'bill',hl:'b4',say:'⑧⑨ 회계부는 근거가 붙은 요청을 검토해 발행하고, 입금 알림은 계산서와 자동으로 맞춰 봅니다. 단톡방에서 다시 묻지 않습니다.'},
+{ok:['c6','c7'],who:'lee',go:'inq',th:'hb',hl:'t11',say:'⑥⑦ 입금이 확인돼야 출고됩니다. 재고 시트가 줄고, 명세서는 실제 출고량과 대조한 뒤 나갑니다.'},
+{ok:['c8','c9'],tab:'list',say:'⑩ 마감까지 거래 한 건이 스레드 하나에 남습니다. 문의대장에서 모든 거래가 어느 단계인지 한눈에 봅니다.'}]},
+{t:'대표님 아침 보고',s:'매일 아침 8시, 결정에 필요한 숫자 한 장. 묻는 말에는 근거와 함께 답합니다.',who:'bae',steps:[
+{who:'bae',go:'gm',hl:'g1',say:'매일 아침 8시, 총괄 AI가 매출, 새 문의, 승인 대기, 입금 대기, 오늘 출고를 한 장으로 보고합니다.'},
+{ok:['c1','c2','c3'],hl:'g3',say:'궁금한 것은 바로 묻습니다. 답에는 근거가 된 스레드가 붙습니다.'},
+{go:'bill',hl:'b5',say:'입금이 늦은 건은 출고를 보류하고 날짜를 셉니다. 재요청 문자는 회계 담당자가 확인하고 보냅니다.'}]},
+{t:'권한과 인수인계',s:'보는 범위는 사람마다 다르고, AI의 답도 그 범위를 따릅니다. 담당자가 바뀌어도 일이 이어집니다.',who:'hong',steps:[
+{who:'park',go:'gm',hl:'k2',say:'영업부 직원이 입금 여부를 물어도, 총괄 AI는 그가 볼 수 없는 채널의 내용은 말하지 않습니다.'},
+{who:'hong',go:'gm',ok:ALLD,hl:'l2',say:'담당자가 휴가이거나 바뀌어도 지난 조건과 회사 기준이 근거와 함께 나옵니다. 회사의 기억이 사람과 함께 나가지 않습니다.'}]}];
+const OD={
+pr:{d:'SNS 게시물. 문의를 부르는 첫 단계',p:['사진','문구','채널','게시 예약'],ai:'사진으로 네이버 클립·인스타 초안, 근거가 필요한 표현 점검',r:'업종별 광고 규정과 필수 표시 문구를 빠뜨리지 않습니다.',c:['① 게시 전 사진·표현 승인'],sec:'#디자인-홍보',mo:'더 팔기 · 매번 손으로 만들던 홍보물을 초안부터',sc:[0,0]},
+inq:{d:'고객이 묻는 한 건. 모든 거래의 시작',p:['거래처','사업','창구','접수 시각','회신 담당','단계'],ai:'중복 문의 확인, 사업 분류, 회신 담당 배정',c:['② 중복 문의와 회신 담당자 확인'],sec:'#문의대장 (사무실 전원)',mo:'더 팔기 · 대표님이 받은 전화까지 놓치지 않음',sc:[0,0]},
+cust:{d:'거래하는 회사나 사람',p:['상호','사업자등록번호','연락처','지난 거래·단가','결제 방식','소개한 사람'],ai:'사업자등록증 사진에서 상호와 번호를 읽음',c:[],sec:'#문의대장',mo:'덜 새기 · 담당자가 바뀌어도 지난 조건이 남음',sc:[2,1]},
+quote:{d:'문의에 대한 가격 제안',p:['품목','수량','단가','배송비','납기','합계'],ai:'회신 문자와 견적서 문장',r:'금액은 가격표로 코드가 계산합니다. 3만 원 이상 무료배송도 코드가 적용합니다. AI는 숫자를 정하지 않습니다.',c:['③ 가격·재고·납기 근거 확인','④ 단가·배송비·납기 승인'],sec:'#문의대장',mo:'덜 새기 · 단가·수량 실수 0건',sc:[0,1]},
+item:{d:'파는 물건과 남은 수량',p:['품목','규격','가격','재고','입고 일정'],r:'출고하면 재고 시트에서 자동으로 뺍니다.',c:[],sec:'#기획부',mo:'덜 새기 · 없는 재고로 견적하지 않음',sc:[0,1]},
+order:{d:'확정된 거래',p:['견적','변경 조건','사업자등록증','ERP 전표'],ai:'견적과 바뀐 조건 비교',r:'확정되면 ERP 입력 → 계산서 요청 → 입금 요청 문자가 이어집니다.',c:['⑤ 변경 조건과 최종 주문 확인'],sec:'#문의대장',mo:'덜 들기 · 같은 내용을 다시 입력하는 일 0건',sc:[0,2]},
+inv:{d:'주문에 대한 세금계산서',p:['공급가액','세액','합계','발행일'],c:['⑧ 회계 담당자가 검토 후 발행'],sec:'🔒계산서-입금 (4명)',mo:'덜 들기 · 단톡방 요청 대신 근거 붙은 요청',sc:[0,3]},
+pay:{d:'고객이 보낸 돈',p:['금액','입금자','일시','대조 결과','잔액','지연 일수'],r:'계산서와 금액·입금자명을 자동 대조하고, 늦으면 날짜를 셉니다.',c:['⑨ 계좌 입금 확인 후 잔액 확정'],sec:'🔒계산서-입금 (4명)',mo:'덜 새기 · 미입금은 재요청 문자 초안까지',sc:[1,2]},
+ship:{d:'물건이 나가는 일',p:['품목','수량','운송 (직접 배송·택배·화물)','배송 일시','운송장'],r:'입금 확인 뒤에만 출고 카드를 만듭니다. 가까운 곳은 직접 배송, 먼 곳은 택배.',c:['⑥ 창고가 실제 출고량 확인'],sec:'#출고',mo:'덜 새기 · 입금 전 출고 0건',sc:[0,4]},
+close:{d:'거래명세서와 장부 마감',p:['거래명세서','판매 전표','수금','재고 시트 반영'],r:'전표 중복·누락을 자동으로 점검합니다.',c:['⑦ 명세서와 실출고 대조','⑩ 전표 중복·누락 확인 후 마감'],sec:'🔒계산서-입금',mo:'덜 새기 · 누락·중복 전표 0건',sc:[0,5]}};
+// 구조 페이지 (흐름도): 노드 [종류 x 외부|o 대상|a AI, 이름, 종류 글자, 열, 줄, 지금, 바뀐 뒤, 너비(열)]
+const SDN={sns:['x','인스타·네이버','외부 시스템 · SNS',1,'e'],phone:['x','전화·카톡·문자','외부 시스템 · 휴대폰',2,'e'],ecount:['x','ERP','외부 시스템 · 장부',3.5,'e'],bank:['x','은행','외부 시스템 · 입금',5,'e'],courier:['x','택배사','외부 시스템 · 화물',6,'e'],
+pr:['o','홍보물','대상 · ①',0,'m','사람이 직접 제작','홍보 비서 초안 → 승인'],inq:['o','문의','대상 · ②',1,'m','전화 · DM · 메일','문의대장 한 곳'],quote:['o','견적','대상 · ③④',2,'m','개인 폰·문자·카톡','가격표로 계산한 초안'],order:['o','주문','대상 · ⑤',3,'m','전화 · 기억','최종 주문 확인 한 번'],inv:['o','세금계산서','대상 · ⑧',4,'m','회계부가 따로 발행','근거 붙은 발행 요청'],pay:['o','입금','대상 · ⑨',5,'m','단톡방 알림·물어봄','은행 알림 자동 대조'],ship:['o','출고','대상 · ⑥',6,'m','단톡방 · 직접 배송','입금 확인 뒤 출고'],close:['o','명세서·마감','대상 · ⑦⑩',7,'m','명세서 대부분 안 보냄','실출고 대조·마감 점검'],
+cust:['o','거래처','대상 · 기준 정보',1,'s','사업자등록증 사진','ERP 거래처'],item:['o','품목·재고','대상 · 기준 정보',2,'s','스프레드시트','가격표·재고 시트'],
+apr:['a','홍보 비서','① 게시물 초안',0,'a'],ainq:['a','문의 비서','② 접수·담당 배정 · ③ 근거와 회신 문자 · ④ 견적 초안',1,'a','','',2],aord:['a','주문 비서','⑤ 확정·ERP 입력 · ⑧ 계산서 요청 · ⑨ 입금 대조 · ⑥ 출고 접수 · ⑦ 명세서 · ⑩ 마감 점검',3,'a','','',4],agm:['a','총괄 AI','아침 보고 · 답변',7,'a']};
+// 연결 [from, to, 모양: 없음 흐름 | g 입금 게이트 | d 점선 | s 재고 차감]
+const SDE=[['pr','inq'],['inq','quote'],['quote','order'],['order','inv'],['inv','pay'],['pay','ship','g'],['ship','close'],['sns','inq','d'],['phone','inq','d'],['cust','inq','d'],['item','quote','d'],['order','ecount','d'],['inv','ecount','d'],['bank','pay','d'],['ship','courier','d'],['ship','item','s']];
+// 외부·AI 패널: [설명, 바뀌는 것, 시연 장면]
+const SDX={sns:['게시물을 올리고, DM 문의가 들어오는 곳','지금처럼 씁니다. DM은 문의대장으로 모입니다.',[0,0]],phone:['대부분의 문의와 주문이 들어오는 곳','받은 전화도 문의대장에 한 줄 남기면 거래가 시작됩니다.',[0,0]],ecount:['회계와 장부','지금처럼 씁니다. 주문이 확정되면 거래처와 판매 전표가 자동으로 들어갑니다.',[0,2]],bank:['입금 알림','알림을 계산서와 자동으로 대조하고, 늦으면 날짜를 셉니다.',[0,3]],courier:['먼 곳으로 보내는 화물','입금 확인 뒤 출고되면 화물 접수와 운송장이 이어집니다.',[0,4]],
+apr:[A.pr[4],'게시는 담당자가 승인합니다.',[0,0]],ainq:[A.inq[4],'금액은 가격표로 코드가 계산하고, AI는 문장만 씁니다.',[0,1]],aord:[A.ord[4],'입금 확인 전에는 출고 카드를 만들지 않습니다.',[0,2]],agm:[A.gm[4],'',[1,0]]};
+// 따라가기: [대상, 꼬리표, 몇 번째]
+const TR=[['cust','한빛정밀 · 지인',0],['phone','',1],['inq','10/27 대표님 전화',1],['item','세트 28,000원',2],['quote','60세트 승인',2],['order','전표 1029-0003',3],['ecount','',3],['inv','1,680,000원 발행',4],['pay','입금 · 잔액 0',5],['bank','',5],['ship','직접 배송',6],['close','대조 · 마감',7]];
+const SW=1380,SH=534,DT=.8,RY={e:[42,44],m:[150,90],s:[292,90],a:[468,44]},SG=[['외부 시스템','지금 쓰는 도구는 그대로',8,92],['온톨로지','회사의 대상과 관계 · 거래 한 건의 흐름',116,302],['AI 동료','초안만 만들고, 정하는 것은 사람과 코드',434,92]];
+const SI={x:'<path d="M8 1C4.7 1 2 2.1 2 3.5v9C2 13.9 4.7 15 8 15s6-1.1 6-2.5v-9C14 2.1 11.3 1 8 1z"/><path d="M2 3.5C2 4.9 4.7 6 8 6s6-1.1 6-2.5M2 8c0 1.4 2.7 2.5 6 2.5S14 9.4 14 8" fill="none" stroke="#fff" stroke-width="1.1"/>',o:'<path d="M8 .8 14.8 4.4v7.2L8 15.2 1.2 11.6V4.4z"/><path d="M1.6 4.6 8 8l6.4-3.4M8 8v7" fill="none" stroke="#fff" stroke-width="1.1"/>',a:'<path d="M7 1c.6 3.6 2 5 5.6 5.6C9 7.2 7.6 8.6 7 12.2 6.4 8.6 5 7.2 1.4 6.6 5 6 6.4 4.6 7 1z"/><path d="M12.5 9.5c.3 1.6.8 2.1 2.4 2.4-1.6.3-2.1.8-2.4 2.4-.3-1.6-.8-2.1-2.4-2.4 1.6-.3 2.1-.8 2.4-2.4z"/>'};
+const PAGES=['오늘','흐름 하나','숫자','시연','제안','조건','부록 · 구조'];
+// 첫 시범 후보 흐름: 지금 방식은 예시이고, 건수와 분은 미팅에서 같이 셉니다
+const FL=[{t:'제품 A',tg:'시연의 메인 흐름',l:['문의: 사무실 전화, SNS DM. 지인과 가까운 거래처가 많음','안내·견적: 가격표로 수량 확정','출고: 직접 배송·방문, 먼 곳은 택배 (3만 원 이상 무료)'],n:null,m:null},
+{t:'제품 B',l:['문의: 사무실 전화, 홈페이지 메일','안내·견적: 담당자 휴대폰으로 전화·문자·카톡, 샘플 발송','출고: 화물 택배, 재고는 스프레드시트'],n:null,m:null}];
+let fsel=0;
+
+const $=s=>document.querySelector(s),S0={ec:1};
+let S={...S0},who='lee',cur='inq',tab='msg',pane=null,flt='전체',hl=null,tour=null,pi=0,demo=false,osel=null,om='after',ots=0;
+const CV={n:150,now:40,goal:15,wage:25000,mg:5};
+const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const C=id=>CH.find(c=>c.id==id);
+const N=k=>(P[k]||A[k])[0];
+const pre=c=>c.p?'🔒':'#';
+const vis=m=>!m.need||S[m.need];
+const isDM=()=>cur=='gm'||/^[ua]:/.test(cur);
+const f=s=>E(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/@\{(\w+)\}/g,(_,k)=>`<span class=mn>@${N(k)}</span>`).replace(/#\{(\w+)\}/g,(_,k)=>`<a class=ch onclick="go('${k}')">${pre(C(k))}${C(k).n}</a>`).replace(/\n/g,'<br>');
+function av(k,s=36){const a=A[k],i=Object.keys(P).indexOf(k);return `<span class=av style="width:${s}px;height:${s}px;font-size:${Math.max(9,Math.round(s/2.5))}px;background:${a?a[3]:PC[i%PC.length]}">${a?a[2]:P[k][0][0]}</span>`}
+const fl=l=>(l||[]).map(x=>{const d=DOCF.indexOf(x);return d<0?`<span class=fl>📄 ${E(x)}</span>`:`<span class="fl lk" onclick="docOpen(${d})">📄 ${E(x)}</span>`}).join('');
+const im=l=>(l||[]).map(x=>`<span class=im>📷 ${E(x)}</span>`).join('');
+const bt=l=>l?`<div class=bt>${l.map(b=>`<button onclick="${b.go?`go('${b.go}')`:`th('${b.th}')`}">${E(b.l)}</button>`).join('')}</div>`:'';
+function card(c){return `<div class=card>${c.title?`<div class=ct>${f(c.title)}</div>`:''}${c.rows?`<table>${c.rows.map(r=>`<tr><th>${f(r[0])}</th><td>${f(r[1])}</td></tr>`).join('')}</table>`:''}${c.body?`<div class=cb>${f(c.body)}</div>`:''}${c.foot?`<div class=cf>${f(c.foot)}</div>`:''}${fl(c.files)}</div>`}
+function chk(c){if(!c)return'';const d=S[c.id];return `<div class="chk${d?' dn':''}"><div class=h>${d?'✅ 확인됨':'✋ 사람 확인'} · ${E(N(c.by))}</div><div class=l>${E(c.l)}</div>${d?`<div class=ok>${f(c.ok)}</div>`:`<div class=bt><button class=p onclick="act('${c.id}')">${E(c.b||'확인')}</button><button>수정</button></div>`}</div>`}
+function stage(r){let s=r[6];for(const[k,v]of r[7])if(S[k])s=Math.max(s,v);return s}
+const lab=n=>n>=7?'✅ 완료':SP[n];
+function item(t,mini){const r=L.find(r=>r[5]==t);if(!r)return'';const n=stage(r);
+ if(mini)return `<div class=li onclick="th('${t}')">📋 문의대장 · <b>${r[0]}</b> · ${r[1]} <span class="pill${n>=7?' ok2':''}">${lab(n)}</span></div>`;
+ return `<div class=item><div>📋 <b>문의대장</b> · ${r[0]} · ${r[1]} · ${r[4]}${/\d/.test(r[4])?'원':''} · 담당 ${N(r[2])}</div><div class=sps>${SP.map((l,i)=>`<span class="${i<n||n>=7?'dn':i==n?'cu':''}">${l}</span>`).join('')}</div></div>`}
+const cnt=t=>T[t].filter(m=>!m.d&&vis(m)).length;
+function msg(m,inPane){
+ const a=A[m.u],nm=m.as?`${m.as} (${a[0]})`:N(m.u);
+ let h=`<div class="msg${m.id&&m.id==hl?' hl':''}"${m.id?` id="m-${m.id}"`:''}>${av(m.u)}<div class=bd><div><span class=nm>${E(nm)}</span>${a?`<span class=ap>APP</span>${a[1]=='모의'?'<span class="ap mk">모의</span>':''}`:''}<span class=tm>${m.t||''}</span></div>`;
+ if(m.st||m.x)h+=`<div>${m.st?`<span class=st>${m.st}</span>`:''}${m.x?f(m.x):''}</div>`;
+ if(m.card)h+=card(m.card);
+ h+=fl(m.files)+im(m.img)+chk(m.chk)+bt(m.btns);
+ if(m.r)h+=`<div class=rx>${m.r.map(([e,n])=>`<span>${e} ${n}</span>`).join('')}</div>`;
+ if(m.th&&!inPane){const n=cnt(m.th);h+=item(m.th,1)+`<button class=rep onclick="th('${m.th}')">💬 ${n} ${n==1?'reply':'replies'}</button>`}
+ return h+'</div></div>'}
+function feed(list,inPane){const o=[];let day=null;for(const m of list){if(m.d){day=m.d;continue}if(!vis(m))continue;if(day){o.push(`<div class=day><span>${day}</span></div>`);day=null}o.push(msg(m,inPane))}return o.join('')}
+function scrollTo(id){if(!id)return;const e=document.querySelector('#pane #m-'+id)||document.querySelector('#main #m-'+id);e&&e.scrollIntoView({block:'center',behavior:'smooth'})}
+const ALL=[...Object.values(M),...Object.values(T),...Object.values(DMS)].flat();
+function act(id){S[id]=1;hl=null;render();const n=ALL.find(m=>m.need==id&&m.id&&document.getElementById('m-'+m.id));n&&scrollTo(n.id)}
+function go(id){const c=C(id);if(c&&c.p&&!c.h.includes(who)){alert(`${pre(c)}${c.n}은 비공개 채널입니다. ${N(who)} 님은 멤버가 아니라 볼 수 없습니다.`);return}cur=id;tab='msg';hl=null;if(pane&&(pane.k=='mem'||!(M[id]||[]).some(m=>m.th==pane.id)))pane=null;render()}
+function th(id){pane={k:'th',id};hl=null;if(!M[cur]||!M[cur].some(m=>m.th==id)){tab='msg';cur=Object.keys(M).find(k=>M[k].some(m=>m.th==id))}render()}
+function home(){return['inq','bill','ship','vnqc','all'].find(id=>C(id).h.includes(who))}
+function page(i){SIM.on=0;pi=Math.max(0,Math.min(i,PAGES.length-1));demo=false;tour=null;hl=null;render();$('#deck').scrollTop=0}
+function browse(){S={...S0};tour=null;hl=null;pane=null;who='lee';cur='inq';tab='msg';pi=3;demo=true;render()}
+function stepTo(s,i){const sc=SC[s];i=Math.max(0,Math.min(i,sc.steps.length-1));tour={s,i};pi=3;demo=true;S={...S0};
+ let w=who,g=null,t=null,tb='msg';
+ for(let j=0;j<=i;j++){const p=sc.steps[j];(p.ok||[]).forEach(k=>S[k]=1);if(p.who)w=p.who;if(p.go){g=p.go;t=null;tb='msg'}if(p.th)t=p.th;if(p.tab)tb=p.tab}
+ who=w;if(g)cur=g;tab=tb;pane=t?{k:'th',id:t}:null;hl=sc.steps[i].hl||null;render();
+ requestAnimationFrame(()=>{const pm=t&&(M[cur]||[]).find(m=>m.th==t),pe=pm&&document.querySelector('#main #m-'+pm.id);pe&&pe.scrollIntoView({block:'center'});scrollTo(hl)})}
+function next(){const sc=SC[tour.s];if(tour.i<sc.steps.length-1)stepTo(tour.s,tour.i+1);else if(tour.s<SC.length-1)stepTo(tour.s+1,0);else page(4)}
+
+// ---------- 한 달 시뮬레이터 (canvas) ----------
+// 단계별 일의 수(w)는 예시: ⑤에서 입금 요청·사업자등록증·ERP 입력·계산서·입금 확인이 함께 일어납니다.
+// 단계별 시간은 이 비율로 나눈 가정이고, 화면에 그렇게 적습니다. g는 바뀐 뒤 사람이 확인하는 곳의 수입니다.
+const SIM={st:['② 문의','③④ 안내·견적','⑤ 확정·입금·장부','⑥ 출고','⑦⑩ 명세서·마감'],w:[1,2,5,1,1],g:[1,2,3,1,2],D:20,K:.06,tr:.3,on:0,t0:0,O:[],end:0};
+const simOrd=m=>{const W=SIM.w.reduce((a,b)=>a+b,0),n=Math.min(Math.max(0,CV.n|0),400);return Array.from({length:n},(_,k)=>({a:(k+.5)/n*SIM.D*.85,d:SIM.w.map(w=>Math.max(0,m)*w/W*SIM.K)}))};
+function simAt(o,t){let x=t-o.a;if(x<0)return null;for(let s=0;s<5;s++){if(x<o.d[s])return{s};x-=o.d[s];if(s<4){if(x<SIM.tr)return{s,f:x/SIM.tr};x-=SIM.tr}}return{z:1}}
+function simWork(o,t){let x=Math.max(0,t-o.a),w=0;for(let s=0;s<5&&x>0;s++){w+=Math.min(x,o.d[s]);x-=o.d[s]+SIM.tr}return w/SIM.K}
+function simData(){SIM.O=[simOrd(CV.now),simOrd(CV.goal)];SIM.end=Math.max(SIM.D,...SIM.O.flat().map(o=>o.a+o.d.reduce((p,q)=>p+q,0)+4*SIM.tr))}
+function simDraw(t){const c=$('#sim');if(!c)return[0,0];const W=c.clientWidth,H=290,r=devicePixelRatio||1;if(c.width!=Math.round(W*r)){c.width=Math.round(W*r);c.height=H*r}
+ const g=c.getContext('2d'),F='system-ui,-apple-system,sans-serif';g.setTransform(r,0,0,r,0,0);g.clearRect(0,0,W,H);
+ const x0=112,x1=W-150,sw=(x1-x0)/5,bw=sw-22,bh=104,LN=[{y:12,m:CV.now,c:'#e8912d',l:'지금'},{y:162,m:CV.goal,c:'#39063a',l:'바뀐 뒤'}],k=CV.n>0?CV.n/Math.min(CV.n,400):0,res=[];
+ LN.forEach((ln,li)=>{const O=SIM.O[li]||[],cnt=[0,0,0,0,0];
+  g.textBaseline='alphabetic';g.fillStyle='#1d1c1d';g.font=`800 16px ${F}`;g.fillText(ln.l,6,ln.y+46);g.fillStyle='#616061';g.font=`13px ${F}`;g.fillText(`한 건 ${ln.m}분`,6,ln.y+66);
+  for(let s=0;s<5;s++){const bx=x0+s*sw,hot=li==0&&s==2;g.fillStyle=hot?'#fffaeb':'#f8f8f8';g.strokeStyle=hot?'#ecb22e':'#e6e6eb';g.lineWidth=hot?2:1;g.beginPath();g.roundRect?g.roundRect(bx,ln.y,bw,bh,10):g.rect(bx,ln.y,bw,bh);g.fill();g.stroke();
+   g.fillStyle='#1d1c1d';g.font=`700 12px ${F}`;g.fillText(SIM.st[s],bx+8,ln.y+18);
+   if(li==1){const h='✋'.repeat(SIM.g[s]);g.font=`11px ${F}`;g.fillText(h,bx+bw-6-g.measureText(h).width,ln.y+bh-8)}
+   if(s<4){g.strokeStyle='#d0d0d6';g.lineWidth=1;g.beginPath();g.moveTo(bx+bw,ln.y+bh/2);g.lineTo(bx+sw,ln.y+bh/2);g.stroke()}}
+  if(li==0){g.fillStyle='#8a6d00';g.font=`700 11px ${F}`;g.fillText('돈과 장부가 몰리는 곳',x0+2*sw+8,ln.y+bh+15)}
+  const cols=Math.max(1,Math.floor((bw-16)/9)),cap=cols*Math.floor((bh-32)/9);let mins=0;g.fillStyle=ln.c;
+  for(const o of O){mins+=simWork(o,t);const p=simAt(o,t);if(!p||p.z)continue;
+   if(p.f==null){const i=cnt[p.s]++;if(i<cap){g.beginPath();g.arc(x0+p.s*sw+12+(i%cols)*9,ln.y+31+Math.floor(i/cols)*9,3.5,0,7);g.fill()}}
+   else{const ax=x0+p.s*sw+bw,ex=x0+(p.s+1)*sw;g.beginPath();g.arc(ax+(ex-ax)*p.f,ln.y+bh/2,3.5,0,7);g.fill()}}
+  g.font=`700 11px ${F}`;for(let s=0;s<5;s++)if(cnt[s]>cap){g.fillStyle='#616061';g.fillText('+'+(cnt[s]-cap),x0+s*sw+bw-34,ln.y+bh-8)}
+  const hrs=mins*k/60;res.push(hrs);
+  g.fillStyle='#616061';g.font=`12px ${F}`;g.fillText('쌓인 사람 시간',x1+12,ln.y+40);g.fillStyle=ln.c;g.font=`900 28px ${F}`;g.fillText(Math.round(hrs).toLocaleString()+'시간',x1+12,ln.y+74)});
+ return res}
+function simReset(){simData();simDraw(0);const d=$('#simday'),r=$('#simres');d&&(d.textContent='1일 / 30일');r&&(r.textContent='')}
+function simPlay(){simData();SIM.on=1;SIM.t0=performance.now();$('#simres').textContent='';requestAnimationFrame(simLoop)}
+function simLoop(){if(!SIM.on||!$('#sim')){SIM.on=0;return}const t=(performance.now()-SIM.t0)/1000,h=simDraw(Math.min(t,SIM.end));$('#simday').textContent=`${Math.min(30,Math.floor(t/SIM.D*30)+1)}일 / 30일`;
+ if(t<SIM.end)return requestAnimationFrame(simLoop);SIM.on=0;const d=h[0]-h[1];$('#simres').innerHTML=`한 달에 사람 시간 <b>${Math.round(d).toLocaleString()}시간</b>을 아낍니다 · 사람 약 ${(d/209).toFixed(1)}명분`}
+
+// ---------- 나가는 문서 ----------
+const DOCF=['견적서_한빛정밀.pdf','거래명세서_한빛정밀.pdf','세금계산서_발행요청_한빛정밀.pdf','아침보고_11월4일.pdf'];
+let dk=null;
+const DD=(()=>{const q=60,u=28000,t=q*u,s=Math.round(t/1.1);return{q,u,t,s,x:t-s}})(),wn=v=>v.toLocaleString('ko-KR');
+const a4head=(ti,dt)=>`<div class=a4t>${ti}</div><div class=a4d>${dt}</div><div class=a4p><table><tr><th colspan=2>공급받는 자</th></tr><tr><td>상호</td><td>한빛정밀 귀하</td></tr><tr><td>사업자등록번호</td><td>000-00-00000</td></tr></table><table><tr><th colspan=2>공급자</th></tr><tr><td>상호</td><td>${WS}</td></tr><tr><td>대표</td><td>배정훈</td></tr><tr><td>사업자등록번호</td><td>000-00-00000</td></tr><tr><td>주소</td><td>○○시 (예시)</td></tr></table></div>`;
+const a4items=()=>`<table class=a4i><tr><th>품목</th><th>규격</th><th>수량</th><th>단가</th><th>금액</th></tr><tr><td>제품 A 세트</td><td>기본 구성 · 포장</td><td>${DD.q}</td><td>${wn(DD.u)}</td><td>${wn(DD.t)}</td></tr><tr><td>배송</td><td>시내 직접 배송</td><td>1</td><td>0</td><td>0</td></tr><tr class=sum><td colspan=4>공급가액</td><td>${wn(DD.s)}</td></tr><tr class=sum><td colspan=4>세액</td><td>${wn(DD.x)}</td></tr><tr class=sum><td colspan=4><b>합계 (부가세 포함)</b></td><td><b>${wn(DD.t)}</b></td></tr></table>`;
+const DOCS=[
+{t:'견적서',a:()=>a4head('견 적 서','2026년 10월 28일')+`<p class=a4l>아래와 같이 견적합니다. 합계 금액 <b>${wn(DD.t)}원</b> (부가세 포함)</p>`+a4items()+`<div class=a4n><b>비고</b> 납기 10월 30일(금) 오전 10시, 회사 로비로 직접 배송합니다. 입금이 확인되면 출고합니다.</div>`,
+ s:[['단가 28,000원','가격표 · 제품 A 세트','code'],[`금액 ${wn(DD.t)}원`,`${DD.q}세트 × ${wn(DD.u)}원`,'code'],['배송비 0원','시내 직접 배송 · 3만 원 이상 무료 규칙','code'],[`공급가액 ${wn(DD.s)} · 세액 ${wn(DD.x)}`,'합계 ÷ 1.1, 원 미만 반올림','code'],['비고 문장','AI가 쓴 부분은 이것뿐입니다','ai'],['④ 단가·배송비·납기 승인','이수빈 대리가 승인한 뒤 나갑니다','hu']]},
+{t:'거래명세서',a:()=>a4head('거 래 명 세 서','2026년 10월 30일')+a4items()+`<div class=a4n><b>출고</b> 10월 30일 오전 10시 직접 배송</div>`,
+ s:[['수량 60세트','창고가 확인한 실제 출고량 (장만수 반장, 10/30 9:30)','hu'],['견적 60 = 출고 60','견적서와 실출고를 자동 대조','code'],['재고 시트 72 → 12세트','출고하면 자동으로 뺍니다','code'],['⑦ 명세서와 실출고 대조','이수빈 대리가 대조한 뒤 나갑니다','hu']]},
+{t:'계산서 발행 요청',a:()=>`<div class=a4t>세금계산서 발행 요청</div><div class=a4d>2026년 10월 29일 오전 9:07 · 받는 곳: 회계부</div><table class=a4k><tr><td>거래처</td><td>한빛정밀 · 000-00-00000 (사업자등록증 사진에서 읽음)</td></tr><tr><td>품목</td><td>제품 A 세트 ${DD.q}세트</td></tr><tr><td>공급가액</td><td>${wn(DD.s)}원</td></tr><tr><td>세액</td><td>${wn(DD.x)}원</td></tr><tr><td>합계</td><td><b>${wn(DD.t)}원</b></td></tr><tr><td>근거</td><td>견적서 (10/28 승인) · 사업자등록증 사진 · ERP 판매 전표 1029-0003</td></tr><tr><td>발행</td><td>회계 담당자 검토 후 ERP에서 전자세금계산서 발행</td></tr></table>`,
+ s:[['지금','단톡방에 견적서 사진과 "ERP 입력했어요"를 올리면 회계부가 다시 확인','now'],['바뀐 뒤','근거가 붙은 요청 한 장. 다시 묻지 않습니다','code'],['금액','견적서와 같은 숫자를 그대로 씁니다','code'],['⑧ 회계 담당자 검토 후 발행','최민정 과장이 발행합니다','hu']]},
+{t:'아침 보고',a:()=>`<div class=a4t>아 침 보 고</div><div class=a4d>2026년 11월 4일 (수) 오전 8:00 · 받는 분: 대표님</div><table class="a4k a4w"><tr><td>제품 A 최근 7일</td><td>주문 3건 · 3,042,000원</td></tr><tr><td>어제 새 문의</td><td>3건 · 제품 A(인스타 DM), 제품 D, 제품 C</td></tr><tr><td>승인 대기</td><td>1건 · 해솔물류 견적 5,115,000원</td></tr><tr><td>입금 대기</td><td>1건 · 그린조경 1,980,000원 (5일째, 출고 보류)</td></tr><tr><td>오늘 출고</td><td>2건 · 제품 A: 솔밭상회 직접 배송, 지우 님 택배</td></tr></table><div class=a4n><b>오늘 먼저 볼 것</b> 그린조경 입금이 5일째 없습니다. 재요청 문자 초안이 🔒계산서-입금에 있고, 회계 담당자가 확인한 뒤 보냅니다.</div><div class=a4n><b>시범 기준</b> · 회사가 정한 숫자</div><table class="a4k a4w"><tr><td>한 건 처리 시간</td><td>시작 전 ${CV.now}분 → 목표 ${CV.goal}분 · 시작 전과 같은 방법으로 잽니다</td></tr></table><div class=a4n style="color:#616061">근거: #문의대장 · #출고 · 🔒계산서-입금 · ERP 전표</div>`,
+ s:[['사업마다 따로','숫자가 ERP, 단톡방, 엑셀에 흩어져 있습니다','now'],['매출 · 건수 · 금액','#문의대장과 ERP 전표에서 셉니다','code'],['입금 대기 5일째','계산서 발행일부터 셉니다. 입금 전에는 출고를 보류합니다','code'],['오늘 먼저 볼 것','AI가 쓴 부분은 이 문장뿐입니다','ai'],['시범 기준','사람이 시작 전과 같은 방법으로 잰 값입니다','hu']]}];
+function docOpen(i){dk=i;docUI()}
+function docClose(){dk=null;docUI()}
+function docUI(){const o=$('#doc');if(dk==null){o.hidden=true;return}o.hidden=false;const d=DOCS[dk],ic={code:'⚙ 코드',ai:'✦ AI',hu:'✋ 사람',now:'지금'};
+ o.innerHTML=`<div class=a4>${d.a()}</div><div class=dsd><div class=dtb>${DOCS.map((x,i)=>`<button class="${i==dk?'on':''}" onclick="docOpen(${i})">${x.t}</button>`).join('')}<button class=x onclick="docClose()">✕</button></div><div class=dsh>이 문서가 만들어지는 방법</div>${d.s.map(([a,b,k])=>`<div class="dsr ${k}"><span>${ic[k]}</span><b>${E(a)}</b><small>${E(b)}</small></div>`).join('')}<p class=dsf>회사, 거래처, 금액은 예시입니다. ← → 문서 넘기기 · Esc 닫기</p></div>`}
+
+// ---------- 발표 페이지 ----------
+const won=v=>v>=1e8?(v/1e8).toFixed(1)+'억 원':Math.round(v/1e4).toLocaleString()+'만 원';
+const sl=(s,i,t='시연 →')=>`<a class=go onclick="stepTo(${s},${i})">${t}</a>`;
+function calc(){const h=Math.max(0,CV.n*(CV.now-CV.goal)/60),y=h*12*CV.wage,r=CV.mg>0?y/(CV.mg/100):0,o=$('#out');if(!o)return;
+ o.innerHTML=`<div>한 달에 아끼는 사람 시간<b>${Math.round(h).toLocaleString()}시간</b><small>사람 약 ${(h/209).toFixed(1)}명분 (월 209시간 기준)</small></div><div>1년이면 · 같은 일을 사람을 더 뽑아 할 때 드는 돈<b>${won(y)}</b></div><div>이만큼의 이익을 매출로 내려면<b class=y>${won(r)}을 더 팔아야 합니다</b><small>이익 = 매출 × 순이익률. 아낀 비용은 그대로 이익이 됩니다.</small></div>`;if(!SIM.on)simReset()}
+function pCover(){return `<div class="pg cv"><div class=ey>SJ Dynamics · 회사 소개</div><h1>시스템으로<br><em>성과</em>를 만듭니다</h1><p class=lead>프로그램을 설치하고 끝내지 않습니다. 고객이 정한 숫자가 바뀌어야 저희 일이 끝납니다.</p>
+<div class=ey style="margin:0 0 8px">오늘 순서</div>
+<div class=agd><div><i>1</i><b>거래 한 건</b>회사의 실제 거래 한 건을 회사 화면으로 같이 따라갑니다.</div><div><i>2</i><b>흐름 하나</b>한 달에 몇 건, 한 건에 몇 분인지 세고 시범할 흐름을 고릅니다.</div><div><i>3</i><b>숫자</b>그 시간이 돈으로 얼마인지 회사 숫자로 봅니다.</div><div><i>4</i><b>제안</b>한 달 시범의 범위, 결과물, 조건을 보고 시작일을 정합니다.</div></div>
+<div class=cards style="margin-top:14px"><div class=cd><div class=n1>1</div><b>성공 기준은 고객이</b><p>무엇을 성공으로 볼지 고객이 정하고, 저희는 그 숫자로만 판단받습니다.</p></div><div class=cd><div class=n1>2</div><b>작게 시작해 숫자로 확인</b><p>흐름 하나, 한 달. 시작 전과 같은 방법으로 재서 비교합니다.</p></div><div class=cd><div class=n1>3</div><b>지금 쓰는 도구는 그대로</b><p>ERP, 스프레드시트, 지금 쓰시는 AI 도구는 그대로 씁니다. 저희는 그것들을 잇고, 매일 돌아가게 운영합니다.</p></div></div>
+<p class=by>김태유 · SJ Dynamics</p></div>`}
+const fh=i=>{const r=FL[i];return r.n!=null&&r.m!=null?Math.round(r.n*r.m/60).toLocaleString():'—'};
+function syncCV(){const r=FL[fsel];if(r.n!=null)CV.n=r.n;if(r.m!=null)CV.now=r.m}
+function fin(i,k,v){FL[i][k]=v===''?null:+v;if(i==fsel)syncCV();const o=document.getElementById('fh'+i);if(o)o.textContent=fh(i)}
+function pick(i){fsel=i;syncCV();render()}
+function pOne(){const inp=(i,k)=>`<input type=number min=0 placeholder="?" value="${FL[i][k]??''}" onclick="event.stopPropagation()" oninput="fin(${i},'${k}',this.value)">`;
+ return `<div class=pg><div class=ey>첫 시범</div><h1>첫 시범은 <em>흐름 하나</em>만 합니다</h1><p class=lead>모든 사업이 같은 흐름을 쓰지만 시작은 한 곳입니다. 흐름마다 한 달에 몇 건, 한 건에 몇 분이 드는지 같이 세고, 시간이 가장 많이 드는 곳이나 대표님이 가장 먼저 보고 싶은 곳을 고릅니다.</p>
+<div class=fo>${FL.map((r,i)=>`<div class="cd${i==fsel?' on':''}" onclick="pick(${i})"><b>${r.t}${r.tg?`<span class=tg>${r.tg}</span>`:''}</b><ul>${r.l.map(x=>`<li>${x}</li>`).join('')}</ul><div class=cin>한 달 ${inp(i,'n')} 건 · 한 건 ${inp(i,'m')} 분</div><div class=hr>한 달에 드는 사람 시간 <b id=fh${i}>${fh(i)}</b> 시간</div><div class=pk>${i==fsel?'✓ 이 흐름으로 시범':'이 흐름으로 고르기'}</div></div>`).join('')}</div>
+<div class=cd style="margin-top:14px"><b>오늘은 조언으로 답하는 것</b><ul><li><b>조직 AX 계획</b> · 흐름 하나가 자리 잡으면 다음 흐름으로 넘어갑니다. 이것이 쌓여 AX 조직이 됩니다.</li><li><b>사내 도구 검증</b> · 회사가 직접 만든 계산·설계 도구는 기준 사례를 정해 고칠 때마다 다시 검사하고, 이전 버전으로 되돌릴 수 있게 합니다.</li><li><b>AI 구독과 부서 공동 사용</b> · 누가 어떤 일에 쓰는지부터 보고 같이 정리합니다.</li></ul></div></div>`}
+function pMoney(){const inp=(k,w)=>`<input type=number value="${CV[k]}" oninput="CV.${k}=+this.value||0;calc()"${w?` style="width:${w}px"`:''}>`;
+ return `<div class=pg><div class=ey>대표님이 원하는 성과</div><h1>성과는 결국 <em>돈</em>입니다</h1><p class=lead>사람을 더 뽑지 않고 매출을 키우는 구조. 더 팔고, 덜 새고, 덜 듭니다. 무엇을 잴지는 회사가 정합니다.</p>
+<div class=simw><div class=simb><button class="bt2 p" onclick="simPlay()">▶ 한 달을 20초로</button><span id=simday class=sday>1일 / 30일</span><span class=snote>점 하나가 주문 한 건입니다. 단계별 시간은 단계마다 하는 일의 수로 나눈 가정이고, 실제 시간은 오늘 같이 잽니다.</span></div><canvas id=sim></canvas><div id=simres class=sres></div></div>
+<div class=calc><div class=cin><b style="display:block;line-height:1.6">${E(FL[fsel].t)} 흐름</b>한 달 문의·주문 ${inp('n')} 건<br>한 건 처리 시간: 지금 ${inp('now')} 분 → 목표 ${inp('goal')} 분<br>사람 시간 1시간 비용 ${inp('wage',110)} 원<br>순이익률 ${inp('mg')} %<small>노란 칸은 예시입니다. 오늘 회사 숫자로 바꿉니다. 목표 칸이 시범의 성공 기준이 됩니다.<br>아낀 시간이 돈이 되려면, 일이 늘어도 사람을 더 뽑지 않거나 그 시간을 영업에 써야 합니다.</small></div><div class=out id=out></div></div>
+<div class=cards style="margin-top:14px"><div class=cd><b>💰 더 팔기</b><ul><li>홍보물 초안으로 문의를 부름 (① 단계)</li><li>대표님이 받은 주문 전화까지 한 곳에, 회신 담당이 바로 ${sl(0,0)}</li><li>근거와 초안이 먼저 준비돼 견적이 빨라짐 ${sl(0,1)}</li></ul></div><div class=cd><b>🛡 덜 새기</b><ul><li>입금 확인 전 출고 0건 ${sl(0,4)}</li><li>미입금은 날짜를 세고 재요청 초안 ${sl(1,2)}</li><li>단가·수량 실수, 전표 누락 0건 ${sl(0,1)}</li></ul></div><div class=cd><b>⏱ 덜 들기</b><ul><li>문자·카톡·ERP에 다시 입력하지 않음 ${sl(0,2)}</li><li>"입금됐어?" 질문이 사라짐 ${sl(0,3)}</li><li>담당자가 바뀌어도 지난 조건이 남음 ${sl(2,1)}</li></ul></div></div></div>`}
+const sic=(k,c)=>`<svg class=ic viewBox="0 0 16 16" fill="${c}">${SI[k]}</svg>`;
+const scol=(k,now)=>k=='x'?'#8f99a8':k=='a'?'#9d3f9d':now?'#abb3bf':'#215db0';
+function sbox(id){const n=SDN[id],[y,h]=RY[n[4]],x=26+169*n[3],w=142+169*((n[7]||1)-1);return{x,y,w,h,cx:x+w/2,cy:y+h/2}}
+function sdc(){const now=om=='now',el=ots?(Date.now()-ots)/1000:0,tr={},dl=s=>`animation-delay:${(s*DT-el).toFixed(2)}s`;if(!now&&ots)TR.forEach(([k,l,s])=>tr[k]=[l,s]);
+ let e='',n='';
+ if(!now)for(const[a,b,k]of SDE){const p=sbox(a),q=sbox(b),c=k=='g'?'g':k?'d':'m';let d;
+  if(k=='s'){const x=p.x+22;d=`M${x},${p.y+p.h}V${q.cy-18}Q${x},${q.cy} ${x-18},${q.cy}H${q.x+q.w}`}
+  else if(p.y==q.y)d=`M${p.x+p.w},${p.cy}H${q.x}`;
+  else{const dn=p.y<q.y,sx=p.cx+Math.max(-40,Math.min(40,(q.cx-p.cx)*.3)),ex=q.cx+Math.max(-40,Math.min(40,(p.cx-q.cx)*.3)),sy=dn?p.y+p.h:p.y,ey=dn?q.y:q.y+q.h,my=(sy+ey)/2;d=`M${sx},${sy}C${sx},${my} ${ex},${my} ${ex},${ey}`}
+  e+=`<path class=${c} d="${d}" marker-end="url(#a${c})"/>`;
+  if(tr[a]&&tr[b])e+=`<path class=t d="${d}" pathLength=1 style="${dl(Math.max(tr[a][1],tr[b][1])-.75)}"/>`;
+  if(k=='s')e+=`<text class=el x=${(p.x+22+q.x+q.w)/2} y=${q.cy-7} text-anchor=middle>재고 차감</text>`;
+  if(k=='g'){const x=(p.x+p.w+q.x)/2;e+=`<circle class=gb cx=${x} cy=${p.cy} r=11 /><text class=gt x=${x} y=${p.cy+4.5} text-anchor=middle>₩</text>`}}
+ for(const id in SDN){const[kd,t,ty,,,nw,af]=SDN[id],b=sbox(id),off=now&&kd=='a',c=kd=='o'&&!now?OD[id].c.length:0,r=tr[id];
+  n+=`<div class="sdn${osel==id?' sel':''}${off?' off':''}${r?' lit':''}" style="left:${b.x}px;top:${b.y}px;width:${b.w}px;height:${b.h}px;${r?dl(r[1]):''}" onclick="osel='${id}';render()"><div class=hd>${sic(kd,scol(kd,now))}<div class=hc><div class=tt>${t}</div><div class=ty>${off?'지금은 사람이 직접':ty}</div></div></div>${kd=='o'?`<div class=bd>${now?nw:af}</div>`:''}${c?`<span class=tg>✋ ${c}</span>`:''}</div>`;
+  if(r&&r[0])n+=`<span class=sdp style="left:${b.cx}px;top:${b.y+b.h+6}px;${dl(r[1])}">${r[0]}</span>`}
+ const mk=[['m','#5f6b7c'],['d','#8f99a8'],['g','#d49b00']].map(([k,c])=>`<marker id=a${k} viewBox="0 0 10 10" refX=9 refY=5 markerWidth=9 markerHeight=9 markerUnits=userSpaceOnUse orient=auto><path d="M0 0L10 5L0 10z" fill="${c}"/></marker>`).join('');
+ return `<div class=sdw id=sdw><div class=sdc>${SG.map(([t,s,y,h])=>`<div class=sdg style="top:${y}px;height:${h}px"><b>${t}</b><small>${s}</small></div>`).join('')}<svg class=sde width=${SW} height=${SH}><defs>${mk}</defs>${e}</svg>${n}</div>${sdpanel()}</div>`}
+function sdpanel(){if(!osel)return'';const n=SDN[osel],kd=n[0],side=sbox(osel).cx>SW/2?'left':'right';let sc,h=`<div class=sdi style="${side}:12px"><div class=sih>${sic(kd,scol(kd))}<div><b>${n[1]}</b><small>${kd=='o'?'대상':kd=='a'?'AI 동료':'외부 시스템'}</small></div><button onclick="osel=null;render()">✕</button></div>`;
+ if(kd=='o'){const d=OD[osel];sc=d.sc;h+=`<p class=dsc>${d.d}</p><div class=k>속성</div><div class=t>${d.p.map(x=>`<span>${x}</span>`).join('')}</div><div class=k>지금 → 바뀐 뒤</div><p>${n[5]} → <b>${n[6]}</b></p>${d.ai?`<div class=k>✦ AI가 하는 일</div><p>${d.ai}</p>`:''}${d.r?`<div class=k>⚙ 규칙 (코드)</div><p>${d.r}</p>`:''}${d.c.length?`<div class=k>✋ 사람 확인</div><p>${d.c.join('<br>')}</p>`:''}<div class=k>🔒 보는 곳</div><p>${d.sec}</p><div class=mo>${d.mo}</div>`}
+ else{const[d,r,s]=SDX[osel];sc=s;h+=`<p class=dsc>${d}</p>${r?`<div class=k>${kd=='a'?'⚙ 지키는 규칙':'바뀌는 것'}</div><p>${r}</p>`:''}`}
+ return h+`<p style="margin-top:10px">${sl(sc[0],sc[1],'시연에서 보기 →')}</p></div>`}
+function otrace(){om='after';osel=null;ots=Date.now();render()}
+function sdfit(){const w=$('#sdw');if(!w)return;const k=w.clientWidth/SW;w.style.height=Math.round(SH*k)+'px';w.firstElementChild.style.transform=`scale(${k})`}
+function pOnto(){const now=om=='now';return `<div class="pg w"><div class=ey>부록 · 구조 · 온톨로지</div><h1>회사의 일을 <em>하나의 흐름</em>으로 잇습니다</h1><p class=lead>들어오는 곳에서 마감까지, 거래 한 건이 왼쪽에서 오른쪽으로 흐릅니다. 사람이 확인하는 10곳은 ✋로 표시했습니다.</p>
+<div class=ctl><span class=seg><button class="${now?'on':''}" onclick="om='now';ots=0;osel=null;render()">지금</button><button class="${now?'':'on'}" onclick="om='after';ots=0;render()">바뀐 뒤</button></span><button class="bt2 p" onclick="otrace()">▶ 거래 한 건 따라가기</button><span class=sdt>${now?'지금: 정보가 전화·카톡·스프레드시트·ERP·단톡방에 흩어져 있고, 잇는 것은 사람의 기억입니다.':'금액·대조·상태는 코드가 · AI는 초안만 · 정하는 것은 사람'}</span></div>
+${sdc()}
+<div class=sdl><span><b>📦 데이터</b>대상 10가지와 관계</span><span><b>⚙ 규칙</b>금액·대조·상태는 코드가</span><span><b>✋ 행동</b>사람 확인 10곳</span><span><b>🔒 권한</b>채널 멤버만 보고, AI도 같음</span><span><b>₩ 게이트</b>입금 확인 뒤에만 출고</span><span class=h>카드를 누르면 자세히 봅니다</span></div></div>`}
+function pDemo(){return `<div class=pg><div class=ey>시연 · 화면은 SJ Station</div><h1>실제로 돌아가는 모습</h1><p class=lead>앞에서 본 거래 한 건이 이렇게 바뀝니다. 다른 사업도 같은 흐름이고, 계산 규칙과 배송만 다릅니다. 회사, 거래처, 금액은 모두 예시입니다. ← → 키로 장면을 넘깁니다.</p>
+<div class=scg>${SC.map((s,i)=>`<div class="sc${i?'':' main'}" onclick="stepTo(${i},0)"><div class=n>시나리오 ${i+1}${i?'':' · 메인'}</div><h3>${s.t}</h3><p>${s.s}</p><div class=ft>${av(s.who,18)} ${E(N(s.who))} 시점 <span class=pill>${s.steps.length}장면</span></div></div>`).join('')}<div class=sc onclick="docOpen(0)"><div class=n>문서</div><h3>견적서 · 명세서 · 계산서 요청 · 아침 보고</h3><p>고객과 회계부에 나가는 문서 3장과 대표님이 매일 받는 보고 1장. 숫자가 어디서 왔는지 옆에 붙습니다.</p><div class=ft>📄 <span class=pill>4장</span></div></div></div>
+<p style="margin-top:18px"><button class=bt2 onclick="browse()">자유롭게 둘러보기</button></p></div>`}
+const PRICE=null;
+function pAsk(){return `<div class=pg><div class=ey>제안</div><h1>한 달 동안, <em>실제 주문</em>으로 확인하겠습니다</h1>
+<div class=cards><div class=cd><b>범위</b><p>${E(FL[fsel].t)} 한 흐름. 홍보 → 문의 → 가격 안내·견적 → 확정·입금 → 출고 → 명세서·마감. 다른 사업은 이 흐름이 자리 잡은 뒤에 붙입니다.</p></div><div class="cd fx rp"><b>결과물 · 대표님 아침 보고 한 장</b><p>매일 아침 8시, 매출·새 문의·승인 대기·입금 대기·오늘 출고와 시범 기준을 한 장으로 받습니다. 숫자마다 근거가 붙고, 묻는 말에는 근거와 함께 답합니다.</p><div class=rpb><button onclick="docOpen(3)">📄 예시 한 장</button><button onclick="stepTo(1,0)">▶ 시연</button></div></div><div class=cd><b>성공 기준 · 회사가 정함</b><p>한 건 <span class=ex>${CV.now}분</span> → <span class=ex>${CV.goal}분</span>, 다시 입력하는 일 0건. 시작 전과 같은 방법으로 재서 비교하고, 그 값이 아침 보고에 함께 올라갑니다. 저희는 이 숫자로만 판단받습니다.</p></div></div>
+<div class=tl3><div><i>시작 전</i><b>기준을 같이 정하고, 지금 시간을 잽니다</b>가격표·단가표, 재고 시트, 사람이 확인하는 10곳. AI는 이 기준을 따라 초안만 만들고, 금액은 가격표로 계산합니다.</div><div><i>한 달</i><b>실제 주문으로 돌립니다</b>지금 쓰시는 도구는 그대로 두고, 매일 아침 보고를 받습니다.</div><div><i>끝</i><b>같은 방법으로 다시 잽니다</b>성공 기준과 비교한 결과를 보고 다음 단계를 정합니다.</div></div></div>`}
+function pTerms(){const o=FL[1-fsel].t;return `<div class=pg><div class=ey>조건과 다음 단계</div><h1>한 달 시범의 <em>조건</em></h1>
+<div class=cards><div class="cd fx"><b>비용</b><p>시범도 유료입니다.</p><div class=pr>한 달 시범 ${PRICE?`<b>${E(PRICE)}</b>`:`<span class=ex>금액</span>`}</div></div><div class=cd><b>준비할 것</b><p>실제 문의·견적 샘플, ERP 연동 권한, 담당자 한 분.</p></div><div class=cd><b>하지 않는 것</b><ul><li>공장·설비 자동화는 이번 범위가 아닙니다.</li><li>AI는 금액을 정하지 않습니다. 금액은 가격표로 계산하고 사람이 승인합니다.</li><li>지금 쓰시는 도구를 바꾸라고 하지 않습니다.</li><li>지원은 평일 저녁과 주말에 합니다.</li></ul></div></div>
+<div class=sv><b>운영 서버</b><div class=svr><div><i>시범</i>저희 서버에서 운영합니다</div><span>→</span><div><i>정식 계약</i>서울의 관리형 서버로 옮기거나</div><div><i>정식 계약</i>회사 서버에 직접 설치 · 견적 별도</div></div></div>
+<div class=lad><div><b>지금</b>${E(FL[fsel].t)}</div><div><b>다음</b>${E(o)} · 다른 사업</div><div><b>그다음</b>설계·생산 단계까지</div><div><b>이후</b>새 법인·지점도 처음부터 같은 구조로</div></div>
+<div class=ask>오늘 정할 것 세 가지: 흐름 하나 · 성공 기준 · 시작일<small>처음 만든 흐름이 다른 사업의 틀이 됩니다. 금액은 지금 단계만 드립니다.</small></div></div>`}
+
+// ---------- 시연 (SJ Station 화면) ----------
+function rail(){const dm=isDM(),r=[['⌂','Home',`go(home())`,!dm],['💬','DMs',`go('gm')`,dm],['🔔','Activity'],['📄','Files'],['⋯','More']];
+ $('#rail').innerHTML=`<div class=w>${WS[0]}</div>`+r.map(([i,l,a,on])=>`<button class="${on?'on':''}"${a?` onclick="${a}"`:''}><i>${i}</i>${l}</button>`).join('')}
+function side(){const cs=CH.filter(c=>c.h.includes(who)).sort((a,b)=>a.n<b.n?-1:1),lk=(on,a,ic,l)=>`<a class="${on?'on':''}" onclick="${a}">${ic}<span>${l}</span></a>`;
+ let h=`<div class=ws>${WS} <small>⌄</small></div><a class=mut><b>💬</b><span>Threads</span></a><a class=mut><b>➤</b><span>Drafts & sent</span></a>`;
+ h+=`<div class=sec>▾ Channels</div>`+cs.map(c=>lk(cur==c.id,`go('${c.id}')`,`<b>${pre(c)}</b>`,c.n)).join('')+`<a class=mut><b>＋</b><span>Add channels</span></a>`;
+ h+=`<div class=sec>▾ Direct messages</div>`+['lee','hong','choi'].filter(k=>k!=who).slice(0,2).map(k=>lk(cur=='u:'+k,`go('u:${k}')`,av(k,20),E(N(k)))).join('')+`<a class=mut><b>＋</b><span>Invite people</span></a>`;
+ const ap=['gm','inq','ord'].concat(C('pr').h.includes(who)?['pr']:[],C('vnqc').h.includes(who)?['qc']:[]);
+ h+=`<div class=sec>▾ Agents & apps</div>`+ap.map(k=>k=='gm'?lk(cur=='gm',`go('gm')`,av(k,20),A[k][0]):lk(cur=='a:'+k,`go('a:${k}')`,av(k,20),A[k][0])).join('');
+ $('#side').innerHTML=h}
+const comp=t=>`<div class=comp><div>${E(t)}</div><div class=tl>＋ Aa ☺ @ ⧉</div></div>`;
+function list(){const bs=['전체',...new Set(L.map(r=>r[1]))];
+ return `<div class=fc>${bs.map(b=>`<button class="${flt==b?'on':''}" onclick="flt='${b}';render()">${b}</button>`).join('')}</div><div style="padding:0 20px 20px;overflow:auto"><table class=lt><tr><th>거래처</th><th>사업</th><th>단계</th><th>금액(원)</th><th>담당</th><th>접수</th></tr>${L.filter(r=>flt=='전체'||r[1]==flt).map(r=>{const n=stage(r);return `<tr class="${r[5]?'r':''}" ${r[5]?`onclick="th('${r[5]}')"`:''}><td><b>${r[0]}</b></td><td>${r[1]}</td><td><span class="pill${n>=7?' ok2':''}">${lab(n)}</span>${r[8]?` <span class=pill>${r[8]}</span>`:''}</td><td>${r[4]}</td><td>${N(r[2])}</td><td>${r[3]}</td></tr>`}).join('')}</table></div>`}
+function dmv(){const k=cur=='gm'?'gm':cur.slice(2),ap=!!A[k],sub=ap?A[k][4]:P[k][1];
+ const ms=k=='gm'?(DMS[who]||[{u:'gm',t:'8:00 AM',x:`안녕하세요 ${N(who)} 님. ${N(who)} 님이 볼 수 있는 채널의 기록으로만 답합니다.`}]):[];
+ return `<header>${av(k,24)}<h1>${E(N(k))}</h1>${ap?'<span class=ap>APP</span>':''}<span class=d>${E(sub)}</span></header><nav class=tabs><a class=on>💬 Messages</a>${ap?'<a>About</a>':''}</nav><div class=feed><div class=intro>${av(k,56)}<h2>${E(N(k))}</h2><p>${E(ap?sub:`This conversation is just between you and ${N(k)}.`)}</p></div>${feed(ms)}</div>`+comp(`Message ${N(k)}`)}
+function chan(){if(isDM())return dmv();const c=C(cur);
+ let h=`<header><h1>${pre(c)} ${c.n} <small>⌄</small></h1><span class=d>${c.d}</span><button class=m onclick="pane={k:'mem',id:'${c.id}'};render()">👥 ${c.h.length+c.a.length}</button></header><nav class=tabs><a class="${tab=='msg'?'on':''}" onclick="tab='msg';render()">💬 Messages</a>${cur=='inq'?`<a class="${tab=='list'?'on':''}" onclick="tab='list';render()">📋 문의대장</a>`:''}</nav>`;
+ const intro=`<div class=intro><div class=ic>${pre(c)}</div><h2>${pre(c)} ${c.n}</h2><p>${c.d} · ${c.h.length} members · ${c.a.length} apps${c.p?' · Private':''}</p></div>`;
+ return h+`<div class=feed>${tab=='list'?list():intro+feed(M[cur])}</div>`+comp(`Message ${pre(c)}${c.n}`)}
+function pane2(){const p=$('#pane');if(!pane){p.hidden=true;return}p.hidden=false;
+ if(pane.k=='mem'){const c=C(pane.id);p.innerHTML=`<header><h1 style="font-size:16px">${pre(c)}${c.n} · Members</h1><button class=x onclick="pane=null;render()">✕</button></header><div class=feed>${c.h.concat(c.a).map(k=>`<div class=msg>${av(k,28)}<div class=bd><b>${E(N(k))}</b>${A[k]?'<span class=ap>APP</span>':''}<div class=tm style="margin:0">${E(A[k]?(A[k][4]||'연동 (모의)'):P[k][1])}</div></div></div>`).join('')}</div>`;return}
+ let pm,pc;for(const k in M){const m=M[k].find(m=>m.th==pane.id);if(m){pm=m;pc=C(k);break}}
+ const n=cnt(pane.id);p.innerHTML=`<header><h1 style="font-size:16px">Thread</h1><span class=d>${pre(pc)}${pc.n}</span><button class=x onclick="pane=null;render()">✕</button></header><div class=feed>${item(pane.id)}${msg(pm,1)}<div class=rc>${n} ${n==1?'reply':'replies'}</div>${feed(T[pane.id],1)}</div>`+comp('Reply…')}
+function tourUI(){const t=$('#tour');t.hidden=!(demo&&tour);if(t.hidden)return;
+ const sc=SC[tour.s],st=sc.steps[tour.i],last=tour.i==sc.steps.length-1;
+ t.innerHTML=`<div class=tt>시나리오 ${tour.s+1}/${SC.length} · 장면 ${tour.i+1}/${sc.steps.length}<b>${E(sc.t)}</b><div class=dt>${sc.steps.map((_,j)=>`<i class="${j<=tour.i?'on':''}"></i>`).join('')}</div></div><div class=ts>${f(st.say)}</div><div class=tb><button onclick="stepTo(${tour.s},${tour.i-1})"${tour.i?'':' disabled'}>← 이전</button><button onclick="page(3)">목록</button><button class=p onclick="next()">${!last?'다음 →':tour.s<SC.length-1?'다음 시나리오 →':'제안으로 →'}</button></div>`}
+function render(){
+ $('#pages').innerHTML=PAGES.map((p,i)=>`<button class="${pi==i?'on':''}" onclick="page(${i})">${i+1} ${p}</button>`).join('');
+ ['#q','#vw','#rs'].forEach(s=>$(s).hidden=!demo);$('#sp').hidden=demo;
+ $('#deck').hidden=demo;$('#app').hidden=!demo;
+ if(!demo){$('#tour').hidden=true;$('#deck').innerHTML=[pCover,pOne,pMoney,pDemo,pAsk,pTerms,pOnto][pi]()+`<div class=nx>${pi?`<button onclick="page(${pi-1})">← 이전</button>`:''}${pi<PAGES.length-1?`<button class=p onclick="page(${pi+1})">다음 →</button>`:''}</div>`;if(pi==2)calc();if(pi==6)sdfit();return}
+ $('#who').value=who;$('#wav').innerHTML=av(who,20);rail();side();$('#main').innerHTML=chan();pane2();tourUI()}
+$('#who').innerHTML=Object.keys(P).map(k=>`<option value=${k}>${E(N(k))}</option>`).join('');
+$('#who').onchange=e=>{who=e.target.value;const c=C(cur);if((c&&!c.h.includes(who))||cur=='u:'+who){cur=home();pane=null}hl=null;render()};
+document.onkeydown=e=>{const g=e.target.tagName;if(g=='INPUT'||g=='SELECT')return;const k=e.key;
+ if(dk!=null){e.preventDefault();if(k=='Escape')docClose();else if(k=='ArrowRight')docOpen((dk+1)%DOCS.length);else if(k=='ArrowLeft')docOpen((dk+DOCS.length-1)%DOCS.length);return}
+ if(demo){if(k=='Escape')return page(3);if(!tour)return;if(k=='ArrowRight'){e.preventDefault();next()}else if(k=='ArrowLeft'){e.preventDefault();tour.i&&stepTo(tour.s,tour.i-1)}return}
+ if(k=='ArrowRight'){e.preventDefault();page(pi+1)}else if(k=='ArrowLeft'){e.preventDefault();page(pi-1)}};
+onresize=()=>{if(!demo&&pi==6)sdfit();if(!demo&&pi==2&&!SIM.on)simDraw(0)};
+render();
+// 발표자 화면(sjdynamics-presenter.html) 안에 담겼을 때만: 정해진 명령만 받고, 지금 상태를 알립니다.
+if(parent!==window){
+ addEventListener('message',e=>{const m=e.data;if(!m||!m.sj)return;
+  if(m.tour){if(dk!=null)docClose();stepTo(m.tour[0],m.tour[1])}
+  else if(m.page!=null){if(dk!=null&&m.doc==null)docClose();if(demo||pi!=m.page)page(m.page);if(m.doc!=null)docOpen(m.doc);if(m.sim)setTimeout(simPlay,400)}
+  if(m.key)document.onkeydown({key:m.key,preventDefault(){},target:document.body})});
+ let last='';setInterval(()=>{const s={pi,demo,tour,dk},j=JSON.stringify(s);if(j!==last){last=j;parent.postMessage({sjState:s},'*')}},300)}
+</script>

@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>(주)디와이글로벌 — 회사 전체 지도와 영업 전략</title>
+<style>
+  :root {
+    --bg: #f6f5f2; --card: #fff; --ink: #1d1d1f; --mute: #6b6b70; --line: #e4e2dc;
+    --accent: #1f5f99; --accent-soft: #e6eff8; --gold: #8a6a2f; --gold-soft: #f5efe3;
+    --warn: #a3361f; --warn-soft: #fbece8; --ok: #2f7a4a; --ok-soft: #e7f3eb;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif; }
+  header { background: var(--ink); color: #fff; padding: 22px 32px 18px; }
+  header h1 { margin: 0; font-size: 26px; }
+  header .sub { color: #c9c9cf; margin-top: 4px; font-size: 15px; }
+  .sched { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .chip { background: #34343a; border: 1px solid #4a4a52; border-radius: 999px; padding: 6px 14px; font-size: 15px; }
+  .chip b { color: #ffd98a; margin-right: 6px; }
+  .chip.warn b { color: #ff9b85; }
+  nav { position: sticky; top: 0; z-index: 3; background: rgba(246,245,242,.95); backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line); padding: 10px 32px; display: flex; gap: 6px; flex-wrap: wrap; }
+  nav a { color: var(--ink); text-decoration: none; font-size: 14px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); }
+  nav a.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+  main { max-width: 1180px; margin: 0 auto; padding: 22px 32px 60px; }
+  section { margin-bottom: 30px; scroll-margin-top: 64px; }
+  h2 { font-size: 21px; margin: 0 0 12px; }
+  h2 small { color: var(--mute); font-weight: 400; font-size: 14px; margin-left: 8px; }
+  h3 { font-size: 17px; margin: 0 0 6px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
+  .card + .card { margin-top: 14px; }
+  .grid > .card { margin-top: 0; }
+  .grid { display: grid; gap: 14px; }
+  .grid + .card, .card + .grid { margin-top: 14px; }
+  .g4 { grid-template-columns: repeat(4, 1fr); }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+  .g2 { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 900px) { .g4, .g3 { grid-template-columns: repeat(2, 1fr); } .g2 { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) { .g4, .g3 { grid-template-columns: 1fr; } }
+  .kpi .v { font-size: 28px; font-weight: 700; line-height: 1.2; }
+  .kpi .l { color: var(--mute); font-size: 14px; }
+  .kpi .n { font-size: 13px; color: var(--mute); margin-top: 6px; }
+  .lead { font-size: 17px; }
+  .lead b { color: var(--accent); }
+  .biz h3 { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .biz .role { font-size: 13px; font-weight: 600; border-radius: 6px; padding: 1px 8px; white-space: nowrap; }
+  .role.main { background: var(--accent-soft); color: var(--accent); }
+  .role.hong { background: var(--gold-soft); color: var(--gold); }
+  .role.ceo { background: var(--ok-soft); color: var(--ok); }
+  .role.side { background: #efeee9; color: var(--mute); }
+  .biz p { margin: 4px 0 0; color: #333; font-size: 15px; }
+  .biz .meta { color: var(--mute); font-size: 13px; margin-top: 8px; }
+  ol.tl { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--line); }
+  ol.tl li { position: relative; padding: 0 0 8px 18px; font-size: 15px; }
+  ol.tl li::before { content: ""; position: absolute; left: -6px; top: 8px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+  ol.tl b { display: inline-block; min-width: 70px; }
+  .flow { font: 14px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; background: #f0efea; border-radius: 10px; padding: 12px 14px; white-space: pre; overflow-x: auto; margin: 10px 0 0; }
+  blockquote { margin: 8px 0; padding: 8px 14px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 8px 8px 0; }
+  blockquote small { color: var(--mute); display: block; }
+  ul.clean { margin: 0; padding-left: 18px; }
+  ul.clean li { margin: 4px 0; }
+  .infer { border-left: 5px solid var(--gold); }
+  .warnc { border-left: 5px solid var(--warn); }
+  .badge { display: inline-block; font-size: 12px; border-radius: 6px; padding: 1px 8px; margin-bottom: 6px; background: var(--gold-soft); color: var(--gold); }
+  .badge.w { background: var(--warn-soft); color: var(--warn); }
+  .badge.o { background: var(--ok-soft); color: var(--ok); }
+  .check label { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-top: 1px solid var(--line); cursor: pointer; }
+  .check label:first-of-type { border-top: 0; }
+  .check input { margin-top: 5px; width: 17px; height: 17px; flex: none; }
+  .check .when { color: var(--mute); font-size: 13px; margin-left: 6px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 7px 8px; border-top: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--mute); font-weight: 600; }
+  td.s { white-space: nowrap; color: var(--mute); }
+  a { color: var(--accent); }
+  footer { color: var(--mute); font-size: 13px; text-align: center; padding: 10px 0 30px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>(주)디와이글로벌 — 회사 전체 지도와 영업 전략</h1>
+  <div class="sub">2026-10-28·10-31 통화, 홍건의가 보여 준 자료, 공개 자료 조사 · SJ Dynamics 내부용 · 2026-10-31 작성</div>
+  <div class="sched">
+    <span class="chip"><b>11/3 전</b>홍건의가 A~G 업무 흐름 정리를 보냄</span>
+    <span class="chip"><b>11/3(화) 저녁</b>진주 도착, 저녁 식사</span>
+    <span class="chip warn"><b>11/4(수) 오전</b>대표 미팅·현장 · 8시인지 10시인지 확인</span>
+  </div>
+</header>
+
+<nav id="nav">
+  <a href="#glance">한눈에</a><a href="#company">회사</a><a href="#flow">흐름</a><a href="#people">사람</a>
+  <a href="#asks">요청</a><a href="#strategy">영업 전략</a><a href="#meeting">11/4</a>
+  <a href="#grants">지원사업</a><a href="#checks">확인할 것</a><a href="#sources">출처</a>
+</nav>
+
+<main>
+
+<section id="glance">
+  <h2>한눈에</h2>
+  <div class="grid g4">
+    <div class="card kpi"><div class="v">64억</div><div class="l">매출 (2025)</div><div class="n">2023년 42억 → 2024년 50억 → 2025년 64억 (+28%)</div></div>
+    <div class="card kpi"><div class="v">2.0억</div><div class="l">순이익 (2025)</div><div class="n">자본총계 9.5억 · NICE D&amp;B</div></div>
+    <div class="card kpi"><div class="v">6~8명</div><div class="l">사무 인원</div><div class="n">NICE 기준 사원 6명 · 홈페이지 표기 임직원 40명 (공장·베트남 포함으로 추정)</div></div>
+    <div class="card kpi"><div class="v">6개 · 12곳</div><div class="l">사업 수 · 문의 창구 수</div><div class="n">같은 흐름 하나를 사업마다 따로 돌리고 있음</div></div>
+  </div>
+  <div class="card lead">
+    B2B 목재·파렛트·수출포장이 본업인 회사이고, 그 위에 건축자재와 소비재 사업을 여러 개 얹었습니다.
+    <b>모든 사업이 같은 흐름(문의 → 견적 → 발주 → 출고 → 세금계산서 → 입금 → 이카운트)을 쓰지만, 이 흐름은 전화·문자·카톡·엑셀 이미지에 흩어져 있고, 사업마다 따로 움직입니다.</b>
+    이 흐름을 한 곳에 모으는 것이 홍건의의 자문 요청 2번이고, 회사 전체 AX(요청 1번)의 출발점입니다.
+  </div>
+</section>
+
+<section id="company">
+  <h2>회사 지도 <small>사업 6개와 베트남</small></h2>
+  <div class="grid g3">
+    <div class="card biz"><h3>목재 유통 <span class="role main">가장 큼</span></h3>
+      <p>라트비아에서 시작해 칠레로 넓혔습니다. 베트남·중국에서 LVL과 합판을 들여옵니다. 발트3국, 라트비아, 칠레, 스웨덴의 대형 제재소와 직거래합니다.</p>
+      <div class="meta">홍건의 10/31 "목재 유통이 제일 커" · 홈페이지 파트너사</div></div>
+    <div class="card biz"><h3>파렛트·수출포장 <span class="role main">메인</span></h3>
+      <p>진주 공장에서 직접 만들고, 울산 OEM 공장에도 맡깁니다. OEM 물량은 디와이가 매입해 마진을 붙여 팔고, 월말에 결제합니다. 고객은 현대모비스·현대차(2016년 목재포장 물량 70%), LG화학, LG전자, 보쉬렉스로스, 삼성전기 필리핀 수출포장입니다. 홍건의가 만든 설계·원가 앱(PDS)이 있습니다.</p>
+      <div class="meta">ISO 9001/14001 · IPPC · 연혁, 블로그, 10/31 통화</div></div>
+    <div class="card biz"><h3>매직소프트스톤 <span class="role hong">홍건의 · 첫 대상 후보</span></h3>
+      <p>디와이가 한국 독점으로 공급하고, 제조는 중국입니다(캔톤페어에서 소싱). 국내 재고는 1~3일, 수입 모델은 4~6주 걸립니다. 사례는 롯데월드몰 하이디라오, 진주시청 실내체육관, 남해 아난티, 강남의 치과, 내셔널지오그래픽 매장입니다. 출고는 대부분 수도권으로 갑니다. 총판·대리점을 모집하고 있습니다.</p>
+      <div class="meta">magicsoftstone.co.kr (홍건의가 Claude로 제작) · 인스타 릴스 최대 2.2만 회</div></div>
+    <div class="card biz"><h3>야자매트 <span class="role hong">홍건의</span></h3>
+      <p>관공서, 행사, 조경용입니다. 사례는 경포마라톤 140롤(행사 뒤 중고로 판매), 경상대 칠암캠퍼스, 의령 친수공원입니다. 단가표를 공개하고 있습니다. 홍건의는 매직스톤과 함께 이 둘을 "돈 벌어오는" 사업으로 꼽았습니다.</p>
+      <div class="meta">홈페이지 자료실 · 블로그</div></div>
+    <div class="card biz"><h3>창호 <span class="role side">경남 총판</span></h3>
+      <p>이천에 본사를 둔 진흥창호의 경남 총판입니다. Aluplast 독일식 시스템창호를 현장에 맞춰 만들고 시공합니다. 인스타 팔로워 6,065명으로, 회사 채널 중 가장 큽니다.</p>
+      <div class="meta">10/31 통화 · jhwindow.com · 시공을 누가 하는지는 미확인</div></div>
+    <div class="card biz"><h3>소비재 <span class="role ceo">전통주 = 대표님 희망</span></h3>
+      <p>전통주 眞酒는 2026년 OEM으로 출시했습니다. 진주청주 13,000원, 진홍 16,000원, 세트 28,000원이고, 주문은 오픈채팅과 DM으로 받습니다. 인스타 팔로워는 56명입니다. 판촉물·답례품, 라탄, 데크타일, 밸런스바이크도 팔고, 스마트스토어가 있습니다.</p>
+      <div class="meta">콜라닉(아무르콜라겐 브랜드)과의 관계는 미확인</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><h3>베트남</h3>
+      <ul class="clean">
+        <li>DT GLOBAL JSC (하노이, 2019년 합작) · DY GLOBAL VIETNAM (2023년 단독)</li>
+        <li>2027년 구상: "클린 슬레이트로 AI로만" 시작. 먼저 울산 OEM 모델을 옮기고, 칠레 목재를 베트남으로 보내고, 합판 QC를 합니다. 그다음 매직스톤을 가져갑니다</li>
+        <li>QC 보고: 현장 사진 → 텔레그램이나 슬랙 → AI가 템플릿 보고서 작성 → 고객에게 바로 통보</li>
+      </ul></div>
+    <div class="card"><h3>연혁과 시설</h3>
+      <ol class="tl">
+        <li><b>2012–14</b>라트비아 Palleteries와 거래 시작, 진주에 Palleteries Korea 설립</li>
+        <li><b>2016</b>라트비아 Best Exporter 대통령상 · 현대 계열 목재포장 70%</li>
+        <li><b>2019</b>(주)디와이글로벌 설립 · 하노이 합작법인 설립</li>
+        <li><b>2022</b>진주 복합제조물류센터 준공(11,900㎡, 공장동 2개, 사무동 1개, 컨테이너 도크)</li>
+        <li><b>2026</b>전통주 출시 · 대표 강동엽(82년생)</li>
+      </ol></div>
+  </div>
+  <div class="card infer"><span class="badge">추론</span>
+    <p style="margin:0">홍보를 사람이 계속 만들고 있습니다. 블로그는 최근 3개월에 45편 이상이고, 인스타 계정 5개와 쇼츠 36개가 있으며, 홈페이지 검색 키워드에 경남·전남·경북 지역명이 나열되어 있습니다. 홍건의가 원하는 "SNS 홍보물을 AI로"는 이 반복 노동을 가리킵니다.</p></div>
+</section>
+
+<section id="flow">
+  <h2>모든 사업이 쓰는 흐름 <small>10/31 홍건의 설명, 매직스톤 기준</small></h2>
+  <div class="card">
+    <table>
+      <tr><th>단계</th><th>지금</th><th>정보가 남는 곳</th></tr>
+      <tr><td class="s">① 홍보</td><td>사람이 피드와 영상을 만들어 SNS와 블로그에 올림</td><td>인스타 5계정, 블로그, 유튜브</td></tr>
+      <tr><td class="s">② 문의</td><td>카톡, 그리고 대부분 사무실 전화. 홍건의가 개인 번호로 다시 걸어 상담</td><td>전화, 개인 휴대폰</td></tr>
+      <tr><td class="s">③ 소개</td><td>전화로 설명하고 문자로 링크를 보냄 (샘플을 보내기도 함)</td><td>문자</td></tr>
+      <tr><td class="s">④ 견적</td><td>엑셀로 만든 견적을 이미지로 카톡에 올리고, 그걸 다시 문자로 보냄</td><td>엑셀, 카톡, 문자</td></tr>
+      <tr><td class="s">⑤ 발주</td><td>전화로 옴 ("몇 장, 내일까지")</td><td>기억</td></tr>
+      <tr><td class="s">⑥ 출고</td><td>직접 출고하는 일이 많음</td><td>—</td></tr>
+      <tr><td class="s">⑦ 명세서</td><td>주는 곳도 있고 안 주는 곳도 있음</td><td>—</td></tr>
+      <tr><td class="s">⑧ 계산서</td><td>무조건 발행함. 3명 단톡방(홍건의·팀원·회계)에 견적서와 ERP 입력 사실을 올리면 회계가 발행</td><td>카톡 단톡방, 이카운트</td></tr>
+      <tr><td class="s">⑨ 입금</td><td>회계에 계속 물어 확인함. 미입금은 따로 적어 두었다가 1~2주 뒤 다시 요청. 원칙은 입금 후 출고, 목재는 월말 결제</td><td>회계 담당의 머리, 따로 적은 목록</td></tr>
+      <tr><td class="s">⑩ 마감</td><td>이카운트에 매입·매출 입력</td><td>이카운트, NAS 스프레드시트</td></tr>
+    </table>
+    <p style="margin:10px 0 0;color:var(--mute);font-size:14px">홍건의 본인도 "되게 원시적으로"라고 했습니다(17:26). 문의 창구는 대표전화, 매직스톤 010 번호, info@ 메일, 홈페이지 두 곳의 문의 양식, 카톡 오픈채팅과 채널, 인스타 DM 5계정, 스마트스토어, 11번가(추정)입니다.</p>
+  </div>
+  <div class="card"><h3>바꿀 모습 <small style="color:var(--mute);font-weight:400">홍건의의 "AX 조직화 추진" 문서와 같은 방향</small></h3>
+<div class="flow">문의 (전화·카톡·DM·홈페이지)  ─▶  공용 문의대장 한 곳
+   └▶ AI 초안: 답변 · 상품소개 · 견적  (단가표, 카탈로그, 지난 견적을 근거로)
+        └▶ 사람 승인 ─▶ 발주 ─▶ 출고지시 ─▶ 명세서 ─▶ 계산서 ─▶ 입금 확인 ─▶ 이카운트
+   한 건이 처음부터 끝까지 같은 대화 하나에 남음 → 사람이 바뀌어도 이어짐</div>
+    <p style="margin:10px 0 0">매직스톤과 주류는 이 흐름을 그대로 탈 수 있습니다. 다음은 야자매트와 창호이고, 파렛트는 견적 단계에 PDS를 끼우면 같은 흐름이 됩니다. 한 번 만든 흐름을 사업마다 다시 쓰는 구조입니다.</p>
+  </div>
+</section>
+
+<section id="people">
+  <h2>사람과 조직</h2>
+  <div class="grid g3">
+    <div class="card"><h3>대표 강동엽 <span class="badge o">결정자</span></h3>
+      <ul class="clean">
+        <li>82년생. 외부 활동이 많음</li>
+        <li>관심: 비용(인건비)과 주류</li>
+        <li>슬랙 같은 게 있어야 AI가 된다는 걸 이해함</li>
+        <li>홍건의 말로는 데이터 정리를 더 잘하고, 새 기술을 먼저 써 봄</li>
+      </ul></div>
+    <div class="card"><h3>홍건의 · 기획부 <span class="badge">추진자</span></h3>
+      <ul class="clean">
+        <li>매직스톤과 야자매트를 맡음</li>
+        <li>홈페이지, PDS, "AX 조직화 추진" 계획 문서를 직접 만듦 (Claude·GPT Pro 개인 구독)</li>
+        <li>목표는 개발자가 아니라 관리자. 영업 확장과 비용 절감</li>
+        <li>베트남 근무를 원함</li>
+      </ul></div>
+    <div class="card"><h3>회계 담당 <span class="badge">두 번째 지지자 후보</span></h3>
+      <ul class="clean">
+        <li>세금계산서 발행과 입금 확인을 맡음</li>
+        <li>지금은 "입금됐어?"라는 질문을 계속 받음</li>
+        <li>시범을 하면 가장 먼저 편해지는 사람</li>
+      </ul></div>
+  </div>
+  <div class="card warnc"><span class="badge w">고충</span>
+    <blockquote>"그냥 다 사업으로 다 따로 나눠져 있고… 조직이 개판이야 따로 놀아"<small>10/31 통화 39:04</small></blockquote>
+    <p style="margin:6px 0 0">NAS 폴더 구조: 영업부, 무역부, 창호&amp;외장재 사업부, 기획부, 디자인, DY-VN, 회사공용자료. 통화에서 말한 담당 영역: 목재 유통, 파렛트(유통, OEM 관리, 인근 대형 공장 납품), 무역, 창호, 회계, 기획부, 현장 생산, 원격 근무 1명, 총괄 1명. 한 사람이 여러 일을 겸합니다.</p></div>
+</section>
+
+<section id="asks">
+  <h2>자문 요청 4가지와 우리의 답</h2>
+  <div class="card">
+    <table>
+      <tr><th>요청 (10/31 메시지)</th><th>우리의 답</th></tr>
+      <tr><td>① 조직 AX 큰 계획</td><td>위의 회사 지도와 흐름이 그 계획입니다. 흐름 하나를 작게 시작해, 안정되면 다음 사업으로 넓힙니다. 처음부터 한곳에 모아야 기억이 쌓이고, 그래야 AI 이사·팀장급과 인수인계 없는 운영이 됩니다.</td></tr>
+      <tr><td>② 작은 실행 (주류, 매직스톤): 문의 → 견적 → 발주 → 출고 → 명세서 → 계산서 → 입금 → ERP</td><td>매직스톤을 시범 대상으로 하고, 주류를 같은 흐름에 함께 태웁니다. 그의 계획(공용 문의대장, 이카운트 API, 승인 단계)을 설계서로 삼습니다.</td></tr>
+      <tr><td>③ PDS를 다른 시각에서</td><td>계속 키울 가치가 충분합니다. 다만 검증 체계(CI/CD)를 붙여야 합니다: 상용 PDS와 실측값을 기준으로 테스트를 두고, 한 번 고친 오류는 다시 나지 않게 합니다. 그다음 견적 단계에 연결하면, 견적 요청 하나로 설계·원가·적재 계획·문서가 한 번에 나옵니다.</td></tr>
+      <tr><td>④ 작은 조직의 AI 구독, 부서별 공용</td><td>개인 구독을 나눠 쓰면 기록과 기억이 섞입니다. 회사 서버 안의 AI 동료를 권한별로 두면, 기록은 회사에 남고 보는 범위는 권한이 정합니다. TY 말로 "AX 조직의 관건은 권한관리"입니다.</td></tr>
+    </table>
+  </div>
+  <div class="card infer"><span class="badge">이미 해 둔 것</span>
+    <p style="margin:0">홍건의의 ChatGPT 문서 "디와이글로벌 AX 조직화 추진"에는 다음이 들어 있습니다.</p>
+    <ul class="clean">
+      <li>자문 4가지</li>
+      <li>①SNS 홍보부터 ⑩ERP 마감까지의 단계표 (단계마다 누가, 어떻게 하는지와 AX 전환안)</li>
+      <li>이카운트 오픈 API 연동 범위, n8n 승인 흐름</li>
+      <li>공용 문의대장과 NAS 승인 자료로 시스템을 꾸리는 안</li>
+      <li>11/4 계획: "실제 거래 한 건과 PDS 화면을 보며 조언"</li>
+    </ul>
+    <p style="margin:6px 0 0">그가 참고한 것은 HOW I AI의 헤르메스 에이전트 영상("AX 전에 데이터 DX부터"), Obsidian과 harness, 아크포인트의 "AI 네이티브 조직" 영상입니다.</p></div>
+</section>
+
+<section id="strategy">
+  <h2>영업 전략</h2>
+  <div class="card lead"><b>TY 결정 (11/1):</b> 소프트웨어는 0원으로 수렴한다고 보고 인프라로 수익을 냅니다. 모든 인프라와 사용료에 우리 마진을 붙여서 팝니다. 작게 시작하고, 시작은 최저 가격(원가 = 서버 운영비 + AI 사용료)입니다. 데이터는 우리 쪽에 귀속, lock-in 전략. PoC는 서버 B(우리 클러스터)에서 월 한도를 낮춰 운영하고, 정식 계약 때 서버 A(서울 관리형)로 옮기거나 Self Host(견적 따로)를 옵션으로 줍니다. 디와이글로벌은 SJ Station을 기본으로 WorkOS를 만듭니다. 지금은 SPIN 단계이고 제안서 전입니다. 17가지 전체: <a href="dy-global-pricing.html">dy-global-pricing.html</a>. 고객이 한 곳뿐이면 그 한 곳에 회사가 달려 있습니다(business.md "Concentration").</div>
+  <div class="grid g2">
+    <div class="card"><h3>누구에게 무엇을</h3>
+<div class="flow">대표 강동엽 ── 결정자
+   "사람을 더 뽑지 않고 매출을 키우는 구조,
+    사람이 바뀌어도 일이 이어지는 회사"
+홍건의 ─────── 추진자
+   "형이 세운 계획을 매일 돌아가게 만드는 게 우리 일"
+회계 담당 ──── 두 번째 지지자
+   "입금됐어? 질문이 사라짐"
+영업·무역·창호 ── 다음에 넓힐 대상</div></div>
+    <div class="card"><h3>순서</h3>
+<div class="flow">11/4      실제 거래 한 건 → 데모 → 요청
+11~12월   시범: 흐름 하나
+          매직스톤에 주류를 같은 흐름으로 함께
+2027 상반기  야자매트·창호에 같은 흐름
+          PDS를 견적 단계에 연결
+2027      베트남: 처음부터 AX 조직, QC 보고
+          (별도 거래로 분리)
+성과 확인 뒤  파트너: 소개 수수료 20~30%</div></div>
+  </div>
+  <div class="card"><h3>가격 <span class="badge w">내부용</span></h3>
+    <p style="margin:0">TY 결정, 원가와 정가, 기록과 부딪히는 곳은 <a href="dy-global-pricing.html">dy-global-pricing.html</a>에 있습니다.</p></div>
+  <div class="card"><h3>이론으로 확인한 근거 <small style="color:var(--mute);font-weight:400">method/human-work</small></h3>
+    <table>
+      <tr><th>전략</th><th>이론 (분야)</th><th>강도와 한계</th></tr>
+      <tr><td>대표님은 결정자, 홍건의는 추진자로 보고, 회계 담당까지 여러 사람과 관계를 만듦</td><td>구매 센터 (조직 구매), Webster &amp; Wind, <i>J. Marketing</i> 1972. 다수 이해관계자 합의, Adamson 외 <i>The Challenger Customer</i> 2015</td><td>강함 / 중간(실무 조사). 홍건의는 사내 위치가 애매하고 베트남에 가고 싶어 하므로, 그 한 사람에게만 기대면 위험합니다</td></tr>
+      <tr><td>그의 계획 문서를 설계서로 삼음</td><td>IKEA 효과, Norton·Mochon·Ariely, <i>JCP</i> 2012. 자율성 욕구(자기결정이론), Deci &amp; Ryan 2000</td><td>중간 / 강함. 그가 원하는 도구(Hermes, Obsidian, n8n)를 깎아내리지 말고, 지금 쓰는 방식과 맞는다는 점을 앞세워 한곳으로 모읍니다</td></tr>
+      <tr><td>작은 시범, 눈에 보이는 결과, 카톡과 이카운트는 그대로 둠</td><td>혁신 확산 이론의 시험 가능성·관찰 가능성·호환성, Rogers 2003. 메타분석 Tornatzky &amp; Klein, <i>IEEE TEM</i> 1982</td><td>강함. 실제 데이터로 하지 않으면 결과가 눈에 보이지 않습니다</td></tr>
+      <tr><td>가치를 그들이 직접 말한 손실로 설명 (퇴사 때 인수인계·데이터 반출, 미입금)</td><td>고객 가치 제안을 핵심 몇 가지에 집중, Anderson·Narus·van Rossum, <i>HBR</i> 2006. 손실 프레이밍(전망 이론), Kahneman &amp; Tversky 1979</td><td>중간 / 강함. 손실 회피의 크기는 논쟁 중입니다(Gal &amp; Rucker 2018). 겁주는 말투는 쓰지 않습니다</td></tr>
+      <tr><td>정보를 모은 뒤 첫 숫자는 우리가 제시 (정가부터)</td><td>기준점 효과, Tversky &amp; Kahneman 1974. 첫 제안의 기준점 효과, Galinsky &amp; Mussweiler, <i>JPSP</i> 2001</td><td>강함. 친구 사이라 숫자가 너무 높으면 신뢰를 잃습니다. 정가 옆에 원가와 할인액을 함께 둡니다</td></tr>
+      <tr><td>정식 제안서와 견적, 친구 일과 회사 거래를 분리</td><td>사회적 규범과 시장 규범, Heyman &amp; Ariely, <i>Psychol. Sci.</i> 2004</td><td>중간 (실험실 연구)</td></tr>
+      <tr><td>데모는 실제 거래 한 건으로</td><td>정교화 가능성 모델, Petty &amp; Cacioppo 1986. 상호성, Regan 1971</td><td>강함</td></tr>
+      <tr><td>데모 직후에 요청하고, 작은 약속으로 끝냄</td><td>정점-종점 규칙, Kahneman 외 1993. 단계적 요청, Burger 1999</td><td>중간 / 약함~중간</td></tr>
+    </table></div>
+  <div class="card warnc"><span class="badge w">위험</span>
+    <ul class="clean">
+      <li><b>데모 준비:</b> 남은 시간이 3일입니다. 최소 범위는 매직스톤 문의 한 건으로 "단가표·카탈로그로 견적 초안 → 승인 → 계산서 요청 → 입금 확인"까지 보여 주는 것이고, 이카운트 연동은 모의로 합니다.</li>
+      <li><b>범위가 커짐:</b> 사업이 6개이고 그가 원하는 도구도 많습니다. 흐름 하나, 2주, 성공 기준으로 묶습니다.</li>
+      <li><b>지원 시간:</b> 지원은 평일 저녁과 주말입니다(business.md "Model").</li>
+      <li><b>서버:</b> 어디에 둘지는 TY가 정합니다. 관련 기록: TY 결정 2("데이터를 우리 쪽에 귀속"), business.md의 서버 위치 기준("망분리가 없으면 관리형 서버"), 홍건의가 준비하겠다던 남는 PC.</li>
+    </ul></div>
+</section>
+
+<section id="meeting">
+  <h2>11/4 진행 순서 <small>대표님과 이야기할 시간은 길지 않을 것 같음</small></h2>
+  <div class="grid g2">
+    <div class="card">
+<div class="flow">10분  대표님의 목표 듣기 (비용, 사람, 주류)
+      그대로 두면 어떻게 되는지 묻는 질문 1~2개
+15분  실제 거래 한 건 따라가기 (홍건의가 정한 형식)
+      사람 손이 가는 곳을 짚기
+10분  데모: 같은 거래가 한 곳에서 처리되는 모습
+ 5분  요청: 흐름 하나로 작게 시작 · 성공 기준은 디와이가
+      · 범위 합의 일정 → 금액과 조건은 그 뒤 서면으로
+이후  현장 둘러보기 · PDS는 홍건의와 따로</div></div>
+    <div class="card"><h3>지킬 것</h3>
+      <ul class="clean">
+        <li>통화 내용을 화면에 그대로 인용하지 않습니다. 예산 이야기는 화면에 넣지 않습니다.</li>
+        <li>재직 중인 회사, 내부 Open* 이름, 첫 고객사 이름, 개인적인 동기는 말하지 않습니다.</li>
+        <li>가격, 일정, 기능은 그 자리에서 약속하지 않습니다. TY가 정한 안만 꺼냅니다.</li>
+        <li>PDS는 칭찬하고 키우는 방향으로 이야기합니다. 갈아엎자는 말은 하지 않습니다.</li>
+        <li>덱: <a href="jinju-deck.html">jinju-deck.html</a>. 공유는 <code>?static</code>에서 인쇄한 PDF로만 합니다.</li>
+      </ul></div>
+  </div>
+</section>
+
+<section id="grants">
+  <h2>공공 지원사업 <small>시범에는 쓰지 않고, 2027년에 넓힐 때 검토</small></h2>
+  <div class="card">
+    <table>
+      <tr><th>사업</th><th>내용</th><th>우리에게 맞는지</th></tr>
+      <tr><td>AI 바우처 (과기정통부·NIPA)</td><td>수요기업당 최대 2억 원. 2026년 접수는 3/30에 마감</td><td>공급기업은 NIPA 풀에 등록된 AI 기업이어야 합니다. 사업자 등록 전이라 지금은 해당되지 않습니다</td></tr>
+      <tr><td>2027 중기부 제조 AI 전환</td><td>1,728억 원 신규 (예산안, 국회 확정 전)</td><td>공고가 나오면 요건을 확인합니다</td></tr>
+      <tr><td>경남TP 스마트공장 기초구축</td><td>2026년 9월 추가 모집은 마감</td><td>다음 차수를 gntp.or.kr에서 확인합니다</td></tr>
+    </table></div>
+</section>
+
+<section id="checks">
+  <h2>확인할 것 <small>체크하면 이 브라우저에만 저장됩니다</small></h2>
+  <div class="card check" id="checks-list">
+    <label><input type="checkbox" data-k="time">11/4 미팅 시각: 홍건의 캘린더 8시, TY Apple 캘린더 9~10시, 대표님 출근 10시쯤. 어느 쪽인지 홍건의에게 확인<span class="when">11/1 카톡</span></label>
+    <label><input type="checkbox" data-k="ag">A~G 흐름 정리 받기, 그리고 매직스톤의 월 문의·발주 건수와 견적 한 건에 드는 시간 (덱 노란 칸)<span class="when">11/3 전</span></label>
+    <label><input type="checkbox" data-k="pricing">가격: TY 결정 7가지와 아직 정하지 않은 기록 <a href="dy-global-pricing.html#records">dy-global-pricing.html</a><span class="when">TY</span></label>
+    <label><input type="checkbox" data-k="palantir">대표님용 의사결정 데모 (TY: "OpenPalantir 데모는 가능함 … 필요시 만들수있음"). minitab/openpalantir-ui도 파트너십 관계라 SJ Dynamics로 봐도 됨(TY, 11/1)<span class="when">필요할 때</span></label>
+    <label><input type="checkbox" data-k="reg">사업자 등록 시점 (TY-747)<span class="when">11/4 전</span></label>
+    <label><input type="checkbox" data-k="demo">데모: 매직스톤 문의 한 건 → 견적 초안 → 승인 → 계산서 요청 → 입금 확인<span class="when">11/4 전</span></label>
+    <label><input type="checkbox" data-k="server">관리형 서버(서울)의 실제 월 비용, 고객별 AI 사용량 측정 (CTO TY-9644: 서버 A 서울 Lightsail 월 3.6~3.8만, 서버 B 우리 클러스터 약 0, AI 2~7만. 고르는 것은 TY)<span class="when">근거 11/1</span></label>
+    <label><input type="checkbox" data-k="rehearse">시간을 재는 리허설 설치: k3s, SJ Station, 흐름 하나, 백업과 복원. 우리 장비에서 무료로 하고 데모 환경으로도 씀 (CTO가 실행, TY 승인)<span class="when">11/4 전</span></label>
+    <label><input type="checkbox" data-k="ws">디와이 전용 Claude 워크스페이스, API 키, Admin API 키 만들기 (TY)<span class="when">운영 시작 전</span></label>
+    <label><input type="checkbox" data-k="mix">사업별 매출 비중, 직원 수(6명과 40명의 차이)<span class="when">11/4</span></label>
+    <label><input type="checkbox" data-k="stone">매직스톤이 자체 브랜드인지 독점 공급인지, 창호 시공은 누가 하는지<span class="when">11/4</span></label>
+    <label><input type="checkbox" data-k="partner">대표님이 파트너(소개 수수료) 구상을 아시는지<span class="when">11/4</span></label>
+    <label><input type="checkbox" data-k="vn">베트남 2027 계획: 새 법인인지, 기존 법인 개편인지<span class="when">11/4</span></label>
+    <label><input type="checkbox" data-k="dpa">개인정보 처리 위탁 계약 초안 (TY-751)<span class="when">계약 전</span></label>
+  </div>
+</section>
+
+<section id="sources">
+  <h2>출처</h2>
+  <div class="card">
+    <table>
+      <tr><th>내용</th><th>출처</th></tr>
+      <tr><td>요청, 업무 흐름, 조직, 베트남, PDS</td><td>2026-10-28 통화(28분), 2026-10-31 Zoom 통화(68분) 녹음 전사와 화면 기록. TY Mac에만 보관합니다. 요약은 <a href="salesforce-prep.md">salesforce-prep.md</a> 4절과 7절에 있습니다</td></tr>
+      <tr><td>자문 4가지, 참고 영상, 회사 채널</td><td><a href="shared-materials.md">shared-materials.md</a></td></tr>
+      <tr><td>매출, 순이익, 사원 수, 대표자</td><td><a href="https://www.incruit.com/company/1685154920/">인크루트 기업정보 (NICE D&amp;B 제공)</a></td></tr>
+      <tr><td>연혁, 사업, 파트너사, 임직원 40명</td><td><a href="https://www.dyglobal.kr/default/aboutus/sub03.php">dyglobal.kr 연혁</a>, <a href="https://www.dyglobal.kr/default/aboutus/sub02.php">회사개요</a>, <a href="https://www.dyglobal.kr/default/business/sub02.php">목재유통</a></td></tr>
+      <tr><td>매직소프트스톤</td><td><a href="https://www.magicsoftstone.co.kr/">magicsoftstone.co.kr</a>, 카탈로그 PDF</td></tr>
+      <tr><td>진흥창호</td><td><a href="https://jhwindow.com/default/company/company.php">jhwindow.com</a></td></tr>
+      <tr><td>시공·납품 사례, 블로그 빈도</td><td><a href="https://rss.blog.naver.com/dyglobalkr.xml">디와이글로벌 블로그 RSS</a></td></tr>
+      <tr><td>전통주</td><td>제품 소개 PDF, Instagram @jinju_sool</td></tr>
+      <tr><td>지원사업</td><td><a href="https://www.fintechtimes.co.kr/mobile/article.html?no=54934">AI 바우처 2026</a>, <a href="https://wowtale.net/2026/09/01/263826/">2027 중기부 예산안</a>, <a href="https://www.gntp.or.kr">경남테크노파크</a></td></tr>
+      <tr><td>가격 구조, 정가, 관리형 서버, 파트너, 청구 시점</td><td>SJ Dynamics CEO <code>business.md</code> "Model", "Leading model" (forgejo/main e36161b), <code>roadmap.md</code></td></tr>
+      <tr><td>AI 단가</td><td>Anthropic API 가격, 2026-10-06 기준: Sonnet 5.5 100만 토큰당 입력 $2·출력 $10·캐시 읽기 $0.20, Haiku 5.5 $0.10·$0.50</td></tr>
+    </table></div>
+</section>
+
+</main>
+<footer>SJ Dynamics 내부 자료 · 외부 공유 금지 · 2026-10-31 작성 (10/28판을 대체)</footer>
+
+<script>
+  // Checklist state stays in this browser only.
+  const KEY = "dy-global-brief-checks-v2";
+  const st = JSON.parse(localStorage.getItem(KEY) || "{}");
+  document.querySelectorAll("#checks-list input").forEach(cb => {
+    cb.checked = !!st[cb.dataset.k];
+    cb.onchange = () => { st[cb.dataset.k] = cb.checked; localStorage.setItem(KEY, JSON.stringify(st)); };
+  });
+  // Highlight the nav item of the section in view.
+  const links = [...document.querySelectorAll("#nav a")];
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) links.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id));
+  }), { rootMargin: "-40% 0px -55% 0px" });
+  document.querySelectorAll("main section").forEach(s => io.observe(s));
+</script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>(주)디와이글로벌 — 전략과 가격</title>
+<style>
+  :root {
+    --bg: #f6f5f2; --card: #fff; --ink: #1d1d1f; --mute: #6b6b70; --line: #e4e2dc;
+    --accent: #1f5f99; --accent-soft: #e6eff8; --gold: #8a6a2f; --gold-soft: #f5efe3;
+    --warn: #a3361f; --warn-soft: #fbece8; --ok: #2f7a4a; --ok-soft: #e7f3eb;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif; }
+  header { background: var(--ink); color: #fff; padding: 22px 32px 18px; }
+  header h1 { margin: 0; font-size: 26px; }
+  header .sub { color: #c9c9cf; margin-top: 4px; font-size: 15px; }
+  .sched { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .chip { background: #34343a; border: 1px solid #4a4a52; border-radius: 999px; padding: 6px 14px; font-size: 15px; }
+  .chip b { color: #ffd98a; margin-right: 6px; }
+  .chip.warn b { color: #ff9b85; }
+  nav { position: sticky; top: 0; z-index: 3; background: rgba(246,245,242,.95); backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line); padding: 10px 32px; display: flex; gap: 6px; flex-wrap: wrap; }
+  nav a { color: var(--ink); text-decoration: none; font-size: 14px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); }
+  main { max-width: 1180px; margin: 0 auto; padding: 22px 32px 60px; }
+  section { margin-bottom: 30px; scroll-margin-top: 64px; }
+  h2 { font-size: 21px; margin: 0 0 12px; }
+  h2 small { color: var(--mute); font-weight: 400; font-size: 14px; margin-left: 8px; }
+  h3 { font-size: 17px; margin: 0 0 6px; }
+  h3 small { color: var(--mute); font-weight: 400; font-size: 14px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
+  .card + .card { margin-top: 14px; }
+  .grid { display: grid; gap: 14px; }
+  .grid > .card { margin-top: 0; }
+  .grid + .card, .card + .grid { margin-top: 14px; }
+  .g2 { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 900px) { .g2 { grid-template-columns: 1fr; } }
+  .lead { font-size: 17px; }
+  .lead b { color: var(--accent); }
+  .flow { font: 14px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; background: #f0efea; border-radius: 10px; padding: 12px 14px; white-space: pre; overflow-x: auto; margin: 10px 0 0; }
+  blockquote { margin: 8px 0; padding: 10px 14px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 8px 8px 0; font-size: 17px; }
+  ul.clean { margin: 0; padding-left: 18px; }
+  ul.clean li { margin: 4px 0; }
+  .warnc { border-left: 5px solid var(--warn); }
+  .okc { border-left: 5px solid var(--ok); }
+  .badge { display: inline-block; font-size: 12px; border-radius: 6px; padding: 1px 8px; margin-bottom: 6px; background: var(--gold-soft); color: var(--gold); }
+  .badge.w { background: var(--warn-soft); color: var(--warn); }
+  .badge.o { background: var(--ok-soft); color: var(--ok); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 7px 8px; border-top: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--mute); font-weight: 600; }
+  td.s { white-space: nowrap; color: var(--mute); }
+  td.n, th.n { white-space: nowrap; text-align: right; }
+  table.cost th:first-child, table.cost td:first-child { white-space: nowrap; }
+  a { color: var(--accent); }
+  .note { color: var(--mute); font-size: 14px; margin: 8px 0 0; }
+  footer { color: var(--mute); font-size: 13px; text-align: center; padding: 10px 0 30px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>(주)디와이글로벌 — 전략과 가격</h1>
+  <div class="sub">SJ Dynamics 내부용 · 2026-11-01 · 결정은 TY만 합니다. 이 페이지에는 TY 결정, 기록, 사실과 숫자만 둡니다 · 회사 전체 지도는 <a href="dy-global-brief.html" style="color:#ffd98a">브리프</a></div>
+  <div class="sched">
+    <span class="chip"><b>TY 결정</b>17가지 (11/1)</span>
+    <span class="chip warn"><b>단계</b>SPIN, 제안서 전</span>
+    <span class="chip"><b>수익</b>소프트웨어 → 0원, 인프라와 사용료 + 마진</span>
+  </div>
+</header>
+
+<nav>
+  <a href="#strategy">전체 전략</a><a href="#decided">TY 결정</a><a href="#facts">사실과 숫자</a>
+  <a href="#records">기록과 부딪히는 곳</a><a href="#theory">근거</a><a href="#sources">출처</a>
+</nav>
+
+<main>
+
+<section id="strategy">
+  <h2>전체 전략 <small>TY 결정을 한 장에 배치. 괄호는 결정 번호</small></h2>
+  <div class="card">
+<div class="flow">SJ Dynamics
+  소프트웨어는 0원으로 수렴한다고 보고, 인프라로 수익을 냅니다 (9)
+  모든 인프라와 사용료에 우리 마진을 붙여서 팝니다 (10)
+  작게 시작합니다. 시작은 최저 가격, 원가는 서버 운영비 + AI 사용료 (1, 4)
+  데이터는 우리 쪽에 귀속, lock-in 전략 (2, 3)
+
+고객의 단계
+  지금      SPIN 단계, 제안서 전 (6, 13)
+  PoC       서버 B: 우리 SJ 클러스터 (8)
+            월 한도를 낮추고, 수익이 나는 방향 (11)
+  정식 계약  서버 A: 서울 관리형 서버로 옮기거나 (8)
+            Self Host 옵션: 견적을 따로 청구 (7, 8)
+  장기      서버를 클라우드보다 SJCluster 확장으로 (16)
+            확장에는 추가 인프라 투자가 필요 (미래) (17)
+
+디와이글로벌
+  SJ Station을 기본으로 WorkOS를 만듭니다 (5)</div></div>
+</section>
+
+<section id="decided">
+  <h2>TY 결정 <small>2026-11-01, TY가 말한 그대로</small></h2>
+  <div class="card">
+    <table>
+      <tr><th>#</th><th>결정</th></tr>
+      <tr><td>1</td><td>작게 시작합니다.</td></tr>
+      <tr><td>2</td><td>데이터를 우리 쪽에 귀속시킵니다.</td></tr>
+      <tr><td>3</td><td>lock-in 전략으로 갑니다.</td></tr>
+      <tr><td>4</td><td>시작은 최저 가격으로 하고, 원가는 서버 운영비와 AI 사용료로 계산합니다.</td></tr>
+      <tr><td>5</td><td>디와이글로벌은 SJ Station을 기본으로 WorkOS를 만듭니다.</td></tr>
+      <tr><td>6</td><td>아직 제안서 단계가 아닙니다.</td></tr>
+      <tr><td>7</td><td>"가격 옵션에 Self Host는 견적을 따로 청구해야하는쪽으로 감" (CRO 세션)</td></tr>
+      <tr><td>8</td><td>"서버는 PoC 기간엔 B로 운영하고 정식계약시 A로 옮기거나 셀프호스트로 옵션을 줄 수 있음"</td></tr>
+      <tr><td>9</td><td>"앞으로 SJDynamics는 소프트웨어는 0원으로 수렴한다고 생각하고 Infra로 수익을 내야함"</td></tr>
+      <tr><td>10</td><td>"우리는 모든 인프라 및 사용료에 우리 마진을 붙여서 파는 형태임"</td></tr>
+      <tr><td>11</td><td>"PoC일때는 월 한도를 낮추고 수익이 나는 방향으로"</td></tr>
+      <tr><td>12</td><td>"전체적인 전략 명시" (이 페이지 위쪽). 회사 기록(CEO business.md)에는 아래 "기록과 부딪히는 곳"을 TY가 정한 뒤 반영합니다</td></tr>
+      <tr><td>13</td><td>"제안 단계가 아니니 쓸모없는건 빼도됨 지금은 SPIN단계가 맞는듯함"</td></tr>
+      <tr><td>14</td><td>"OpenPalantir 데모는 가능함 OpenPalantir UI가 있으므로 따라서 필요시 만들수있음" (대표님께는 OpenPalantir 같은 의사결정이 먹힐 수도 있다는 TY 판단에 이어서)</td></tr>
+      <tr><td>15</td><td>"흐름별 과금은 확정사항이 아님" (CRO 세션)</td></tr>
+      <tr><td>16</td><td>"추가로 장기적으로는 서버를 클라우드보다 SJCluster를 확장하는 계획도 있음" (CRO 세션)</td></tr>
+      <tr><td>17</td><td>"다만 SJClsuter가 확장되려면 추가적인 인프라 투자가 필요함(미래)" (CRO 세션, 16에 이어서)</td></tr>
+    </table>
+    <p class="note">정하지 않은 값: 마진율(기록에는 직원용 AI만 "AI at cost + 30%"가 있음), PoC 월 한도 금액. 숫자는 아래 "마진율과 한도" (CFO).</p></div>
+</section>
+
+<section id="facts">
+  <h2>사실과 숫자 <small>추정, VAT 포함 여부는 표에 표시</small></h2>
+  <div class="card"><h3>마진율과 한도 <small>CFO TY-9641 댓글 954049a5, 숫자만</small></h3>
+    <ul class="clean">
+      <li><b>흐름 AI:</b> 문의 월 150건에 약 $9입니다. 한도가 $9보다 낮으면 흐름이 멈춥니다.</li>
+      <li><b>PoC, 서버 B, AI 한도 $20을 다 썼을 때 월 마진:</b> 30%면 8.0천 원, 50%면 1.33만, 100%면 2.67만, 200%면 5.34만입니다. 운영 1시간을 메우려면 마진율 150%가 필요합니다.</li>
+      <li><b>정식 계약, 서버 A, AI $20:</b> 마진율 30~200%에서 월 1.8~12만 원입니다. 운영 1시간을 메우려면 마진율 66%가 필요합니다.</li>
+      <li><b>현금 흐름:</b> Anthropic은 선불이고 AWS는 후불입니다. 카드 결제일은 15일이고, 고객 청구는 14일 전후에 할 수 있습니다. 사업자 등록 전에는 청구할 수 없습니다. 카드에 찍힌 원화 금액 × (1 + 마진율)로 청구하면 환율 위험이 없고, 원화 정액이면 환율 위험이 있습니다.</li>
+    </ul></div>
+  <div class="card"><h3>원가 <small>CTO TY-9644, 2026-11-01, 1달러 1,334.80원</small></h3>
+    <table class="cost">
+      <tr><th>항목</th><th>단계</th><th class="n">월 원가</th><th>근거</th></tr>
+      <tr><td>서버 B</td><td>PoC</td><td class="n">현금 약 0</td><td>우리 SJ 클러스터의 네임스페이스 하나. 집 전기료는 아직 재지 않았고, 노드 하나 30~60W면 월 약 5~16천 원입니다. sj-control-01의 여유 24GB에 평소 메모리 기준 16~24곳, 모두 3GB까지 치솟으면 8곳이 들어갑니다. 노드를 새로 사야 하면 고객당 월 (노드 가격 ÷ 36개월 + 전기료) ÷ 노드당 고객 수이고, 노드 가격을 50만~200만 원으로 잡으면 월 1.2~13.1천 원입니다(CFO TY-9641)</td></tr>
+      <tr><td>서버 A</td><td>정식 계약</td><td class="n">3.6~3.8만</td><td>서울 Lightsail 4GB·2vCPU·80GB US$24, 매일 스냅숏과 외부 사본, VAT 포함. 실측해 보니 2GB는 작습니다</td></tr>
+      <tr><td>Self Host</td><td>정식 계약</td><td class="n">고객 부담</td><td>고객 서버. 견적을 따로 청구합니다(결정 7)</td></tr>
+      <tr><td>AI</td><td>전 단계</td><td class="n">2~7만</td><td>Sonnet 5.5(100만 토큰당 입력 $2·출력 $10). 문의 월 150건, 사무 인원 6~8명이 직원용 AI를 쓴다고 가정. 고객별 Claude 워크스페이스에 월 한도를 걸고 비용 보고서로 측정합니다</td></tr>
+    </table>
+    <ul class="clean" style="margin-top:10px">
+      <li><b>TY 시간 (추정, 아직 재지 않음):</b> 설치 16시간, 운영 월 2시간. CTO가 우리 장비에서 리허설 설치로 실측할 수 있습니다. 서버 B에서 하는 PoC 환경과 같은 일입니다.</li>
+      <li><b>PoC를 서버 B에서 (CTO TY-9644 e):</b> 우리 SJ Station과 같은 차트를 별도 네임스페이스에 하나 더 띄웁니다. 함께 필요한 것은 공유 PostgreSQL의 DB(또는 네임스페이스 전용 DB), Garage 버킷, Cloudflare 터널을 통한 <code>&lt;slug&gt;.sjstation.com</code>, 로그인 메일 발신, R2 야간 백업, 네트워크 정책, 고객 전용 Claude 워크스페이스와 키(TY가 만듦)입니다. 노드 여유는 충분합니다(약 1~1.5GB 필요, 여유 24~28GB).</li>
+      <li><b>B에서 A로 옮기기 (f):</b> TY가 서버를 사고, 같은 차트를 단일 노드 k3s에 올린 뒤 덤프·복원, 호스트명 전환을 합니다. 주소와 로그인은 그대로이고, 중단 시간은 수 분(추정, 리허설 전)입니다. Self Host도 같은 구성품을 고객 장비에 올립니다.</li>
+      <li><b>측정 (g):</b> AI는 A와 B 모두 고객 워크스페이스의 일별 비용이고, PoC 한도는 그 워크스페이스의 월 지출 한도로 겁니다. 서버 비용은 A는 AWS 청구서에 서버별로 나옵니다. B는 청구서가 없어서 우리 운영비를 나눠 잡아야 하는데(기준은 CFO), 네임스페이스별 사용 기록이 지금은 없습니다. 차트의 고정 요청값으로 잡거나, devops가 수집기를 붙여야 합니다. 저장 용량은 둘 다 잴 수 있습니다(R2는 무료 10GB 초과분 GB당 월 $0.015).</li>
+      <li><b>CTO가 짚은 TY 결정 사항 (e):</b> 공유 PostgreSQL을 고객과 같이 쓸지(장애 영향 범위)는 아직 결정되지 않았습니다. devops에는 고객 데이터 규칙이 Minitab 데이터에 대한 것만 있습니다.</li>
+      <li><b>SJ Station 내보내기 현황 (CTO):</b> 지금은 멤버 CSV와 흐름 파일만 나옵니다.</li>
+      <li><b>Claude 추론 위치 (CTO):</b> global/us 리전에서만 돕니다. 처리 위탁 계약(TY-751)과 관련됩니다.</li>
+    </ul></div>
+</section>
+
+<section id="records">
+  <h2>기록과 부딪히는 곳 <small>TY가 정할 때까지 기록은 그대로 둠</small></h2>
+  <div class="card">
+    <table>
+      <tr><th>기록</th><th>적힌 내용</th><th>부딪히는 결정 / 처리</th></tr>
+      <tr><td>CEO AGENTS.md, Andy 규칙 3</td><td>"The owner can always pull the chip …"</td><td>TY가 삭제하기로 결정. CEO PR #119, TY-9653</td></tr>
+      <tr><td>business.md, Model의 Terms</td><td>"data export at any time; 90 days' notice and data return …"</td><td>TY가 삭제하기로 결정. CEO PR #119, TY-9653</td></tr>
+      <tr><td>business.md, Managed server</td><td>"The account passes to the customer's name on request"</td><td>TY가 삭제하기로 결정. CEO PR #119, TY-9653</td></tr>
+      <tr><td>CEO AGENTS.md, Mission</td><td>"self-hosted, owned by the customer"</td><td>2, 3, 8, 9</td></tr>
+      <tr><td>CEO AGENTS.md, Selling</td><td>"still above our full cost with a contribution margin"</td><td>4, 10</td></tr>
+      <tr><td>business.md, Positioning</td><td>"Being on-premise is itself the reason to buy"</td><td>8, 9</td></tr>
+      <tr><td>business.md, Model</td><td>"Annual on-premise license, prepaid, per user or per site"; free plan (license free, install paid); setup and migration fees</td><td>7, 9, 10</td></tr>
+      <tr><td>business.md, Model</td><td>"Multi-tenant SaaS: not now"</td><td>8 (PoC를 우리 클러스터에서)</td></tr>
+      <tr><td>business.md, Leading model, Prices</td><td>install ₩1.28M, job build ₩1.2M, job run ₩100k a month; first outside customer pays half; year-1 floor about ₩1.7M; managed server ₩50k a month; staff AI at cost + 30%</td><td>4, 9, 10, 11</td></tr>
+      <tr><td>business.md, Leading model</td><td>망분리 customers on their own server</td><td>7</td></tr>
+      <tr><td>business.md, Leading model</td><td>"Per job, not per seat" and the per-job price lines</td><td>15</td></tr>
+      <tr><td>roadmap.md, Own infrastructure</td><td>office or server room chosen by 3- and 5-year TCO against IDC colocation, cloud and tykimT plus a node; trigger: recurring revenue covers its fixed cost with margin, and a measured need</td><td>16, 17</td></tr>
+      <tr><td>business.md, Cash · Costs</td><td>"No capital spending … before revenue or investment pays for it"; Hosting: "tykimT (TY-owned) for build and demo"</td><td>16, 17</td></tr>
+      <tr><td>CTO TY-9644 (사실)</td><td>SJ 클러스터는 CI와 노드를 같이 씀, 슬롯 11개 중 9.6개 사용 중</td><td>8, 16</td></tr>
+    </table>
+    <p class="note">CEO 이슈 TY-9640이 TY의 결정을 받아 이 기록을 고칩니다. 결정 7·9·10과 이 기록들이 어떻게 맞물리는지는 TY가 아직 말하지 않았습니다.</p></div>
+</section>
+
+<section id="theory">
+  <h2>근거 <small>method/human-work와 경제학. 결정의 배경 이론</small></h2>
+  <div class="card">
+    <table>
+      <tr><th>결정</th><th>이론 (분야)</th><th>강도와 한계</th></tr>
+      <tr><td>9: 소프트웨어 → 0원</td><td>정보재는 복제 비용이 거의 0이라 경쟁하면 가격이 한계비용 쪽으로 내려감, Shapiro &amp; Varian, <i>Information Rules</i> 1999 1~2장</td><td>강함 (경제학 이론, 사례 다수). 차별화나 lock-in이 있으면 가격이 그만큼 버팁니다</td></tr>
+      <tr><td>9·10: 인프라와 운영으로 수익</td><td>모방이 쉬운 혁신의 가치는 보완 자산(설치, 운영, 채널, 신뢰)을 가진 쪽으로 감, Teece, <i>Research Policy</i> 1986</td><td>강함 (전략 경영의 고전). 보완 자산도 따라 하기 쉬우면 마진이 얇아집니다. 클라우드 재판매 자체는 따라 하기 쉽습니다</td></tr>
+      <tr><td>2·3: lock-in</td><td>전환 비용과 lock-in 순환, Shapiro &amp; Varian 1999. Farrell &amp; Klemperer, <i>Handbook of Industrial Organization</i> 3권, 2007</td><td>강함. 고객이 lock-in을 미리 예상하면 처음 계약 때 조건을 요구한다는 결과가 함께 나옵니다</td></tr>
+      <tr><td>1·4: 작고 낮게 시작</td><td>혁신 확산의 시험 가능성, Rogers 2003. 메타분석 Tornatzky &amp; Klein, <i>IEEE TEM</i> 1982</td><td>강함</td></tr>
+      <tr><td>13: SPIN 단계</td><td>SPIN: 상황 → 문제 → 영향 → 해결 가치 순서로 묻기, Rackham, <i>SPIN Selling</i> 1988</td><td>중간. 자사 관찰 연구이고 상관관계입니다</td></tr>
+    </table></div>
+</section>
+
+<section id="sources">
+  <h2>출처</h2>
+  <div class="card">
+    <table>
+      <tr><th>내용</th><th>출처</th></tr>
+      <tr><td>TY 결정</td><td>TY, 2026-11-01 대화 (7은 CRO 세션)</td></tr>
+      <tr><td>정가, 모델, 약관, 미션</td><td>SJ Dynamics CEO <code>business.md</code>, <code>AGENTS.md</code> (forgejo/main e36161b)</td></tr>
+      <tr><td>서버 비용, AI 측정, 내보내기 현황</td><td>CTO 이슈 TY-9644 (2026-11-01)</td></tr>
+      <tr><td>원가 운영 경제성</td><td>CFO 이슈 TY-9641</td></tr>
+      <tr><td>회사 기록 반영</td><td>CEO 이슈 TY-9640, TY-9653 (PR #119)</td></tr>
+      <tr><td>AI 단가</td><td>Anthropic API 가격, 2026-10-06 기준: Sonnet 5.5 100만 토큰당 입력 $2·출력 $10·캐시 읽기 $0.20</td></tr>
+      <tr><td>디와이 흐름, 조직, 일정</td><td><a href="dy-global-brief.html">브리프</a>, <a href="salesforce-prep.md">salesforce-prep.md</a> 7절</td></tr>
+    </table></div>
+</section>
+
+</main>
+<footer>SJ Dynamics 내부용 · 고객에게 보내지 않음 · 2026-11-01</footer>
+</body>
+</html>

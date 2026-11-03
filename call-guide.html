@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>홍건의 통화 — 영업 요령</title>
+<style>
+  :root {
+    --bg: #f6f5f2; --card: #fff; --ink: #1d1d1f; --mute: #6b6b70; --line: #e4e2dc;
+    --accent: #1f5f99; --accent-soft: #e6eff8; --warn: #a3361f; --warn-soft: #fbece8;
+    --ok: #2f7a4a; --ok-soft: #e7f3eb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 17px/1.55 -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
+  }
+  header {
+    position: sticky; top: 0; z-index: 5; background: var(--ink); color: #fff;
+    display: flex; align-items: center; gap: 18px; padding: 10px 24px; flex-wrap: wrap;
+  }
+  header h1 { font-size: 18px; margin: 0; font-weight: 700; }
+  header .goal { color: #c9c9cf; font-size: 15px; flex: 1; min-width: 260px; }
+  .timer { display: flex; align-items: center; gap: 8px; }
+  .timer output { font: 700 24px/1 ui-monospace, SFMono-Regular, Menlo, monospace; min-width: 76px; text-align: right; }
+  button {
+    font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--card);
+    color: var(--ink); border-radius: 8px; padding: 6px 12px; cursor: pointer;
+  }
+  header button { background: #34343a; color: #fff; border-color: #4a4a52; }
+  button:hover { filter: brightness(0.96); }
+  nav.phases { display: flex; gap: 6px; padding: 12px 24px 0; flex-wrap: wrap; }
+  nav.phases button { border-radius: 999px; padding: 6px 14px; }
+  nav.phases button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+  main { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 20px; padding: 16px 24px 40px; max-width: 1400px; }
+  @media (max-width: 1050px) { main { grid-template-columns: 1fr; } aside { position: static !important; } }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; }
+  .rec { border-left: 6px solid var(--warn); }
+  .rec label { display: flex; gap: 10px; align-items: flex-start; margin: 4px 0; }
+  .recdone { display: none; cursor: pointer; color: var(--ok); font-weight: 600; }
+  .recdone small { color: var(--mute); font-weight: 400; }
+  .rec.folded { border-left-color: var(--ok); padding: 10px 20px; }
+  .rec.folded > :not(.recdone) { display: none; }
+  .rec.folded .recdone { display: block; }
+  code { font: 13px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; background: #f0efea; padding: 2px 6px; border-radius: 6px; word-break: break-all; }
+  section.phase { display: none; }
+  section.phase.on { display: block; }
+  .phase h2 { font-size: 24px; margin: 0 0 2px; }
+  .phase .when { color: var(--mute); font-size: 15px; margin-bottom: 14px; }
+  .tip { background: var(--accent-soft); border-radius: 12px; padding: 14px 16px; margin: 0 0 12px; }
+  .tip b { display: block; font-size: 20px; line-height: 1.35; margin-bottom: 4px; }
+  .tip .say { display: block; margin-top: 6px; font-size: 18px; color: var(--accent); font-weight: 600; }
+  .tip small { color: var(--mute); }
+  h3 { font-size: 16px; color: var(--mute); margin: 18px 0 8px; font-weight: 600; letter-spacing: .02em; }
+  ol.qs { list-style: none; padding: 0; margin: 0; counter-reset: q; }
+  ol.qs li { border-top: 1px solid var(--line); padding: 10px 0; }
+  ol.qs li:first-child { border-top: 0; }
+  .q { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+  .q input { margin-top: 5px; width: 18px; height: 18px; flex: none; }
+  .q span { font-size: 18px; }
+  li.done .q span { color: var(--mute); text-decoration: line-through; text-decoration-color: #b9b9b9; }
+  .note { width: 100%; margin: 6px 0 0 28px; max-width: calc(100% - 28px); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; font: inherit; font-size: 15px; resize: vertical; min-height: 34px; background: #fcfcfa; }
+  .listen { background: var(--ok-soft); border-radius: 12px; padding: 10px 16px; margin-top: 14px; font-size: 15px; }
+  .listen b { color: var(--ok); }
+  aside { position: sticky; top: 64px; align-self: start; max-height: calc(100vh - 80px); overflow: auto; }
+  .rules { border-left: 6px solid var(--warn); }
+  .rules h3, .obj h3 { margin-top: 0; }
+  .rules ul { margin: 0; padding-left: 0; list-style: none; }
+  .rules li { padding: 7px 0; border-top: 1px solid var(--line); font-size: 16px; }
+  .rules li:first-child { border-top: 0; }
+  .rules li b { color: var(--warn); }
+  details { border-top: 1px solid var(--line); padding: 8px 0; }
+  details:first-of-type { border-top: 0; }
+  summary { cursor: pointer; font-weight: 600; font-size: 16px; }
+  details p { margin: 6px 0 2px; font-size: 16px; }
+  details p.say { color: var(--accent); font-weight: 600; }
+  details p small { color: var(--mute); }
+  .sources table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .sources th, .sources td { text-align: left; vertical-align: top; padding: 6px 8px; border-top: 1px solid var(--line); }
+  .sources th { color: var(--mute); font-weight: 600; }
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .toast { color: var(--ok); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>홍건의 통화 · 10/28 14:00</h1>
+  <div class="goal">오늘은 <b style="color:#fff">듣고, 다음 약속을 받는 통화</b>. 해결책과 가격은 진주에서.</div>
+  <div class="timer">
+    <output id="clock">00:00</output>
+    <button id="startBtn" type="button">시작</button>
+    <button id="resetBtn" type="button">리셋</button>
+  </div>
+</header>
+
+<nav class="phases" id="phaseNav"></nav>
+
+<main>
+  <div>
+    <div class="card rec">
+      <label><input type="checkbox" data-key="rec-1"> 유선 이어폰 꽂음</label>
+      <label><input type="checkbox" data-key="rec-2"> 녹음 먼저 시작 → 그다음 전화 (끝나면 Ctrl-C)</label>
+      <div style="margin:6px 0 0 28px"><code id="recCmd">apple rec call ~/sjdynamics/dy-global/calls/2026-10-28-honggeonui.wav --tap --mono --rate 16000 --mix</code> <button type="button" id="copyRec">복사</button></div>
+      <label style="margin-top:8px"><input type="checkbox" data-key="rec-3"> 전화는 Mac 전화 앱 또는 Mac 카카오톡으로 (iPhone 카톡은 녹음 안 됨) · 전화 앱 녹음 버튼 누르지 않기</label>
+    </div>
+
+    <div id="phases"></div>
+
+    <div class="card">
+      <div class="toolbar">
+        <button type="button" id="copyNotes">메모 전체 복사 (markdown)</button>
+        <button type="button" id="clearNotes">메모 지우기</button>
+        <span class="toast" id="toast"></span>
+      </div>
+      <p style="color:var(--mute);font-size:14px;margin:8px 0 0">메모는 이 브라우저에만 저장됩니다. 통화 후 복사해서 Claude에게 주면 <code>salesforce-prep.md</code>를 채웁니다.</p>
+    </div>
+
+    <div class="card sources">
+      <details>
+        <summary>근거: 요령마다 기댄 이론과 한계</summary>
+        <table>
+          <thead><tr><th>요령</th><th>이론 (분야)</th><th>출처</th><th>강도와 한계</th></tr></thead>
+          <tbody>
+            <tr><td>말 30% · 문제→영향→가치 순서</td><td>SPIN (영업)</td><td>Rackham, <i>SPIN Selling</i>, 1988</td><td>중간. 판매 통화 35,000건 관찰, 자사 연구, 상관관계</td></tr>
+            <tr><td>의견 말고 지난 사실</td><td>의도와 행동의 차이 (심리학); Mom Test</td><td>Sheeran, <i>Eur. Rev. Soc. Psychol.</i> 12, 2002; Fitzpatrick, 2013</td><td>강함 (의도는 행동 분산의 약 28%). Mom Test는 실무서</td></tr>
+            <tr><td>친구와 거래 분리</td><td>사회적 시장과 금전적 시장; 공동체 관계와 교환 관계</td><td>Heyman &amp; Ariely, <i>Psychol. Sci.</i> 15(11), 2004; Clark &amp; Mills, <i>JPSP</i> 37(1), 1979</td><td>중간. 실험실 과제라 B2B 일반화는 불확실</td></tr>
+            <tr><td>오늘 숫자 안 꺼냄</td><td>기준점 효과, 첫 제안</td><td>Tversky &amp; Kahneman, <i>Science</i> 185, 1974; Galinsky &amp; Mussweiler, <i>JPSP</i> 81(4), 2001</td><td>강함. 첫 제안은 정보가 있을 때 유리하므로 진주에서</td></tr>
+            <tr><td>결정자 · 추진자 · 사용자</td><td>구매 센터 (조직 구매행동)</td><td>Webster &amp; Wind, <i>J. Marketing</i> 36(2), 1972</td><td>강함. 고전 모델</td></tr>
+            <tr><td>Codex 작업 살리기</td><td>IKEA 효과 (소비자 심리)</td><td>Norton, Mochon &amp; Ariely, <i>JCP</i> 22(3), 2012</td><td>중간</td></tr>
+            <tr><td>작은 약속 하나</td><td>foot-in-the-door (사회심리학)</td><td>Freedman &amp; Fraser, <i>JPSP</i> 4(2), 1966; Burger, <i>PSPR</i> 3(4), 1999</td><td>약함~중간. 효과 작고 조건부. Mom Test와 같은 방향</td></tr>
+            <tr><td>진주에 데모</td><td>상호성 (사회심리학)</td><td>Regan, <i>JESP</i> 7(6), 1971</td><td>중간~강함</td></tr>
+          </tbody>
+        </table>
+      </details>
+    </div>
+  </div>
+
+  <aside>
+    <div class="card rules">
+      <h3>항상</h3>
+      <ul>
+        <li><b>말은 30% 이하.</b> 제품·해결책 설명은 진주에서.</li>
+        <li><b>"지난주엔 어떻게 했어?"</b> 의견 말고 지난 사실을 묻는다.</li>
+        <li><b>가격·일정·기능은 약속하지 않는다.</b></li>
+        <li><b>신호는 칭찬이 아니라</b> 자료를 보내 주거나 날짜를 잡는 것.</li>
+        <li><b>숫자를 받는다:</b> 월 주문 건수 × 건당 분 = 대표님께 갈 한 줄.</li>
+      </ul>
+    </div>
+
+    <div class="card obj">
+      <h3>이렇게 물으면</h3>
+      <details open>
+        <summary>"얼마 정도 들어?"</summary>
+        <p class="say">"흐름이랑 범위 보고 진주에서 정식으로 말할게. 지금 숫자 던지면 서로 틀린 기준이 돼."</p>
+        <p><small>기준점 효과 · 청구는 사업자 등록 뒤 (TY-747)</small></p>
+      </details>
+      <details>
+        <summary>"언제까지 돼?"</summary>
+        <p class="say">"자료 받아 보고 진주 갈 때 일정 같이 잡자."</p>
+        <p><small>일정 약속 금지</small></p>
+      </details>
+      <details>
+        <summary>"Codex로 내가 하면 안 돼?"</summary>
+        <p class="say">"형이 만든 거 살리자. 내가 붙이는 건 홈택스·회계·택배 연동, 매일 돌아가게 운영, 장애 대응, 보안이야."</p>
+        <p><small>IKEA 효과: 그의 작업을 깎아내리지 않는다</small></p>
+      </details>
+      <details>
+        <summary>"친구끼리 그냥 좀 도와줘"</summary>
+        <p class="say">"형 일이니까 제대로 해야지. 대표님께는 정식 제안서랑 견적으로 갈게."</p>
+        <p><small>사회적 시장과 금전적 시장을 섞지 않는다</small></p>
+      </details>
+      <details>
+        <summary>"텔레그램이 나아, 슬랙이 나아?"</summary>
+        <p class="say">"지금 영업자들은 뭘로 주문 넘겨? 지난주 주문은 어디로 왔어?"</p>
+        <p><small>추천하지 말고 지난 사실로 돌린다</small></p>
+      </details>
+      <details>
+        <summary>"전부 자동으로 되는 거지?"</summary>
+        <p class="say">"어디까지 자동으로 할지는 실제 주문 보고 같이 정하자."</p>
+        <p><small>기능 약속 금지</small></p>
+      </details>
+      <details>
+        <summary>"언제 시간 돼? 평일에 와 줄 수 있어?"</summary>
+        <p class="say">"방문은 주말이나 휴가 맞춰서 갈게. 연락은 평일 저녁이랑 주말이 제일 빨라."</p>
+        <p><small>기대치를 먼저 맞춘다 (business.md, Model)</small></p>
+      </details>
+    </div>
+  </aside>
+</main>
+
+<script>
+const PHASES = [
+  {
+    id: "open", label: "① 열기", from: 0, to: 3, title: "목적 합의", when: "0–3분",
+    tips: [
+      { b: "오늘 통화의 목적을 먼저 맞춘다.", say: "\"오늘은 듣기만 할게. 진주 갈 때 돌아가는 걸 들고 가려고.\"", s: "듣는 통화라고 먼저 말해 두면 해결책 설명으로 새지 않는다" },
+      { b: "친구 사이와 회사 간 거래를 처음부터 나눈다.", say: "\"숙식은 고마워. 대표님께는 정식 제안서랑 견적으로 갈게.\"", s: "'친구 부탁'으로 굳으면 나중 돈 이야기가 관계를 해친다" }
+    ],
+    qs: [],
+    listen: "홍건의가 대표님 지시를 어떤 말로 전하는지 (그대로 메모)"
+  },
+  {
+    id: "flow", label: "② 지난주 주문 한 건", from: 3, to: 20, title: "지난주 주문 한 건 따라가기", when: "3–20분 · 상황은 짧게, 문제와 영향은 길게",
+    tips: [
+      { b: "말은 30% 이하. 해결책은 꺼내지 않는다.", s: "큰 거래에서 초반 기능 설명은 역효과 (SPIN)" },
+      { b: "의견이 아니라 지난 사실을 묻는다.", say: "\"좋을 것 같아?\" ✕ → \"지난주엔 어떻게 했어?\" ○", s: "말한 의도는 실제 행동을 잘 예측하지 못한다" }
+    ],
+    groups: [
+      { h: "A. 지금 흐름", qs: [
+        "지난주 들어온 주문 하나만 처음부터 끝까지 따라가 보자. 영업자가 주문 받으면 누구한테 어떻게 넘어가?",
+        "배송은 누가 어디로 접수해? (택배사, 직배송)",
+        "세금계산서는 누가 무슨 프로그램으로 끊어? 회계는 내부 경리야, 세무사 기장이야? 프로그램은?",
+        "한 달에 주문 몇 건? 거래처는 주로 어디야? (식당·주점·도매·개인) 재고는 어디서 관리해?",
+        "회사 메신저는 지금 뭐 써? 텔레그램·슬랙은 이미 쓰고 있어, 아니면 새로 쓰는 거야?"
+      ]},
+      { h: "B. 막히는 곳과 그 영향", qs: [
+        "이 과정에서 시간이 제일 많이 드는 데가 어디야? 한 건에 몇 분쯤?",
+        "최근에 실수 난 적 있어? (송장 누락, 계산서 금액 오류, 장부 불일치) 그때 어떻게 수습했어?",
+        "그게 대표님 눈에는 무슨 문제로 보여? (사람을 더 뽑아야 함, 월말 마감 지연)",
+        "주류라서 따로 해야 하는 신고나 서류 업무가 있어?"
+      ]}
+    ],
+    listen: "숫자: 월 건수 · 건당 분 · 실수 빈도 · 사람 이름(영업, 경리, 세무사) · 쓰는 프로그램 이름"
+  },
+  {
+    id: "decide", label: "③ 결정 구조", from: 20, to: 25, title: "해결 가치와 결정 구조", when: "20–25분",
+    tips: [
+      { b: "결정권자는 대표님, 홍건의는 내부 추진자.", say: "그가 대표님께 그대로 전할 한 줄과 숫자를 같이 만든다.", s: "구매에는 결정자·영향자·사용자가 따로 있다" },
+      { b: "홍건의의 Codex 작업을 살려 준다.", say: "\"형이 만든 걸 매일 돌아가는 시스템으로.\"", s: "직접 만든 사람은 결과물에 애착이 크다" }
+    ],
+    groups: [
+      { h: "C. 해결 가치와 결정", qs: [
+        "이게 자동으로 되면 그 시간에 뭘 하게 돼? 사람 한 명분이야?",
+        "결정은 대표님이 하시는 거지? 경리나 영업 쪽에서 같이 봐야 할 사람은 누구야?",
+        "대표님이 진주에서 뭘 보시면 \"이거 하자\" 하실까?",
+        "이걸 위해 이미 해 본 게 있어? (외주 견적, ERP 검토)",
+        "언제까지 돌아가야 해? 베트남 법인 일정 기준으로는?",
+        "대표님이 \"권위자\"한테 기대하시는 게 뭐야? (조언, 직접 구축, 직원 교육)"
+      ]},
+      { h: "D. 범위", qs: [
+        "아까 보낸 파렛트 PDF는 무슨 뜻이야? 참고용이야, 그쪽도 같이 하자는 거야?"
+      ]}
+    ],
+    listen: "결정자 · 성공 기준 · 마감 · 이미 해 본 대안 (예산 신호)"
+  },
+  {
+    id: "next", label: "④ 다음 약속", from: 25, to: 30, title: "다음 약속 받기", when: "25–30분",
+    tips: [
+      { b: "끝날 때 작은 약속 하나를 받는다.", say: "자료 3종 + 진주 날짜 두 개", s: "작은 약속이 다음 단계로 이어진다. 칭찬이 아니라 약속이 신호" },
+      { b: "진주에는 그 회사의 실제 주문으로 돌아가는 데모를 들고 간다.", s: "숙식 제공에 대한 답례이자 가장 강한 설득" },
+      { b: "기대치를 미리 맞춘다.", say: "방문은 주말·휴가, 연락은 평일 저녁·주말", s: "지원은 업무 외 시간 (business.md)" }
+    ],
+    groups: [
+      { h: "E. 다음 약속", qs: [
+        "개인정보 가린 실제 주문 메시지 5~10건, 세금계산서 샘플 1장, 지금 쓰는 엑셀이나 양식을 보내 줄 수 있어? 그걸로 돌아가는 데모 들고 진주 갈게.",
+        "대표님 되시는 날 두 개만 알려 줘."
+      ]}
+    ],
+    listen: "자료 보낼 날짜 · 진주 날짜 후보 · 누가 보내는지"
+  },
+  {
+    id: "after", label: "⑤ 통화 후", from: 30, to: 999, title: "통화 후 기록", when: "끊은 뒤 바로",
+    tips: [
+      { b: "Ctrl-C로 녹음을 멈춘다.", s: "녹음과 전사본은 이 Mac에만 둔다" },
+      { b: "SJ Dynamics 구매자 대화 10건 중 하나로 기록한다.", s: "strategy.md의 가설 1~3" }
+    ],
+    groups: [
+      { h: "기록할 것", qs: [
+        "지금 쓰는 메신저와 불편한 점",
+        "설치·운영·한국어 지원에 돈을 낼 의향",
+        "대신 일해 주는 에이전트에 대한 관심",
+        "누가 무엇을 언제까지 약속했나 (나 / 홍건의)"
+      ]}
+    ],
+    listen: "녹음 파일 경로를 Claude에게 주면 전사 → 요약 → salesforce-prep.md 채우기"
+  }
+];
+
+const KEY = "gunui-call-2026-10-28";
+const state = JSON.parse(localStorage.getItem(KEY) || "{}");
+const save = () => localStorage.setItem(KEY, JSON.stringify(state));
+const el = (tag, attrs = {}, html = "") => { const e = document.createElement(tag); Object.assign(e, attrs); if (html) e.innerHTML = html; return e; };
+const esc = s => s.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+
+const nav = document.getElementById("phaseNav");
+const box = document.getElementById("phases");
+let qn = 0;
+PHASES.forEach((p, i) => {
+  const b = el("button", { type: "button", textContent: p.label });
+  b.dataset.i = i;
+  b.onclick = () => { manual = true; show(i); };
+  nav.appendChild(b);
+
+  const sec = el("section", { className: "phase card" });
+  sec.appendChild(el("h2", {}, esc(p.title)));
+  sec.appendChild(el("div", { className: "when" }, esc(p.when)));
+  p.tips.forEach(t => {
+    sec.appendChild(el("div", { className: "tip" },
+      `<b>${esc(t.b)}</b>${t.say ? `<span class="say">${esc(t.say)}</span>` : ""}${t.s ? `<small>${esc(t.s)}</small>` : ""}`));
+  });
+  (p.groups || []).forEach(g => {
+    sec.appendChild(el("h3", {}, esc(g.h)));
+    const ol = el("ol", { className: "qs" });
+    g.qs.forEach(q => {
+      const id = "q" + (++qn);
+      const li = el("li");
+      const lab = el("label", { className: "q" });
+      const cb = el("input", { type: "checkbox", checked: !!(state[id] && state[id].done) });
+      lab.appendChild(cb);
+      lab.appendChild(el("span", {}, `<b>${qn}.</b> ${esc(q)}`));
+      const ta = el("textarea", { className: "note", placeholder: "답 메모", rows: 1, value: (state[id] && state[id].note) || "" });
+      const sync = () => { state[id] = { q, done: cb.checked, note: ta.value }; li.classList.toggle("done", cb.checked); save(); };
+      cb.onchange = sync; ta.oninput = sync;
+      li.classList.toggle("done", cb.checked);
+      li.appendChild(lab); li.appendChild(ta); ol.appendChild(li);
+    });
+    sec.appendChild(ol);
+  });
+  if (p.listen) sec.appendChild(el("div", { className: "listen" }, `<b>들을 것</b> · ${esc(p.listen)}`));
+  box.appendChild(sec);
+});
+
+// The recording checklist folds to one line once every box is ticked; click the line to reopen.
+const recCard = document.querySelector(".card.rec"), recBoxes = [...recCard.querySelectorAll("input[data-key]")];
+const recDone = el("div", { className: "recdone" }, "✓ 녹음 준비 완료 <small>(눌러서 펼치기)</small>");
+recCard.appendChild(recDone);
+recDone.onclick = () => recCard.classList.remove("folded");
+const foldRec = () => recCard.classList.toggle("folded", recBoxes.every(b => b.checked));
+recBoxes.forEach(cb => {
+  cb.checked = !!state[cb.dataset.key];
+  cb.onchange = () => { state[cb.dataset.key] = cb.checked; save(); foldRec(); };
+});
+foldRec();
+
+function show(i) {
+  [...nav.children].forEach((b, j) => b.classList.toggle("on", j === i));
+  [...box.children].forEach((s, j) => s.classList.toggle("on", j === i));
+}
+show(0);
+
+// Timer: follows the phase by elapsed minutes until a phase is clicked by hand.
+let t0 = null, acc = state.elapsed || 0, tick = null, manual = false;
+const clock = document.getElementById("clock"), startBtn = document.getElementById("startBtn");
+const fmt = ms => { const s = Math.floor(ms / 1000); return String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0"); };
+const now = () => acc + (t0 ? Date.now() - t0 : 0);
+function render() {
+  const ms = now(); clock.value = fmt(ms);
+  if (t0 && !manual) {
+    const m = ms / 60000;
+    const i = PHASES.findIndex(p => m >= p.from && m < p.to);
+    if (i >= 0 && !nav.children[i].classList.contains("on")) show(i);
+  }
+}
+startBtn.onclick = () => {
+  if (t0) { acc = now(); t0 = null; clearInterval(tick); startBtn.textContent = "계속"; state.elapsed = acc; save(); }
+  else { t0 = Date.now(); manual = false; tick = setInterval(render, 500); startBtn.textContent = "멈춤"; }
+  render();
+};
+document.getElementById("resetBtn").onclick = () => { acc = 0; t0 = null; clearInterval(tick); manual = false; startBtn.textContent = "시작"; state.elapsed = 0; save(); show(0); render(); };
+render();
+
+const toast = msg => { const t = document.getElementById("toast"); t.textContent = msg; setTimeout(() => t.textContent = "", 2500); };
+const copy = async text => { try { await navigator.clipboard.writeText(text); return true; } catch { return false; } };
+document.getElementById("copyRec").onclick = async () => toast(await copy(document.getElementById("recCmd").textContent) ? "녹음 명령 복사됨" : "복사 실패: 직접 선택하세요");
+document.getElementById("copyNotes").onclick = async () => {
+  const lines = ["# 홍건의 통화 메모 (2026-10-28)", ""];
+  let n = 0;
+  PHASES.forEach(p => (p.groups || []).forEach(g => {
+    lines.push("## " + g.h);
+    g.qs.forEach(q => { const s = state["q" + (++n)] || {}; lines.push(`- [${s.done ? "x" : " "}] ${n}. ${q}`); if (s.note) lines.push("  - " + s.note.replace(/\n/g, "\n    ")); });
+    lines.push("");
+  }));
+  toast(await copy(lines.join("\n")) ? "메모 복사됨" : "복사 실패");
+};
+document.getElementById("clearNotes").onclick = () => {
+  if (!confirm("체크와 메모를 모두 지울까요?")) return;
+  localStorage.removeItem(KEY); location.reload();
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# Stays on this Mac: call audio and transcripts, and files the customer sent us.
+calls/
+from-customer/
+
+# Tool output
+.playwright-cli/
+.DS_Store
