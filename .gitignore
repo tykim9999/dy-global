@@ -3,5 +3,6 @@ calls/
 from-customer/
 
 # Tool output
+.worktrees/
 .playwright-cli/
 .DS_Store
