@@ -8,6 +8,7 @@ sjdynamics-presenter.html     presenter screen (laptop); "청중 화면 열기" 
 sjdynamics-intro-v5.html      generic company intro: no customer, product or partner names
 sjdynamics-portfolio.html     real-screen drawer; images in real-screens/ (missing ones drop out)
 dy-global-workspace-v4.html   the customer-specific deck
+meeting-minutes-2026-11-04.html   the 11.04 meeting minutes as sent: no transcript, nothing decided for them
 call-guide.*, jinju-deck.*, shared-materials.md, salesforce-prep.md   calls, visit, notes
 ```
 
